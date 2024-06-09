@@ -60,8 +60,11 @@ onMounted(() => {
     (newVal) => {
       if (newVal) {
         console.log('打开')
+        // 禁止body滚动
+        document.body.style.overflow = 'hidden'
         nextTick(() => {
           gsap.to(mianRef.value, {
+            opacity: 1,
             duration: 0.5,
             // 向上移入屏幕
             y: '-100%'
@@ -74,15 +77,17 @@ onMounted(() => {
 
 // 关闭
 const close = () => {
+  // 恢复滚动
+  document.body.style.removeProperty('overflow')
   gsap.to(mianRef.value, {
     opacity: 0,
-    duration: 0.5,
+    duration: 1,
     // 向下移出屏幕
-    y: '200%'
+    y: '100%'
   })
   setTimeout(() => {
     emit('close')
-  }, 500)
+  }, 1000)
 }
 </script>
 <template>
@@ -185,6 +190,7 @@ const close = () => {
   position: absolute;
   top: 100%;
   left: 0;
+  opacity: 0;
   // border: 1px solid #000;
   background-color: rgb(19, 19, 19);
   z-index: 1000;

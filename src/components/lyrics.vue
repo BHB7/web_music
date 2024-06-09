@@ -2,7 +2,6 @@
 import { ref, watch } from 'vue'
 import { getLyricServe } from '@/api/song'
 import { useAudioStore } from '@/stores/index'
-
 const audioStore = useAudioStore()
 // 定义一个歌词数组用于页面渲染
 const lyricList = ref([])
@@ -76,7 +75,7 @@ const audioTime = (e) => {
       // 赋值激活选项
       lyricIndex.value = i
       // 歌词内容体dom通过transform:translateY实现歌词滚动
-      console.log(lyricWarp.value.offsetHeight, lyricLi.value[0].offsetHeight)
+      // console.log(lyricWarp.value.offsetHeight, lyricLi.value[0].offsetHeight)
       const translateY =
         lyricWarp.value.offsetHeight / 2 -
         lyricLi.value[0].offsetHeight * (i + 1)
@@ -88,7 +87,6 @@ const audioTime = (e) => {
 watch(
   () => audioStore.playStatus.currentTime,
   (newVal) => {
-    console.log('newVal:' + newVal)
     audioTime(newVal)
   },
   {
@@ -130,6 +128,7 @@ watch(
     // 每条歌词样式
     .m-song-lritem {
       box-sizing: border-box;
+
       .m-song-lrori {
         display: block;
         font-size: 15px;
@@ -144,8 +143,14 @@ watch(
     // 激活歌词样式
     .m-song-lritem.activeLyric {
       .m-song-lrori {
-        transition: 0.5s;
-        color: #fefefe;
+        background: linear-gradient(to right, #0ded45, #ccc);
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-size: 100%;
+        background-position: 200% 0;
+        backdrop-filter: blur(10px);
+        background-repeat: no-repeat;
+        // color: #fefefe;
         font-size: 20px;
       }
     }

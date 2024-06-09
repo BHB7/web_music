@@ -45,7 +45,7 @@ export const useAudioStore = defineStore('audio', () => {
     // 防抖
     clearTimeout(timer.value)
     timer.value = setTimeout(() => {
-      console.log('progress')
+      // console.log('progress')
       audio.value.currentTime = playStatus.value.duration * (progress / 100)
     }, 100)
   }

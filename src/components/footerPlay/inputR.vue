@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
-
+import gsap from 'gsap'
 const props = defineProps({
   min: {
     type: Number,
@@ -29,7 +29,6 @@ const props = defineProps({
 })
 const paceIptDom = ref()
 const updateProgress = (newProgress) => {
-  console.log(newProgress)
   // 更新进度变量
   // progress.value = newProgress
   // 获取样式并设置CSS变量
@@ -53,10 +52,12 @@ onMounted(() => {
   console.log('类型:' + props.type)
   //  根据类型设置样式
   if (props.type === 'thin') {
-    paceIptDom.value.style.setProperty('--bg1', '#000')
-    paceIptDom.value.style.setProperty('--bg2', '#d38383')
-    paceIptDom.value.style.setProperty('--thumbHw', '8px')
-    paceIptDom.value.style.setProperty('--inpuH', '3px')
+    paceIptDom.value.style.setProperty('--u1', '#ddd')
+    paceIptDom.value.style.setProperty('--u2', '#ddd')
+    paceIptDom.value.style.setProperty('--bg1', '#52616b')
+    paceIptDom.value.style.setProperty('--bg2', '#1e2022')
+    paceIptDom.value.style.setProperty('--thumbHw', '10px')
+    paceIptDom.value.style.setProperty('--inpuH', '5px')
   } else if (props.type === 'normal') {
     paceIptDom.value.style.setProperty('--bg1', '#999')
     paceIptDom.value.style.setProperty('--bg2', '#fff')
@@ -67,6 +68,24 @@ onMounted(() => {
     paceIptDom.value.style.setProperty('--inpuH', '15px')
   }
 })
+const timer = ref()
+const hover = () => {
+  clearTimeout(timer.value)
+  timer.value = setTimeout(() => {
+    gsap.to(paceIptDom.value, {
+      duration: 0.3,
+      '--inpuH': props.type === 'normal' ? '15px' : '8px',
+      '--thumbHw': props.type === 'normal' ? '0' : '16px'
+    })
+  }, 10)
+}
+const noHover = () => {
+  gsap.to(paceIptDom.value, {
+    duration: 0.3,
+    '--inpuH': props.type === 'normal' ? '10px' : '5px',
+    '--thumbHw': props.type === 'normal' ? '0' : '8px'
+  })
+}
 </script>
 <template>
   <input
@@ -78,6 +97,8 @@ onMounted(() => {
     :value="props.value"
     @input="handleInput"
     :style="props.style"
+    @mouseover="hover"
+    @mouseout="noHover"
   />
 </template>
 
@@ -87,6 +108,8 @@ input[type='range'] {
   --value: 0; // 进度
   --bg1: #d38383;
   --bg2: #fff;
+  --u1: #575350;
+  --u2: #575350;
   width: 100%; // 确保进度条宽度与包含元素相匹配
   height: 10px; // 可适当调整高度以改变触摸区域的大小
   -webkit-appearance: none; // 移除默认样式
@@ -119,7 +142,6 @@ input[type='range'] {
   // 定义输入范围的滑块（拇指）样式
   &:hover {
     transition: all 0.5s;
-
     &::-webkit-slider-thumb {
       opacity: 1;
     }
@@ -164,12 +186,13 @@ input[type='range'] {
       to right,
       var(--bg1),
       var(--bg2) var(--value),
-      #575350 var(--value),
-      #575350 100%
+      var(--u1) var(--value),
+      var(--u2) 100%
     );
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     background-position: calc(var(--value) * 1%);
+    backdrop-filter: blur(10px);
   }
 }
 </style>
