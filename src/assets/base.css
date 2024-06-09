@@ -3,3 +3,24 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+/* 滚动条高度和背景 */
+  ::-webkit-scrollbar{
+    width: 8px;
+    height: 8px;
+  }
+
+/* 定义滚动条轨道 内阴影及圆角 */
+::-webkit-scrollbar-track{
+  border-radius: 10px;
+  background-color: #fafafa;
+}
+
+/* 定义滑块 内阴影及圆角 */
+::-webkit-scrollbar-thumb{
+  border-radius: 10px;
+  background-color: rgba(191, 191, 191, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+/*  */

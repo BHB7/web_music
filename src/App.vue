@@ -1,6 +1,7 @@
-<script setup>
-</script>
+<script setup></script>
 
-<template>app</template>
+<template>
+  <router-view></router-view>
+</template>
 
 <style lang="scss" scoped></style>

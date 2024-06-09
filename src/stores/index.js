@@ -7,7 +7,7 @@ pinia.use(piniaPlugins)
 
 export default pinia
 
-
-
 // 统一导入导出
 export * from './modules/counter'
+export * from './modules/audio'
+export * from './modules/user'
