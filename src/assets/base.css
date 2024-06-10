@@ -24,3 +24,12 @@
 }
 
 /*  */
+
+@font-face {
+  font-family: 'myFont'; 
+  src: url('./PingFang/苹方黑体-中粗-简.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,body { font-family: myFont, sans-serif; }

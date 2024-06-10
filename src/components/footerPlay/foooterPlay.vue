@@ -45,7 +45,7 @@ const setVolume = (e) => {
 }
 
 const isShowPlayDetail = ref(false)
-
+const coverRef = ref()
 defineOptions({ name: 'foooterPlay' })
 </script>
 
@@ -54,7 +54,7 @@ defineOptions({ name: 'foooterPlay' })
     <div class="footer-left">
       <!-- 歌曲封面 -->
       <div class="cover" @click="isShowPlayDetail = true">
-        <img src="@/assets/logo.svg" alt="" />
+        <img ref="coverRef" src="@/assets/test.png" alt="" />
       </div>
       <!-- 歌曲信息 -->
       <div class="info">
@@ -117,7 +117,11 @@ defineOptions({ name: 'foooterPlay' })
       </div>
     </div>
   </footer>
-  <playDetail @close="isShowPlayDetail = false" :open="isShowPlayDetail" />
+  <playDetail
+    @close="isShowPlayDetail = false"
+    :open="isShowPlayDetail"
+    :img="coverRef"
+  />
 </template>
 
 <style lang="scss" scoped>

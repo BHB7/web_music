@@ -93,6 +93,15 @@ watch(
     deep: true
   }
 )
+
+const goTime = (item, index) => {
+  console.log(item)
+  audioStore.setProgress(item.time, 'seek')
+  const translateY =
+    lyricWarp.value.offsetHeight / 2 -
+    lyricLi.value[0].offsetHeight * (index + 1)
+  lyricUl.value.style.transform = `translateY(${translateY}px)`
+}
 </script>
 <template>
   <!-- 歌词滚动包裹盒子 -->
@@ -107,7 +116,12 @@ watch(
         :key="item.uid"
         :class="{ activeLyric: lyricIndex === index }"
       >
-        <span class="m-song-lrori">{{ item.words }}</span>
+        <span
+          @click="goTime(item, index)"
+          :class="{ blur: lyricIndex !== index }"
+          class="m-song-lrori"
+          >{{ item.words }}</span
+        >
       </div>
     </div>
   </div>
@@ -116,9 +130,12 @@ watch(
 <style lang="scss" scoped>
 // 歌词样式
 // 歌词视口样式定高50px
+.blur {
+  filter: blur(1px);
+}
 .m-song-scroll {
   height: 300px;
-  text-align: center;
+  // text-align: center;
   color: hsla(0, 0%, 100%, 0.6);
   overflow: hidden;
   -webkit-mask: -webkit-linear-gradient(top, #000, #000 70%, rgba(0, 0, 0, 0));
@@ -131,13 +148,14 @@ watch(
 
       .m-song-lrori {
         display: block;
-        font-size: 15px;
+        font-size: 18px;
         height: 35px; // 需要定死高度--好计算
         line-height: 35px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-family: PingFangSC-Regular;
+        // 苹方-简 中粗体
+        font-family: myFont;
       }
     }
     // 激活歌词样式
@@ -151,7 +169,7 @@ watch(
         backdrop-filter: blur(10px);
         background-repeat: no-repeat;
         // color: #fefefe;
-        font-size: 20px;
+        font-size: 28px;
       }
     }
   }

@@ -22,8 +22,10 @@
     "gsap": "^3.12.5",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "pixi.js": "^5.3.12",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue3-pixi": "^0.9.3"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",

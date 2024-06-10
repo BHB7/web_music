@@ -13,10 +13,10 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
   (config) => {
-    const userStore = useUserStore()
-    if (userStore.cookie) {
-      document.cookie = userStore.cookie
-    }
+    // const userStore = useUserStore()
+    // if (userStore.cookie) {
+    //   document.cookie = userStore.cookie
+    // }
     return config
   },
   (err) => Promise.reject(err)

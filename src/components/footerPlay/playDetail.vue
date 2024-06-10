@@ -11,11 +11,15 @@ import { nextTick, onMounted, ref, watch } from 'vue'
 import lyrics from '../lyrics.vue'
 // 导入动画库
 import gsap from 'gsap'
+import bgColor from '../bgColor.vue'
 
 const props = defineProps({
   open: {
     type: Boolean,
     default: () => false
+  },
+  img: {
+    type: Object
   }
 })
 const audioStore = useAudioStore()
@@ -59,14 +63,15 @@ onMounted(() => {
     () => props.open,
     (newVal) => {
       if (newVal) {
-        console.log('打开')
         // 禁止body滚动
         document.body.style.overflow = 'hidden'
+        console.log('打开')
         nextTick(() => {
           gsap.to(mianRef.value, {
             opacity: 1,
             duration: 0.5,
             // 向上移入屏幕
+            ease: 'power2.out',
             y: '-100%'
           })
         })
@@ -77,21 +82,24 @@ onMounted(() => {
 
 // 关闭
 const close = () => {
-  // 恢复滚动
-  document.body.style.removeProperty('overflow')
   gsap.to(mianRef.value, {
     opacity: 0,
-    duration: 1,
+    duration: 0.5,
     // 向下移出屏幕
-    y: '100%'
+    y: '100%',
+    ease: 'power2.in',
+    onComplete: () => {
+      // console.log('动画结束')
+      // 恢复滚动
+      document.body.style.removeProperty('overflow')
+      emit('close')
+    }
   })
-  setTimeout(() => {
-    emit('close')
-  }, 1000)
 }
 </script>
 <template>
   <main class="main" ref="mianRef" v-if="props.open">
+    <bgColor :img="props.img" class="bg"></bgColor>
     <div class="play-detail">
       <header class="header">
         <div class="l">
@@ -192,8 +200,15 @@ const close = () => {
   left: 0;
   opacity: 0;
   // border: 1px solid #000;
-  background-color: rgb(19, 19, 19);
+  // background-color: rgb(19, 19, 19);
   z-index: 1000;
+  .bg {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+  }
   .header {
     padding: 0 35px;
     width: 100%;
@@ -302,10 +317,12 @@ const close = () => {
             font-size: 18px;
             color: #fff;
           }
+          // 歌名
           .song-name {
             font-size: 20px;
             font-weight: 500;
           }
+          // 歌手
           .author {
             font-size: 16px;
             color: #999;
@@ -355,8 +372,8 @@ const close = () => {
     .active {
       padding: 2px;
       border-radius: 5px;
-      color: #575350 !important;
-      background-color: #9f9d9a;
+      background-clip: text;
+      -webkit-background-clip: text;
       backdrop-filter: blur(10px);
     }
   }

@@ -38,13 +38,17 @@ export const useAudioStore = defineStore('audio', () => {
     audio.value.pause()
   }
   // 设置播放进度
-  const setProgress = (progress) => {
+  const setProgress = (progress, type = 'input') => {
     if (!playStatus.value.isPlay) {
       playStatus.value.pauseTime = playStatus.value.duration * (progress / 100)
     }
     // 防抖
     clearTimeout(timer.value)
     timer.value = setTimeout(() => {
+      if (type !== 'input') {
+        audio.value.currentTime = progress
+        return
+      }
       // console.log('progress')
       audio.value.currentTime = playStatus.value.duration * (progress / 100)
     }, 100)

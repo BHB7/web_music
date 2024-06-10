@@ -34,7 +34,7 @@ module.exports = {
   },
   // eslintrc 中声明全局变量名,  解决 ElMessage 报错问题
   globals: {
-    ElMessage: 'readonly',
+    PIXI: 'readonly',
     ElMessageBox: 'readonly',
     ElLoading: 'readonly'
   }
