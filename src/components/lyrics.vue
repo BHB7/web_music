@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
-import { getLyricServe } from '@/api/song'
+import { getLyricServe } from '@/api/qq/song.js'
 import { useAudioStore } from '@/stores/index'
 const audioStore = useAudioStore()
 // 定义一个歌词数组用于页面渲染

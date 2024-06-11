@@ -11,28 +11,19 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.5.2",
-    "@fortawesome/free-brands-svg-icons": "^6.5.2",
-    "@fortawesome/free-regular-svg-icons": "^6.5.2",
-    "@fortawesome/free-solid-svg-icons": "^6.5.2",
-    "@fortawesome/vue-fontawesome": "^3.0.8",
     "ant-design-vue": "^4.2.2",
     "axios": "^1.7.2",
     "colorthief": "^2.4.0",
     "gsap": "^3.12.5",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
-    "pixi.js": "^5.3.12",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0",
-    "vue3-pixi": "^0.9.3"
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",
     "@vitejs/plugin-vue": "^5.0.4",
-    "@vue/eslint-config-prettier": "^9.0.0",
     "eslint": "^8.57.0",
-    "eslint-plugin-vue": "^9.23.0",
     "prettier": "^3.2.5",
     "sass": "^1.77.4",
     "unplugin-vue-components": "^0.27.0",

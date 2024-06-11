@@ -48,7 +48,7 @@ onMounted(async () => {
       colorfulBackground({
         container: coverRef.value,
         size: [window.innerWidth, window.innerHeight],
-        animation: false,
+        animation: true,
         colors: colorRgab.value
       })
 
@@ -56,7 +56,9 @@ onMounted(async () => {
       const app = new PIXI.Application({
         width: window.innerWidth,
         height: window.innerHeight,
-        transparent: true
+        transparent: true,
+        antialias: false,
+        backgroundAlpha: 0
       })
       coverRef.value.appendChild(app.view)
 
@@ -90,9 +92,9 @@ onMounted(async () => {
       app.stage.addChild(displacementSprite)
 
       // 应用位移滤镜
-      const displacementFilter = new PIXI.filters.DisplacementFilter(
-        displacementSprite
-      )
+      const displacementFilter = new PIXI.filters.DisplacementFilter(displacementSprite)
+      displacementFilter.padding = 10  // 添加一些 padding 以减少裁剪
+
       app.stage.filters = [displacementFilter]
 
       // 添加动画
@@ -109,6 +111,7 @@ onMounted(async () => {
   }
 })
 </script>
+
 <template>
   <div class="cover" ref="coverRef"></div>
 </template>

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useUserStore } from '@/stores'
+import { message } from 'ant-design-vue'
 const baseURL = 'http://localhost:3300'
 
 const instance = axios.create({
@@ -36,7 +37,7 @@ instance.interceptors.response.use(
       return res.data
     } else {
       if (res.data.result === 200) {
-        ElMessage.error(res.data.errMsg || '操作失败')
+        message.error(res.data.errMsg || '操作失败')
         return Promise.reject(res.data)
       }
     }
@@ -46,10 +47,10 @@ instance.interceptors.response.use(
     if (err.response) {
       console.log(err.response)
       // TODO 6. 处理业务失败
-      ElMessage.error(err.response.data.errMsg)
+      message.error(err.response.data.errMsg)
     } else {
-      // TODO 7. 处理网络错误
-      ElMessage.error('网络错误')
+      // TODO 7. 服务器异常
+      message.error('服务器异常')
     }
     // TODO 5. 处理401错误
     return Promise.reject(err)

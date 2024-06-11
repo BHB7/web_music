@@ -6,7 +6,17 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('@/views/Layout/index.vue')
+      component: () => import('@/views/Layout/index.vue'),
+      redirect: '/recommended',
+      children: [
+        // 推荐
+        {
+          path: '/recommended',
+          name: 'recommended',
+          component: () => import('@/views/Recommended/index.vue')
+        }
+
+      ]
     }
   ]
 })

@@ -54,9 +54,9 @@ onMounted(() => {
   if (props.type === 'thin') {
     paceIptDom.value.style.setProperty('--u1', '#ddd')
     paceIptDom.value.style.setProperty('--u2', '#ddd')
-    paceIptDom.value.style.setProperty('--bg1', '#52616b')
-    paceIptDom.value.style.setProperty('--bg2', '#1e2022')
-    paceIptDom.value.style.setProperty('--thumbHw', '10px')
+    paceIptDom.value.style.setProperty('--bg1', '#111')
+    paceIptDom.value.style.setProperty('--bg2', '#000')
+    paceIptDom.value.style.setProperty('--thumbHw', '0')
     paceIptDom.value.style.setProperty('--inpuH', '5px')
   } else if (props.type === 'normal') {
     paceIptDom.value.style.setProperty('--bg1', '#fff')

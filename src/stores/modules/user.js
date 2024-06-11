@@ -5,7 +5,7 @@ import {
   getCookieServe,
   cookieInfoServe,
   userInfoServe
-} from '@/api/user'
+} from '@/api/qq/user'
 export const useUserStore = defineStore(
   'user',
   () => {

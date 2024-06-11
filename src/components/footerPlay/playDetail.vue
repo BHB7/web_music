@@ -11,6 +11,7 @@ import { nextTick, onMounted, ref, watch } from 'vue'
 import lyrics from '../lyrics.vue'
 // 导入动画库
 import gsap from 'gsap'
+// 背景
 import bgColor from '../bgColor.vue'
 
 const props = defineProps({
@@ -117,7 +118,7 @@ const close = () => {
         <!-- 左边操作面板 -->
         <section class="l">
           <div class="line"></div>
-          <div class="cover">
+          <div :class="{ play : audioStore.playStatus.isPlay, noPlay : !audioStore.playStatus.isPlay }" class="cover">
             <img src="@/assets/test.png" alt="" />
           </div>
           <!-- 歌曲信息 -->
@@ -261,6 +262,7 @@ const close = () => {
       // border: 1px solid #000;
       // 小白条
       .line {
+        margin: 10px 0;
         position: relative;
         &::after {
           content: '';
@@ -275,6 +277,16 @@ const close = () => {
           background-color: #fff;
         }
       }
+      .play {
+        transition: all 0.4s ease-in;
+        // .cover{
+          transform: scale(1.1);
+        // }
+      }
+      .noPlay{
+        transition: all 0.4s ease-out;
+        transform: scale(1);
+      }
       // 封面
       .cover {
         display: flex;
@@ -282,9 +294,7 @@ const close = () => {
         width: 100%;
         border-radius: 10px;
         overflow: hidden;
-        box-shadow:
-          rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
-          rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
         img {
           width: 100%;
           height: 330px;
