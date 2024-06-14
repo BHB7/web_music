@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { useUserStore } from '@/stores'
+import { useQQUserStore } from '@/stores'
 import { message } from 'ant-design-vue'
-const baseURL = 'http://localhost:3300'
+const baseURL = 'http://localhost:3000'
 
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
@@ -33,21 +33,14 @@ instance.interceptors.response.use(
   (res) => {
     // TODO 3. 处理业务失败
     // TODO 4. 摘取核心响应数据
-    if (res.data.result === 100) {
-      return res.data
-    } else {
-      if (res.data.result === 200) {
-        message.error(res.data.errMsg || '操作失败')
-        return Promise.reject(res.data)
-      }
-    }
-    return Promise.reject(res.data)
+
+    return res.data
   },
   (err) => {
     if (err.response) {
       console.log(err.response)
       // TODO 6. 处理业务失败
-      message.error(err.response.data.errMsg)
+      message.error('系统错误')
     } else {
       // TODO 7. 服务器异常
       message.error('服务器异常')

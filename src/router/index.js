@@ -9,12 +9,19 @@ const router = createRouter({
       component: () => import('@/views/Layout/index.vue'),
       redirect: '/recommended',
       children: [
+        // 设置
+        {
+          path: '/setting',
+          name: 'setting',
+          component: () => import('@/views/Settings/index.vue')
+        },
         // 推荐
         {
           path: '/recommended',
           name: 'recommended',
           component: () => import('@/views/Recommended/index.vue')
         }
+
 
       ]
     }

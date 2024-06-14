@@ -6,8 +6,8 @@ import {
   cookieInfoServe,
   userInfoServe
 } from '@/api/qq/user'
-export const useUserStore = defineStore(
-  'user',
+export const useQQUserStore = defineStore(
+  'qqUser',
   () => {
     const user = ref({
       cookie: '',

@@ -1,3 +1,4 @@
+import ReactivityTransform from '@vue-macros/reactivity-transform/vite'
 import { fileURLToPath, URL } from 'node:url'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
@@ -15,7 +16,9 @@ export default defineConfig({
           importStyle: false // css in js
         })
       ]
-    })
+    }),
+    // 解决props响应式问题
+    ReactivityTransform()
   ],
   resolve: {
     alias: {

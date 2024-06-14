@@ -76,9 +76,7 @@ const audioTime = (e) => {
       lyricIndex.value = i
       // 歌词内容体dom通过transform:translateY实现歌词滚动
       // console.log(lyricWarp.value.offsetHeight, lyricLi.value[0].offsetHeight)
-      const translateY =
-        lyricWarp.value.offsetHeight / 2 -
-        lyricLi.value[0].offsetHeight * (i + 1)
+      const translateY = lyricWarp.value.offsetHeight / 2 - lyricLi.value[0].offsetHeight * (i + 1)
       lyricUl.value.style.transform = `translateY(${translateY}px)`
     }
   }
@@ -97,9 +95,7 @@ watch(
 const goTime = (item, index) => {
   console.log(item)
   audioStore.setProgress(item.time, 'seek')
-  const translateY =
-    lyricWarp.value.offsetHeight / 2 -
-    lyricLi.value[0].offsetHeight * (index + 1)
+  const translateY = lyricWarp.value.offsetHeight / 2 - lyricLi.value[0].offsetHeight * (index + 1)
   lyricUl.value.style.transform = `translateY(${translateY}px)`
 }
 </script>

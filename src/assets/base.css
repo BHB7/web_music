@@ -3,7 +3,11 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+ul li{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 /* 滚动条高度和背景 */
   ::-webkit-scrollbar{
     width: 8px;
