@@ -1,27 +1,31 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-ul li{
+ul li {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+body,
+html {
+  overflow: hidden;
+}
 /* 滚动条高度和背景 */
-  ::-webkit-scrollbar{
-    width: 8px;
-    height: 8px;
-  }
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
 /* 定义滚动条轨道 内阴影及圆角 */
-::-webkit-scrollbar-track{
+::-webkit-scrollbar-track {
   border-radius: 10px;
   background-color: #fafafa;
 }
 
 /* 定义滑块 内阴影及圆角 */
-::-webkit-scrollbar-thumb{
+::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: rgba(191, 191, 191, 0.5);
   backdrop-filter: blur(10px);
@@ -30,10 +34,13 @@ ul li{
 /*  */
 
 @font-face {
-  font-family: 'myFont'; 
+  font-family: 'myFont';
   src: url('./PingFang/苹方黑体-准-简.ttf');
   font-weight: normal;
   font-style: normal;
 }
 
-html,body { font-family: myFont, sans-serif; }
+html,
+body {
+  font-family: myFont, sans-serif;
+}

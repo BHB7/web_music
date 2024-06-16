@@ -1,9 +1,5 @@
 <script setup>
-import {
-  DownOutlined,
-  ArrowsAltOutlined,
-  EllipsisOutlined
-} from '@ant-design/icons-vue'
+import { DownOutlined, ArrowsAltOutlined, EllipsisOutlined } from '@ant-design/icons-vue'
 import inputR from './inputR.vue'
 import { formatTime } from '@/utils/formatTime'
 import { useAudioStore } from '@/stores/index'
@@ -80,7 +76,13 @@ onMounted(() => {
     }
   )
 })
-
+const keyup = (e) => {
+  if (audioStore.playStatus.isPlay) {
+    pause()
+  } else {
+    play()
+  }
+}
 // 关闭
 const close = () => {
   gsap.to(mianRef.value, {
@@ -118,14 +120,19 @@ const close = () => {
         <!-- 左边操作面板 -->
         <section class="l">
           <div class="line"></div>
-          <div :class="{ play : audioStore.playStatus.isPlay, noPlay : !audioStore.playStatus.isPlay }" class="cover">
-            <img src="@/assets/test.png" alt="" />
+          <div
+            :class="{ play: audioStore.playStatus.isPlay, noPlay: !audioStore.playStatus.isPlay }"
+            class="cover"
+          >
+            <img :src="img.src" alt="" />
           </div>
           <!-- 歌曲信息 -->
           <div class="info">
             <div class="desc">
               <div class="p">
-                <p class="song-name">歌曲名</p>
+                <p class="song-name">
+                  {{ audioStore.playList[audioStore.playStatus.currentIndex].name }}
+                </p>
                 <p class="author">歌手</p>
               </div>
               <!-- 更多 -->
@@ -164,11 +171,7 @@ const close = () => {
               @click="play"
             ></i>
             <!-- 暂停 -->
-            <i
-              class="iconfont size icon-applemusicicon_06"
-              v-else
-              @click="pause"
-            ></i>
+            <i class="iconfont size icon-applemusicicon_06" v-else @click="pause"></i>
             <!-- 下一曲 -->
             <i class="iconfont icon-applemusicicon_09"></i>
             <!-- 单曲循环 -->
@@ -280,10 +283,10 @@ const close = () => {
       .play {
         transition: all 0.4s ease-in;
         // .cover{
-          transform: scale(1.1);
+        transform: scale(1.1);
         // }
       }
-      .noPlay{
+      .noPlay {
         transition: all 0.4s ease-out;
         transform: scale(1);
       }
@@ -294,7 +297,9 @@ const close = () => {
         width: 100%;
         border-radius: 10px;
         overflow: hidden;
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+        box-shadow:
+          rgba(0, 0, 0, 0.3) 0px 19px 38px,
+          rgba(0, 0, 0, 0.22) 0px 15px 12px;
         img {
           width: 100%;
           height: 330px;

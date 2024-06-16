@@ -18,7 +18,7 @@ export default defineConfig({
       ]
     }),
     // 解决props响应式问题
-    ReactivityTransform()
+    ReactivityTransform(),
   ],
   resolve: {
     alias: {

@@ -38,19 +38,21 @@ onMounted(async () => {
     // 将颜色数据发送到 Web Worker 进行进一步处理
     worker.postMessage({ colors })
 
+    console.time('创建背景 耗时')
+
     // 监听 Web Worker 的消息
     worker.onmessage = function (event) {
       const { uniqueColors } = event.data
       // 更新颜色数组
       colorRgab.value = uniqueColors
-
-      // 创建多彩背景
+      // // 创建多彩背景
       colorfulBackground({
         container: coverRef.value,
         size: [window.innerWidth, window.innerHeight],
-        animation: true,
+        animation: false,
         colors: colorRgab.value
       })
+      console.timeEnd('创建背景 耗时')
 
       // 创建 PIXI 应用程序
       const app = new PIXI.Application({
@@ -93,7 +95,7 @@ onMounted(async () => {
 
       // 应用位移滤镜
       const displacementFilter = new PIXI.filters.DisplacementFilter(displacementSprite)
-      displacementFilter.padding = 10  // 添加一些 padding 以减少裁剪
+      displacementFilter.padding = 10 // 添加一些 padding 以减少裁剪
 
       app.stage.filters = [displacementFilter]
 

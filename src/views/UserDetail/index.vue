@@ -14,15 +14,18 @@ const activeKey = ref('1')
 const playList = ref([])
 // 收藏的歌单
 const collectPlayList = ref([])
-getUserPlaylistService(route.query.uid).then((res) => {
-  console.log(res)
+getUserPlaylistService(wyUserStore.user.userInfo.userId).then((res) => {
+  // console.log(res)
+  console.time('循环筛选收藏歌单 耗时')
   res.playlist.forEach((item) => {
-    if (item.subscribed) {
+    if (item.ordered) {
+      console.log('收藏歌单')
       collectPlayList.value.push(item)
     } else {
       playList.value.push(item)
     }
   })
+  console.timeEnd('循环筛选收藏歌单 耗时')
 })
 </script>
 

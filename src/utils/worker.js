@@ -9,7 +9,10 @@ self.onmessage = function (event) {
     const color = colors[i]
     uniqueColors.add(`rgba(${color[0]},${color[1]},${color[2]}, 1)`)
   }
-
   // 将结果发送回主线程
   self.postMessage({ uniqueColors: Array.from(uniqueColors) })
+}
+
+self.onmessageerror = function (event) {
+  console.error('Worker message error:', event.message)
 }

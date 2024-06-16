@@ -1,10 +1,12 @@
 <script setup>
-import { useWyUserStore } from '@/stores'
-import { NumberOutlined } from '@ant-design/icons-vue'
+import { useWyUserStore, useAudioStore } from '@/stores'
+import { NumberOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons-vue'
 import { useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { formatDate } from '@/utils/formatTime'
+import { getSongUrlService } from '@/api/wyy/song'
 const wyUserStore = useWyUserStore()
+const audioStore = useAudioStore()
 // const route = useRoute()
 const props = defineProps({
   list: {
@@ -18,54 +20,67 @@ onMounted(() => {
   console.log(props.list)
 })
 const columns = [
+  // 歌曲名
   {
-    name: 'Name',
+    title: 'Name',
     dataIndex: 'name',
-    key: 'name'
+    key: 'name',
+    width: '50%',
+    hover: false
   },
+  // 专辑
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age'
+    title: 'Album',
+    dataIndex: 'album',
+    key: 'album',
+    hover: false
   },
+  // 喜欢
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address'
+    title: 'Like',
+    dataIndex: 'like',
+    key: 'like',
+    width: '10%',
+    hover: false
   },
+  // 时长
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags'
-  },
-  {
-    title: 'Action',
-    key: 'action'
+    title: 'Time',
+    dataIndex: 'time',
+    key: 'time',
+    width: '10%',
+    hover: false
   }
 ]
 const data = [
   {
     key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer']
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser']
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher']
+    name: '演员',
+    album: '专辑名',
+    like: true,
+    time: '03:02'
   }
 ]
+
+// 播放
+const play = (row) => {
+  console.log('播放')
+  console.log(row)
+  getSongUrlService(row.id).then((res) => {
+    console.log(res.data[0])
+    audioStore.addSong({
+      songId: res.data[0].id,
+      id: row.al.id,
+      url: res.data[0].url,
+      cover: row.al.picUrl,
+      name: row.name,
+      singer: 'CablT Yout'
+    })
+    // 播放
+    audioStore.play()
+  })
+}
+const hover = ref(false)
 </script>
 <template>
   <main class="main">
@@ -79,61 +94,121 @@ const data = [
         <div class="user-name r">我喜欢的音乐</div>
         <div class="user-create r">
           <!-- 头像 -->
-          <div class="avatar">
+          <div class="avatar" @click="$router.push('/userDetail')">
             <img :src="props?.list.creator?.avatarUrl" alt="" />
           </div>
           <!-- 昵称 -->
           <div class="nickname">{{ props?.list.creator?.nickname }}</div>
           <!-- 创建时间 -->
-          <div class="create-time">{{ formatDate(props.list.createTime) }} 创建</div>
+          <div class="create-time">{{ formatDate(props?.list.createTime) }} 创建</div>
         </div>
         <div class="user-level-desc r">简介：</div>
       </div>
     </header>
     <!-- 内容 -->
     <section class="content">
+      <!-- 标签Tab -->
       <a-tabs v-model:activeKey="activeKey">
-        <a-tab-pane key="1" tab="歌曲">
+        <a-tab-pane style="height: 100%" key="1" tab="歌曲">
           <div class="play-list">
-            <a-table :columns="columns" :data-source="data" :pagination="false">
+            <!-- 歌曲列表 表格 -->
+            <a-table
+              y
+              sticky
+              ellipsis
+              class="tabel"
+              :columns="columns"
+              :data-source="props.list?.tracks"
+              :pagination="false"
+            >
               <template #headerCell="{ column }">
+                <!-- 标题表头 -->
                 <template v-if="column.key === 'name'">
-                  <span>
-                    <NumberOutlined />
+                  <span class="h-t">
+                    <NumberOutlined class="icon" />
                     <span class="title">标题</span>
                   </span>
                 </template>
+                <template v-else-if="column.key === 'album'">
+                  <span class="h-t">
+                    <!-- <UserOutlined class="icon" /> -->
+                    <span class="title">专辑</span>
+                  </span>
+                </template>
+                <template v-else-if="column.key === 'like'">
+                  <span class="h-t">
+                    <!-- <UserOutlined class="icon" /> -->
+                    <span class="title">
+                      {{ column.title }}
+                    </span>
+                  </span>
+                </template>
+                <template v-else-if="column.key === 'time'">
+                  <span class="h-t">
+                    <!-- <UserOutlined class="icon" /> -->
+                    <span class="title">时长</span>
+                  </span>
+                </template>
               </template>
+              <!-- 列表内容 -->
+              <template #bodyCell="{ index, column, record }">
+                <!-- 标题 -->
+                <div class="tbody">
+                  <template v-if="column.key === 'name'">
+                    <div class="song-info">
+                      <!-- 序号 -->
+                      <span class="start">
+                        <span class="index">{{ index + 1 }}</span>
+                        <!-- 播放按钮 -->
+                        <span
+                          v-if="
+                            audioStore.playList[audioStore.playStatus.currentIndex].id !==
+                            record.al.id
+                          "
+                          class="btn iconfont icon-applemusicicon_07"
+                          @click="play(record)"
+                        ></span>
+                        <!-- 暂停按钮 -->
+                        <span v-else class="btn iconfont icon-applemusicicon_06"> </span>
+                      </span>
 
-              <template #bodyCell="{ column, record }">
-                <template v-if="column.key === 'name'">
-                  <a>
-                    {{ record.name }}
-                  </a>
-                </template>
-                <template v-else-if="column.key === 'tags'">
-                  <span>
-                    <a-tag
-                      v-for="tag in record.tags"
-                      :key="tag"
-                      :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'"
-                    >
-                      {{ tag.toUpperCase() }}
-                    </a-tag>
-                  </span>
-                </template>
-                <template v-else-if="column.key === 'action'">
-                  <span>
-                    <a>Invite 一 {{ record.name }}</a>
-                    <a-divider type="vertical" />
-                    <a>Delete</a>
-                    <a-divider type="vertical" />
-                    <a class="ant-dropdown-link">
-                      More actions
-                      <!-- <down-outlined /> -->
-                    </a>
-                  </span>
-                </template>
+                      <!-- 封面 -->
+                      <div class="cover">
+                        <img :src="record.al.picUrl" alt="" />
+                      </div>
+                      <!-- 文本信息 -->
+                      <div class="info">
+                        <!-- 歌曲名 -->
+                        <div class="song-name">{{ record.name }}</div>
+                        <div class="author">
+                          <!-- 歌曲品质 -->
+                          <div class="timbre">图标占位</div>
+                          <!-- 歌手 -->
+                          <div class="name">歌手</div>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                  <!-- 专辑 -->
+                  <template v-else-if="column.key === 'album'">
+                    <span>
+                      {{ record.al.name }}
+                    </span>
+                  </template>
+                  <!-- 喜欢 -->
+                  <template v-else-if="column.key === 'like'">
+                    <span>
+                      <!-- 不喜欢 -->
+                      <HeartOutlined class="like-icon" v-if="false" />
+                      <!-- 喜欢 -->
+                      <HeartFilled class="like-icon" v-else />
+                    </span>
+                  </template>
+                  <!-- 时长 -->
+                  <template v-else-if="column.key === 'time'">
+                    <span>{{ record.time }}</span>
+                  </template>
+                </div>
               </template>
             </a-table>
           </div>
@@ -176,6 +251,7 @@ const data = [
         align-items: center;
 
         .avatar {
+          cursor: pointer;
           width: 40px;
           height: 40px;
           border-radius: 50%;
@@ -218,6 +294,77 @@ const data = [
       overflow: auto;
       display: flex;
       flex-wrap: wrap;
+      // 表格
+      .tabel {
+        display: block;
+        height: 100%;
+        width: 100%;
+        .like-icon {
+          color: red;
+          font-size: 18px;
+        }
+        .h-t {
+          width: 300px;
+          .icon {
+            margin: 0 18px;
+          }
+        }
+        .tbody {
+          .song-info {
+            display: flex;
+            align-items: center;
+            .start {
+              // width: 100px;
+              // 序号
+              .index {
+                font-size: 16px;
+                font-weight: 600;
+                margin: 0 18px;
+                color: #959aa5;
+              }
+              .btn {
+                cursor: pointer;
+                font-size: 18px;
+                margin: 0 18px;
+              }
+            }
+            // 封面
+            .cover {
+              width: 50px;
+              height: 50px;
+              border-radius: 5px;
+              margin: 0 10px;
+              overflow: hidden;
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+            }
+            // 歌单信息
+            .info {
+              display: flex;
+              flex-direction: column;
+              .song-name {
+                font-weight: 600;
+                font-size: 16px;
+                color: #283248;
+              }
+              .author {
+                display: flex;
+                // 音乐音质
+                .timbre {
+                }
+                // 歌手
+                .name {
+                  color: #959aa5;
+                  margin: 0 10px;
+                }
+              }
+            }
+          }
+        }
+      }
       // 每个歌单
       .item {
         margin-right: 20px;

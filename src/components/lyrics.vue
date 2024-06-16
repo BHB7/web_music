@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
-import { getLyricServe } from '@/api/qq/song.js'
+import { getLyricService } from '@/api/wyy/song'
 import { useAudioStore } from '@/stores/index'
 const audioStore = useAudioStore()
 // 定义一个歌词数组用于页面渲染
@@ -8,9 +8,11 @@ const lyricList = ref([])
 // 获取歌词方法
 const getLyric = async () => {
   // 异步接口调用
-  const res = await getLyricServe('0029l8mj426h3a')
+  const res = await getLyricService(audioStore.playList[audioStore.playStatus.currentIndex].songId)
   // 歌词
-  const lyric = res.data.lyric
+  console.log(res)
+  const lyric = res.lrc.lyric
+
   // 将歌词字符串格式化后赋值给数据源
   lyricList.value = formatLyric(lyric)
 }

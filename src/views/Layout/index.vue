@@ -57,10 +57,7 @@ onBeforeUnmount(() => {
           <span class="nav-text">为你推荐</span>
         </a-menu-item>
         <a-menu-item-group title="我的">
-          <a-menu-item
-            key="/likedSongs"
-            @click="$router.push(`/likedSongs?uid=${wyUserStore.user.userInfo.userId}`)"
-          >
+          <a-menu-item key="/likedSongs" @click="$router.push(`/likedSongs`)">
             <HeartOutlined class="icon" />
             <span class="nav-text">我喜欢的音乐</span>
           </a-menu-item>
@@ -107,12 +104,15 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </a-layout-header>
-      <!-- 内容 -->
-      <a-layout-content>
-        <div :style="{ padding: '24px', background: '#fff', minHeight: '100vh' }">
-          <router-view></router-view>
-        </div>
-      </a-layout-content>
+      <!-- 滚动容器 -->
+      <div class="scroll">
+        <!-- 内容 -->
+        <a-layout-content>
+          <div :style="{ padding: '24px', background: '#fff', minHeight: '100vh' }">
+            <router-view></router-view>
+          </div>
+        </a-layout-content>
+      </div>
     </a-layout>
   </a-layout>
   <!-- 底部 -->
@@ -121,6 +121,8 @@ onBeforeUnmount(() => {
 </template>
 <style lang="scss" scoped>
 .layout {
+  min-height: 100vh;
+  max-height: 100%;
   background-color: #fff;
   .icon {
     font-size: 18px;
@@ -172,6 +174,9 @@ onBeforeUnmount(() => {
         margin: 0 40px;
       }
     }
+  }
+  .scroll {
+    overflow-y: auto;
   }
   .logo {
     // border: 1px solid #000;

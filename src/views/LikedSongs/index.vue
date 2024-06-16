@@ -12,7 +12,7 @@ console.log(wyUserStore.user.userInfo.userId)
 const playList = ref()
 onMounted(() => {
   // 获取用户歌单
-  getUserPlaylistService(route.query.uid).then((res) => {
+  getUserPlaylistService(wyUserStore.user.userInfo.userId).then((res) => {
     playListId.value = res.playlist[0].id
     // 获取歌单详情
     getPlaylistDetailService(res.playlist[0].id).then((res) => {

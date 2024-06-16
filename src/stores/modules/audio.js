@@ -1,6 +1,7 @@
 import { message } from 'ant-design-vue'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import gsap from 'gsap'
 export const useAudioStore = defineStore('audio', () => {
   const audio = ref(new Audio())
   const timer = ref(null)
@@ -11,31 +12,52 @@ export const useAudioStore = defineStore('audio', () => {
     // 暂停时的播放进度
     pauseTime: 0,
     // 计算的播放进度
-    progress: 0
+    progress: 0,
+    // 当前播放歌曲索引
+    currentIndex: 0,
+    // 播放模式
+    mode: 'loop', // loop: 循环播放, random: 随机播放, single: 单曲循环
+    // 播放顺序
+    order: 'normal', // normal: 正常播放, reverse: 倒序播放
+    // 播放顺序索引
+    orderIndex: 0,
+
   })
   const playList = ref([
     {
-      url: 'http://isure.stream.qqmusic.qq.com/C400001xfRJ942kiUA.m4a?guid=2796982635&vkey=6FA1B9D92DF643789E7C0CD5ABD108360A03654901C45D85A9CEA1141D190566501C0FD172BF9D026620CE45DB09D096D298C23B52E1AB85&uin=&fromtag=120032&src=C400002lGKZx2inQN5.m4a',
-      cover: '@/assets/logo.svg',
-      name: '三年之约 - CablT Yout',
-      singer: 'CablT Yout'
+      url: null,
+      cover: () => import('@/assets/logo.svg'),
+      name: '暂无歌曲',
+      singer: ''
     }
   ])
 
   const addSong = (song) => {
+    // 清除之前的播放进度
+    playStatus.value.pauseTime = 0
     playList.value.unshift(song)
   }
   const play = () => {
+    if (playList.value.url === null) {
+      message.error('暂无歌曲')
+      return
+    }
     audio.value.load()
     if (playStatus.value.pauseTime > 0) {
       audio.value.currentTime = playStatus.value.pauseTime
     }
-    audio.value.src = playList.value[0].url
+    audio.value.src = playList.value[playStatus.value.currentIndex].url
     audio.value.play()
   }
 
   const pause = () => {
-    audio.value.pause()
+    let timer = setInterval(() => {
+      audio.value.volume -= 0.01
+      if (audio.value.volume <= 1) {
+        clearInterval(timer)
+        audio.value.pause()
+      }
+    }, 100)
   }
   // 设置播放进度
   const setProgress = (progress, type = 'input') => {
@@ -64,12 +86,20 @@ export const useAudioStore = defineStore('audio', () => {
   }
   // 开始播放
   audio.value.onplay = () => {
-    audio.value.volume = 0.5 // 默认音量
+    audio.value.volume = 0// 默认音量
     playStatus.value.isPlay = true
+    let timer = setInterval(() => {
+      audio.value.volume += 0.01
+      if (audio.value.volume >= 0.5) {
+        clearInterval(timer)
+      }
+    }, 100)
     console.info('开始播放')
   }
 
+
   audio.value.onwaiting = () => {
+    message.loading('缓冲中...')
     console.info('缓冲中...')
   }
   // 播放结束

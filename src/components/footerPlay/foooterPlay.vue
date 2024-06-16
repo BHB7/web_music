@@ -46,6 +46,7 @@ const setVolume = (e) => {
 
 const isShowPlayDetail = ref(false)
 const coverRef = ref()
+
 defineOptions({ name: 'foooterPlay' })
 </script>
 
@@ -54,14 +55,18 @@ defineOptions({ name: 'foooterPlay' })
     <div class="footer-left">
       <!-- 歌曲封面 -->
       <div class="cover" @click="isShowPlayDetail = true">
-        <img ref="coverRef" src="@/assets/test.png" alt="" />
+        <img
+          ref="coverRef"
+          :src="audioStore.playList[audioStore.playStatus.currentIndex].cover"
+          alt=""
+        />
       </div>
       <!-- 歌曲信息 -->
       <div class="info">
         <p ref="songNameRef" class="song-name">
-          这是阿斯顿撒打算打算打算大萨达手打
+          {{ audioStore.playList[audioStore.playStatus.currentIndex].name }}
         </p>
-        <p ref="authorRef" class="author">author</p>
+        <p ref="authorRef" class="author">还没有请求</p>
       </div>
     </div>
     <div class="footer-center">
@@ -72,11 +77,7 @@ defineOptions({ name: 'foooterPlay' })
             <!-- 上一首 -->
             <BackwardOutlined class="icon" />
             <!-- 暂停 -->
-            <PauseOutlined
-              v-if="audioStore.playStatus.isPlay"
-              @click="pause"
-              class="icon"
-            />
+            <PauseOutlined v-if="audioStore.playStatus.isPlay" @click="pause" class="icon" />
             <!-- 播放 -->
             <CaretRightOutlined v-else @click="play" class="icon" />
             <LoadingOutlined v-if="isLoading" />
@@ -117,11 +118,7 @@ defineOptions({ name: 'foooterPlay' })
       </div>
     </div>
   </footer>
-  <playDetail
-    @close="isShowPlayDetail = false"
-    :open="isShowPlayDetail"
-    :img="coverRef"
-  />
+  <playDetail @close="isShowPlayDetail = false" :open="isShowPlayDetail" :img="coverRef" />
 </template>
 
 <style lang="scss" scoped>
@@ -137,6 +134,7 @@ defineOptions({ name: 'foooterPlay' })
   align-items: center;
   bottom: 0;
   background-color: #fff;
+  z-index: 1000;
   // 左侧部分
   .footer-left {
     width: 200px;
