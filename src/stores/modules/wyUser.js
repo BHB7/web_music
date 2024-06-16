@@ -31,9 +31,11 @@ export const useWyUserStore = defineStore('wyUser', () => {
     try {
       const res = await getLoginStatusService(cookie)
       console.log(res)
-      setUserInfo(res.data)
+      // 筛选用户信息
+      const { profile } = res.data
+      setUserInfo(profile)
     } catch (error) {
-      console.error('Failed to fetch user info:', error)
+      console.error('获取用户信息失败:', error)
     }
   }
 

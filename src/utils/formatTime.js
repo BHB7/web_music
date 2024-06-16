@@ -8,3 +8,12 @@ export const formatTime = (time) => {
     .padStart(2, '0')
   return `${minutes}:${seconds}`
 }
+
+// 时间戳 转换 2022-01-01
+export const formatDate = (time) => {
+  const date = new Date(time)
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  return `${year}-${month}-${day}`
+}

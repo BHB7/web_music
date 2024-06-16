@@ -1,12 +1,7 @@
 <script setup>
 import { onBeforeUnmount, ref, watch } from 'vue'
 import footerPlay from '@/components/footerPlay/foooterPlay.vue'
-import {
-  SendOutlined,
-  VideoCameraOutlined,
-  LeftOutlined,
-  SettingOutlined
-} from '@ant-design/icons-vue'
+import { SendOutlined, HeartOutlined, LeftOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import SInput from '@/components/SInput.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useWyUserStore } from '@/stores/index'
@@ -33,7 +28,6 @@ const login = () => {
   isShowLogin.value = !isShowLogin.value
 }
 
-
 onBeforeUnmount(() => {
   clearInterval(timer.value)
 })
@@ -59,13 +53,16 @@ onBeforeUnmount(() => {
         style="background-color: #f0f3f6; margin-top: 10px"
       >
         <a-menu-item key="/recommended" @click="$router.push('/recommended')">
-          <SendOutlined />
+          <SendOutlined class="icon" />
           <span class="nav-text">为你推荐</span>
         </a-menu-item>
         <a-menu-item-group title="我的">
-          <a-menu-item key="/user">
-            <video-camera-outlined />
-            <span class="nav-text">nav 2</span>
+          <a-menu-item
+            key="/likedSongs"
+            @click="$router.push(`/likedSongs?uid=${wyUserStore.user.userInfo.userId}`)"
+          >
+            <HeartOutlined class="icon" />
+            <span class="nav-text">我喜欢的音乐</span>
           </a-menu-item>
         </a-menu-item-group>
       </a-menu>
@@ -93,11 +90,16 @@ onBeforeUnmount(() => {
           <!-- 登录 用户信息 -->
           <div class="inf" v-else>
             <!-- 头像 -->
-            <div class="avatar">
-              <img :src="wyUserStore.user.userInfo.profile.avatarUrl" />
+            <div
+              class="avatar"
+              @click="$router.push(`/userDetail?uid=${wyUserStore.user.userInfo.userId}`)"
+            >
+              <img :src="wyUserStore.user.userInfo.avatarUrl" />
             </div>
             <!-- 昵称 -->
-            <div class="name"><span>{{ wyUserStore.user.userInfo.profile.nickname }}</span></div>
+            <div class="name">
+              <span>{{ wyUserStore.user.userInfo.nickname }}</span>
+            </div>
           </div>
           <!-- 设置 -->
           <div class="set" @click="$router.push('/setting')">
@@ -120,6 +122,9 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .layout {
   background-color: #fff;
+  .icon {
+    font-size: 18px;
+  }
   .header {
     display: flex;
     align-items: center;

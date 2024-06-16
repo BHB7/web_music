@@ -30,12 +30,8 @@ export const getLoginStatusService = (cookie) => {
   })
 }
 // 获取用户详情
-export const getUserDetailService = (uid) => {
-  return request.get('/user/detail', {
-    params: {
-      uid
-    }
-  })
+export const getUserDetailService = () => {
+  return request.get('/user/detail')
 }
 // 获取账号信息
 // 说明 : 登录后调用此接口 ,可获取用户账号信息
@@ -78,6 +74,41 @@ export const getCaptchaCheckService = (phone, captcha) => {
     params: {
       phone,
       captcha
+    }
+  })
+}
+
+// 获取用户等级信息
+export const getUserLevelService = () => {
+  return request({
+    url: '/user/level'
+  })
+}
+
+// 获取用户信息 , 歌单，收藏，mv, dj 数量
+export const getUserSubcountService = () => {
+  return request({
+    url: '/user/subcount'
+  })
+}
+
+// 获取用户歌单
+export const getUserPlaylistService = (uid, limit = 30, offset = 0) => {
+  return request({
+    url: '/user/playlist',
+    params: {
+      uid,
+      limit,
+      offset
+    }
+  })
+}
+// 获取歌单详情
+export const getPlaylistDetailService = (id) => {
+  return request({
+    url: '/playlist/detail',
+    params: {
+      id
     }
   })
 }

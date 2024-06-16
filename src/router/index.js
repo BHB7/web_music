@@ -20,8 +20,19 @@ const router = createRouter({
           path: '/recommended',
           name: 'recommended',
           component: () => import('@/views/Recommended/index.vue')
+        },
+        // 用户详情
+        {
+          path: '/userDetail',
+          name: 'userDetail',
+          component: () => import('@/views/UserDetail/index.vue')
+        },
+        // 我喜欢的音乐
+        {
+          path: '/likedSongs',
+          name: 'likedSongs',
+          component: () => import('@/views/LikedSongs/index.vue')
         }
-
 
       ]
     }
