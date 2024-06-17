@@ -1,8 +1,8 @@
 <script setup>
 import { useWyUserStore, useAudioStore } from '@/stores'
 import { NumberOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons-vue'
-import { useRoute } from 'vue-router'
-import { nextTick, onMounted, ref, watch } from 'vue'
+// import { useRoute } from 'vue-router'
+import { onMounted, ref, watch } from 'vue'
 import { formatDate, formatSongDuration } from '@/utils/formatTime'
 import { getSongUrlService } from '@/api/wyy/song'
 import { computed } from '@vue/reactivity'

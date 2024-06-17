@@ -17,7 +17,7 @@ const getLyric = async () => {
   lyricList.value = formatLyric(lyric)
 }
 // 处理在没有音乐时 不请求歌词
-if (!audioStore.playList[0].url === null) {
+if (audioStore.playList[0].url !== null) {
   getLyric()
 }
 /**
