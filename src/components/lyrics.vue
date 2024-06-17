@@ -16,7 +16,10 @@ const getLyric = async () => {
   // 将歌词字符串格式化后赋值给数据源
   lyricList.value = formatLyric(lyric)
 }
-getLyric()
+// 处理在没有音乐时 不请求歌词
+if (!audioStore.playList[0].url === null) {
+  getLyric()
+}
 /**
  * 将歌词字符串解析为歌词数组
  * @param {*} lyric 歌词字符串 如 ""
