@@ -82,13 +82,11 @@ watch(
 )
 // 播放
 const play = (row) => {
-  console.log('播放')
-  console.log(row)
+  // console.log('播放')
+  // console.log(row)
   // 通过row 获取id 获取播放地址
   getSongUrlService(row.id).then((res) => {
-    console.log(res.data[0])
-    // const audio = new Audio(res.data[0].url)
-    // console.dir(audio)
+    // console.log(res.data[0])
     audioStore.addSong({
       songId: res.data[0].id,
       id: row.al.id,

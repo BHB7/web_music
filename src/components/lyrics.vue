@@ -142,8 +142,7 @@ const goTime = (item, index) => {
     transition: transform 0.3s ease-out;
     // 每条歌词样式
     .m-song-lritem {
-      box-sizing: border-box;
-
+      // box-sizing: border-box;
       .m-song-lrori {
         display: block;
         font-size: 18px;
@@ -153,21 +152,19 @@ const goTime = (item, index) => {
         text-overflow: ellipsis;
         white-space: nowrap;
         // 苹方-简 中粗体
-        font-family: myFont;
+        font-family: 'myFont';
       }
     }
     // 激活歌词样式
     .m-song-lritem.activeLyric {
       .m-song-lrori {
-        background: linear-gradient(to right, #0ded45, #ccc);
+        text-shadow: rgba(255, 255, 255, 0.8) 0 0 8px;
+        background-color: rgba(255, 255, 255, 0.9);
         -webkit-background-clip: text;
         background-clip: text;
-        background-size: 100%;
-        background-position: 200% 0;
-        backdrop-filter: blur(10px);
-        background-repeat: no-repeat;
-        // color: #fefefe;
+        color: transparent;
         font-size: 28px;
+        font-weight: 600;
       }
     }
   }

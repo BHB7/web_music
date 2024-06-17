@@ -58,11 +58,13 @@ onMounted(() => {
     paceIptDom.value.style.setProperty('--bg2', '#000')
     paceIptDom.value.style.setProperty('--thumbHw', '0')
     paceIptDom.value.style.setProperty('--inpuH', '5px')
+    // 用于进度
   } else if (props.type === 'normal') {
-    paceIptDom.value.style.setProperty('--bg1', '#fff')
-    paceIptDom.value.style.setProperty('--bg2', '#fff')
+    paceIptDom.value.style.setProperty('--bg1', 'rgba(255,255,255,0.8)')
+    paceIptDom.value.style.setProperty('--bg2', 'rgba(255,255,255,0.8)')
     paceIptDom.value.style.setProperty('--thumbHw', '0px')
     paceIptDom.value.style.setProperty('--inpuH', '10px')
+    // 用于其他
   } else if (props.type === 'thick') {
     paceIptDom.value.style.setProperty('--thumbHw', '20px')
     paceIptDom.value.style.setProperty('--inpuH', '15px')
@@ -122,13 +124,14 @@ input[type='range'] {
   --value: 0; // 进度
   --bg1: #d38383;
   --bg2: #fff;
-  --u1: #575350;
-  --u2: #575350;
+  // 背景颜色
+  --u1: rgba(255, 255, 255, 0.3);
+  --u2: rgba(255, 255, 255, 0.3);
   width: 100%; // 确保进度条宽度与包含元素相匹配
   height: 10px; // 可适当调整高度以改变触摸区域的大小
   -webkit-appearance: none; // 移除默认样式
   appearance: none;
-  $inpuBack: #d38383; // 进度条槽背景
+  $inpuBack: rgba(0, 0, 0, 0.1); // 进度条槽背景
   $thumb: #000; // 滑块按钮
   --inpuH: 3px; //进度条高
   --thumbHw: 10px; // 滑块按钮宽高
@@ -203,11 +206,10 @@ input[type='range'] {
       var(--u1) var(--value),
       var(--u2) 100%
     );
-    opacity: 0.5;
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    // opacity: 0.9;
+    // box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     background-position: calc(var(--value) * 1%);
-    backdrop-filter: blur(10px);
   }
 }
 </style>

@@ -76,13 +76,6 @@ onMounted(() => {
     }
   )
 })
-const keyup = (e) => {
-  if (audioStore.playStatus.isPlay) {
-    pause()
-  } else {
-    play()
-  }
-}
 // 关闭
 const close = () => {
   gsap.to(mianRef.value, {
@@ -111,7 +104,7 @@ const close = () => {
           <!-- 全屏 -->
           <ArrowsAltOutlined class="icon" />
         </div>
-        <div class="c">播放详情</div>
+        <div class="c"><span>播放详情</span></div>
         <div class="r">
           <section class="style-btn">播放器样式</section>
         </div>
@@ -235,6 +228,16 @@ const close = () => {
         background-color: rgba(0, 0, 0, 0.3);
       }
     }
+    // 中间
+    .c {
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+      background-color: rgba(255, 255, 255, 0.6);
+      font-weight: 600;
+      font-size: 18px;
+      backdrop-filter: blur(20px);
+    }
     .r {
       .style-btn {
         cursor: pointer;
@@ -336,21 +339,31 @@ const close = () => {
           }
           // 歌名
           .song-name {
+            background-clip: text;
             font-size: 20px;
-            font-weight: 500;
+            font-weight: 600;
+            color: transparent;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
           }
           // 歌手
           .author {
+            background-clip: text;
             font-size: 16px;
-            color: #999;
+            color: transparent;
+            background-color: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
           }
         }
         // 时间
         .time {
           padding: 0 18px;
           font-size: 12px;
-          color: #575350;
+          color: transparent;
           display: flex;
+          background-clip: text;
+          -webkit-background-clip: text;
+          background-color: rgba(255, 255, 255, 0.3);
           justify-content: space-between;
         }
       }
@@ -368,6 +381,38 @@ const close = () => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        .iconfont {
+          position: relative;
+          // 悬停效果
+          &:hover {
+            &::after {
+              content: '';
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(255, 255, 255, 0.3);
+              backdrop-filter: blur(20px);
+              border-radius: 50%;
+              top: 50%;
+              left: 50%;
+              padding: 6px;
+              transform: translate(-50%, -50%);
+              z-index: -1;
+              opacity: 0;
+              transition: all 0.3s ease;
+              animation: op 0.3s ease-out forwards;
+              border: 1px solid rgba(0, 0, 0, 0.1);
+            }
+            @keyframes op {
+              from {
+                opacity: 0;
+              }
+              to {
+                opacity: 1;
+              }
+            }
+          }
+        }
       }
       .volume {
         padding: 0 16px;
