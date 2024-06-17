@@ -66,7 +66,9 @@ defineOptions({ name: 'foooterPlay' })
         <p ref="songNameRef" class="song-name">
           {{ audioStore.playList[audioStore.playStatus.currentIndex].name }}
         </p>
-        <p ref="authorRef" class="author">还没有请求</p>
+        <p ref="authorRef" class="author">
+          {{ audioStore.playList[audioStore.playStatus.currentIndex].singer }}
+        </p>
       </div>
     </div>
     <div class="footer-center">
@@ -113,7 +115,16 @@ defineOptions({ name: 'foooterPlay' })
               @change="setVolume"
             />
           </template>
-          <SoundOutlined />
+          <i class="iconfont icon icon-yinliang-wu" v-if="audioStore.audio.volume === 0"></i>
+          <i
+            class="iconfont icon icon-yinliangxiao"
+            v-else-if="audioStore.audio.volume === 0.2"
+          ></i>
+          <i
+            class="iconfont icon icon-yinliang-zhong"
+            v-else-if="audioStore.audio.volume === 0.5"
+          ></i>
+          <i class="iconfont icon icon-yinliangda" v-else></i>
         </a-popover>
       </div>
     </div>
@@ -222,6 +233,12 @@ defineOptions({ name: 'foooterPlay' })
     display: flex;
     justify-content: center;
     align-items: center;
+    .volume {
+      .icon {
+        font-size: 30px;
+        color: #000;
+      }
+    }
   }
 }
 </style>

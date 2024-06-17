@@ -133,7 +133,9 @@ const close = () => {
                 <p class="song-name">
                   {{ audioStore.playList[audioStore.playStatus.currentIndex].name }}
                 </p>
-                <p class="author">歌手</p>
+                <p class="author">
+                  {{ audioStore.playList[audioStore.playStatus.currentIndex].singer }}
+                </p>
               </div>
               <!-- 更多 -->
               <EllipsisOutlined class="icon" />

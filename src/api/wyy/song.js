@@ -30,3 +30,13 @@ export const getLyricService = (id) => {
         }
     })
 }
+
+// 获取歌曲详情
+export const getSongDetailService = (ids) => {
+    return request({
+        url: '/song/detail',
+        params: {
+            ids
+        }
+    })
+}

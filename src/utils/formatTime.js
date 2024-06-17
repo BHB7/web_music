@@ -17,3 +17,14 @@ export const formatDate = (time) => {
   const day = date.getDate()
   return `${year}-${month}-${day}`
 }
+
+// 330118 时间戳毫秒 转换为 歌曲时长
+export const formatSongDuration = (time) => {
+  const minutes = Math.floor((time / 1000 / 60) % 60)
+    .toString()
+    .padStart(2, '0')
+  const seconds = Math.floor((time / 1000) % 60)
+    .toString()
+    .padStart(2, '0')
+  return `${minutes}:${seconds}`
+}

@@ -3,7 +3,7 @@ import { useWyUserStore, useAudioStore } from '@/stores'
 import { NumberOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons-vue'
 import { useRoute } from 'vue-router'
 import { nextTick, onMounted, ref, watch } from 'vue'
-import { formatDate } from '@/utils/formatTime'
+import { formatDate, formatSongDuration } from '@/utils/formatTime'
 import { getSongUrlService } from '@/api/wyy/song'
 import { computed } from '@vue/reactivity'
 const wyUserStore = useWyUserStore()
@@ -64,14 +64,14 @@ const data = [
 ]
 watch(
   // 监听多个值 只要有一个发生改变 都会触发
-  () => [audioStore.playList, audioStore.playStatus.isPlay ],
+  () => [audioStore.playList, audioStore.playStatus.isPlay],
   (newVal, oldVal) => {
     // 判断当前播放歌曲是否在歌单中
-    props.list?.tracks?.forEach((item, index) => {
+    props.list?.songs?.forEach((item, index) => {
       if (item.al.id === audioStore.playList[audioStore.playStatus.currentIndex].id) {
-          item.isPlay = audioStore.playStatus.isPlay
+        item.isPlay = audioStore.playStatus.isPlay
       } else {
-          item.isPlay = false
+        item.isPlay = false
       }
     })
   },
@@ -87,20 +87,33 @@ const play = (row) => {
   // 通过row 获取id 获取播放地址
   getSongUrlService(row.id).then((res) => {
     console.log(res.data[0])
+    // const audio = new Audio(res.data[0].url)
+    // console.dir(audio)
     audioStore.addSong({
       songId: res.data[0].id,
       id: row.al.id,
       url: res.data[0].url,
       cover: row.al.picUrl,
       name: row.name,
-      singer: 'CablT Yout'
+      singer: computed(() => {
+        const nstr = row.ar.map((item) => {
+          // console.log(item)
+          return item.name
+        })
+        let str = ''
+        nstr.forEach((item, index) => {
+          if (index !== 0) {
+            str += ' / '
+          }
+          str += item
+        })
+        return str
+      })
     })
     // 播放
     audioStore.play()
   })
 }
-
-const hover = ref(false)
 </script>
 <template>
   <main class="main">
@@ -138,7 +151,7 @@ const hover = ref(false)
               ellipsis
               class="tabel"
               :columns="columns"
-              :data-source="props.list?.tracks"
+              :data-source="props.list?.songs"
               :pagination="false"
             >
               <template #headerCell="{ column }">
@@ -199,7 +212,7 @@ const hover = ref(false)
                           <!-- 歌曲品质 -->
                           <div class="timbre">图标占位</div>
                           <!-- 歌手 -->
-                          <div class="name">歌手</div>
+                          <div class="name">{{ record.ar[0].name }}</div>
                         </div>
                       </div>
                     </div>
@@ -221,7 +234,7 @@ const hover = ref(false)
                   </template>
                   <!-- 时长 -->
                   <template v-else-if="column.key === 'time'">
-                    <span>{{ record.time }}</span>
+                    <span>{{ formatSongDuration(record.dt) }}</span>
                   </template>
                 </div>
               </template>
