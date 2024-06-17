@@ -1,6 +1,7 @@
 import { message } from 'ant-design-vue'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import logo from '@/assets/audio.svg'
 import gsap from 'gsap'
 export const useAudioStore = defineStore('audio', () => {
   const audio = ref(new Audio())
@@ -26,7 +27,7 @@ export const useAudioStore = defineStore('audio', () => {
   const playList = ref([
     {
       url: null,
-      cover: () => import('@/assets/logo.svg'),
+      cover: logo,
       name: '暂无歌曲',
       singer: ''
     }
