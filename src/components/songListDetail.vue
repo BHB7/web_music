@@ -2,9 +2,10 @@
 import { useWyUserStore, useAudioStore } from '@/stores'
 import { NumberOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons-vue'
 import { useRoute } from 'vue-router'
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import { formatDate } from '@/utils/formatTime'
 import { getSongUrlService } from '@/api/wyy/song'
+import { computed } from '@vue/reactivity'
 const wyUserStore = useWyUserStore()
 const audioStore = useAudioStore()
 // const route = useRoute()
@@ -61,11 +62,32 @@ const data = [
     time: '03:02'
   }
 ]
-
+watch(
+  () => audioStore.playStatus.isPlay,
+  (newVal, oldVal) => {
+    // 判断当前播放歌曲是否在歌单中
+    props.list?.tracks?.forEach((item, index) => {
+      if (item.al.id === audioStore.playList[audioStore.playStatus.currentIndex].id) {
+        nextTick(() => {
+          item.isPlay = newVal
+        })
+      } else {
+        nextTick(() => {
+          item.isPlay = false
+        })
+      }
+    })
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+)
 // 播放
 const play = (row) => {
   console.log('播放')
   console.log(row)
+  // 通过row 获取id 获取播放地址
   getSongUrlService(row.id).then((res) => {
     console.log(res.data[0])
     audioStore.addSong({
@@ -80,6 +102,7 @@ const play = (row) => {
     audioStore.play()
   })
 }
+
 const hover = ref(false)
 </script>
 <template>
@@ -138,9 +161,7 @@ const hover = ref(false)
                 <template v-else-if="column.key === 'like'">
                   <span class="h-t">
                     <!-- <UserOutlined class="icon" /> -->
-                    <span class="title">
-                      {{ column.title }}
-                    </span>
+                    <span class="title">喜欢</span>
                   </span>
                 </template>
                 <template v-else-if="column.key === 'time'">
@@ -161,10 +182,7 @@ const hover = ref(false)
                         <span class="index">{{ index + 1 }}</span>
                         <!-- 播放按钮 -->
                         <span
-                          v-if="
-                            audioStore.playList[audioStore.playStatus.currentIndex].id !==
-                            record.al.id
-                          "
+                          v-if="!record.isPlay"
                           class="btn iconfont icon-applemusicicon_07"
                           @click="play(record)"
                         ></span>
@@ -330,6 +348,7 @@ const hover = ref(false)
             }
             // 封面
             .cover {
+              min-width: 50px;
               width: 50px;
               height: 50px;
               border-radius: 5px;

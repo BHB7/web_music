@@ -43,13 +43,13 @@ watch(
 
 // 设置进度
 const setProgress = (e) => {
-  console.log('设置值' + e)
+  // console.log('设置值' + e)
   audioStore.setProgress(e)
 }
 
 // 设置音量
 const setVolume = (e) => {
-  console.log('设置音量' + e)
+  // console.log('设置音量' + e)
   audioStore.setVolume(e)
 }
 const emit = defineEmits(['close'])

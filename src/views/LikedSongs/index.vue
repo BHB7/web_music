@@ -17,6 +17,10 @@ onMounted(() => {
     // 获取歌单详情
     getPlaylistDetailService(res.playlist[0].id).then((res) => {
       playList.value = res.playlist
+      // 人造一个属性 isPlay 默认为false
+      playList.value.tracks.forEach((item) => {
+        item.isPlay = false
+      })
     })
   })
 })
