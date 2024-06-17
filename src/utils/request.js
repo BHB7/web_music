@@ -27,10 +27,6 @@ instance.interceptors.response.use(
   (res) => {
     // TODO 3. 处理业务失败
     // TODO 4. 摘取核心响应数据
-    if (res.data.code !== 200) {
-      message.error(res.data.msg)
-      return Promise.reject(res.data.msg)
-    }
     return res.data
   },
   (err) => {
