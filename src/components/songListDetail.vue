@@ -63,18 +63,15 @@ const data = [
   }
 ]
 watch(
-  () => audioStore.playStatus.isPlay,
+  // 监听多个值 只要有一个发生改变 都会触发
+  () => [audioStore.playList, audioStore.playStatus.isPlay ],
   (newVal, oldVal) => {
     // 判断当前播放歌曲是否在歌单中
     props.list?.tracks?.forEach((item, index) => {
       if (item.al.id === audioStore.playList[audioStore.playStatus.currentIndex].id) {
-        nextTick(() => {
-          item.isPlay = newVal
-        })
+          item.isPlay = audioStore.playStatus.isPlay
       } else {
-        nextTick(() => {
           item.isPlay = false
-        })
       }
     })
   },
