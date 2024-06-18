@@ -32,8 +32,13 @@ const router = createRouter({
           path: '/likedSongs',
           name: 'likedSongs',
           component: () => import('@/views/LikedSongs/index.vue')
-        }
-
+        },
+        // 歌单详情展示
+        {
+          path: '/playlistDetail',
+          name: 'playlistDetail',
+          component: () => import('@/views/PlaylistDetail/index.vue')
+        },
       ]
     }
   ]

@@ -12,7 +12,6 @@ const getLyric = async () => {
   // 歌词
   console.log(res)
   const lyric = res.lrc.lyric
-
   // 将歌词字符串格式化后赋值给数据源
   lyricList.value = formatLyric(lyric)
 }

@@ -13,33 +13,28 @@ const route = useRoute()
 console.log(wyUserStore.user.userInfo.userId)
 const playList = ref()
 onMounted(() => {
-  // 获取用户歌单
-  getUserPlaylistService(wyUserStore.user.userInfo.userId).then((res) => {
-    playListId.value = res.playlist[0].id
-    // 获取歌单详情
-    getPlaylistDetailService(res.playlist[0].id).then((res) => {
-      console.log(res)
-      playList.value = res.playlist
-      let idsStr = ''
-      playList.value.trackIds.forEach((item, index) => {
-        idsStr += `${item.id},`
-      })
-      // 获取歌曲详情
-      getSongDetailService(idsStr.substring(0, idsStr.lastIndexOf(','))).then((res) => {
-        // console.log(res.songs)
-        playList.value.songs = res.songs
-      })
+  // 获取歌单详情
+  getPlaylistDetailService(route.query.id).then((res) => {
+    console.log(res)
+    playList.value = res.playlist
+    let idsStr = ''
+    playList.value.trackIds.forEach((item, index) => {
+      idsStr += `${item.id},`
+    })
+    // 获取歌曲详情
+    getSongDetailService(idsStr.substring(0, idsStr.lastIndexOf(','))).then((res) => {
+      // console.log(res.songs)
+      playList.value.songs = res.songs
+    })
 
-      // 人造一个属性 isPlay 默认为false
-      playList.value.tracks.forEach((item) => {
-        item.isPlay = false
-      })
+    // 人造一个属性 isPlay 默认为false
+    playList.value.tracks.forEach((item) => {
+      item.isPlay = false
     })
   })
 })
 </script>
 <template>
-  <!-- 歌单详情组件 -->
   <songListDetail :list="playList">
     <template #content="{ list }">
       <!-- 标签Tab -->

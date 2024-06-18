@@ -4,10 +4,12 @@ import { useWyUserStore } from '@/stores'
 import { getUserPlaylistService } from '@/api/wyy/user'
 import { FormOutlined } from '@ant-design/icons-vue'
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import playListItem from './components/playListItem.vue'
+import songListDetail from '@/components/songList/songListDetail.vue'
 const wyUserStore = useWyUserStore()
 const route = useRoute()
+const router = useRouter()
 // tag默认选中
 const activeKey = ref('1')
 
@@ -15,7 +17,7 @@ const playList = ref([])
 // 收藏的歌单
 const collectPlayList = ref([])
 getUserPlaylistService(wyUserStore.user.userInfo.userId).then((res) => {
-  // console.log(res)
+  console.log(res)
   console.time('循环筛选收藏歌单 耗时')
   res.playlist.forEach((item) => {
     if (item.ordered) {
@@ -27,44 +29,44 @@ getUserPlaylistService(wyUserStore.user.userInfo.userId).then((res) => {
   })
   console.timeEnd('循环筛选收藏歌单 耗时')
 })
+
+// 跳转歌单详情
+const goPlayListDetail = (item) => {
+  if (item.name === `${wyUserStore.user.userInfo.nickname}喜欢的音乐`) {
+    router.push('likedSongs')
+    return
+  }
+  router.push({
+    path: '/playListDetail',
+    query: {
+      id: item.id
+    }
+  })
+}
 </script>
 
 <template>
-  <main class="main">
-    <header class="header">
-      <!-- 用户头像 -->
-      <div class="user-avatar">
-        <img :src="wyUserStore.user.userInfo.avatarUrl" alt="" />
+  <songListDetail :list="wyUserStore.user.userInfo" :isUser="true">
+    <template #content>
+      <div class="play-list">
+        <playListItem
+          class="item"
+          v-for="item in playList"
+          :item="item"
+          @click="goPlayListDetail(item)"
+        ></playListItem>
       </div>
-      <!-- 用户信息 -->
-      <div class="user-info">
-        <div class="user-name r">
-          {{ wyUserStore.user.userInfo.nickname }}
-          <!-- 编辑图标 -->
-          <FormOutlined class="edit-icon" />
-        </div>
-        <div class="user-level r">LV.6</div>
-        <div class="user-level-desc r">简介：{{ wyUserStore.user.userInfo.signature }}</div>
+      <h2>我收藏的歌单</h2>
+      <div class="play-list">
+        <playListItem
+          class="item"
+          v-for="item in collectPlayList"
+          :item="item"
+          @click="goPlayListDetail(item)"
+        ></playListItem>
       </div>
-    </header>
-    <!-- 内容 -->
-    <section class="content">
-      <a-tabs v-model:activeKey="activeKey">
-        <a-tab-pane key="1" tab="歌单">
-          <h2>我创建的歌单</h2>
-          <div class="play-list">
-            <playListItem class="item" v-for="item in playList" :item="item"></playListItem>
-          </div>
-          <h2>我收藏的歌单</h2>
-          <div class="play-list">
-            <playListItem class="item" v-for="item in collectPlayList" :item="item"></playListItem>
-          </div>
-        </a-tab-pane>
-        <a-tab-pane key="2" tab="动态" force-render>Content of Tab Pane 2</a-tab-pane>
-        <a-tab-pane key="3" tab="播客">Content of Tab Pane 3</a-tab-pane>
-      </a-tabs>
-    </section>
-  </main>
+    </template>
+  </songListDetail>
 </template>
 
 <style lang="scss" scoped>
