@@ -1,9 +1,10 @@
+import logo from '@/assets/audio.svg'
 export default {
     mounted(el) {
         // 先保存原始的src
         const imgSrc = el.src
-        // 把src设置为空
-        el.src = ''
+        // 把src设置为未加载的图片
+        el.src = logo
         // 观察者
         const observer = new IntersectionObserver(([{ isIntersecting
         }]) => {

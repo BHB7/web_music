@@ -116,6 +116,10 @@ const play = (row) => {
     audioStore.play()
   })
 }
+// 暂停
+const pause = () => {
+  audioStore.pause()
+}
 </script>
 <template>
   <!-- 歌曲列表 表格 -->
@@ -177,6 +181,7 @@ const play = (row) => {
               <!-- 当播放时 并且没有加载时 显示暂停按钮 -->
               <span
                 v-if="record.isPlay ? !record.isLoading : record.isPlay"
+                @click="pause"
                 class="btn iconfont icon-applemusicicon_06"
               >
               </span>
