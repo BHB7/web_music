@@ -12,6 +12,8 @@ const playListId = ref('')
 const route = useRoute()
 console.log(wyUserStore.user.userInfo.userId)
 const playList = ref()
+// tag默认选中
+const activeKey = ref('1')
 onMounted(() => {
   // 获取用户歌单
   getUserPlaylistService(wyUserStore.user.userInfo.userId).then((res) => {
@@ -33,6 +35,7 @@ onMounted(() => {
       // 人造一个属性 isPlay 默认为false
       playList.value.tracks.forEach((item) => {
         item.isPlay = false
+        item.isLoading = false
       })
     })
   })
@@ -41,12 +44,12 @@ onMounted(() => {
 <template>
   <!-- 歌单详情组件 -->
   <songListDetail :list="playList">
-    <template #content="{ list }">
+    <template #content>
       <!-- 标签Tab -->
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane style="height: 100%" key="1" tab="歌曲">
           <div class="play-list">
-            <songListTabel :list="list"></songListTabel>
+            <songListTabel :list="playList"></songListTabel>
           </div>
           <!-- <h2>我收藏的歌单</h2>
           <div class="play-list">a</div> -->

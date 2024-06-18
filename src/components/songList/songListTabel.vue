@@ -6,6 +6,7 @@ import { onMounted, ref, watch } from 'vue'
 import { formatDate, formatSongDuration } from '@/utils/formatTime'
 import { getSongUrlService } from '@/api/wyy/song'
 import { computed } from '@vue/reactivity'
+import loader from '../loader.vue'
 const wyUserStore = useWyUserStore()
 const audioStore = useAudioStore()
 // const route = useRoute()
@@ -15,8 +16,7 @@ const props = defineProps({
     default: () => ({})
   }
 })
-// tag默认选中
-const activeKey = ref('1')
+
 onMounted(() => {
   console.log(props.list)
 })
@@ -64,11 +64,12 @@ const data = [
 ]
 watch(
   // 监听多个值 只要有一个发生改变 都会触发
-  () => [audioStore.playList, audioStore.playStatus.isPlay],
+  () => [audioStore.playList, audioStore.playStatus.isPlay, audioStore.playStatus.isWaiting],
   (newVal, oldVal) => {
     // 判断当前播放歌曲是否在歌单中
     props.list?.songs?.forEach((item, index) => {
       if (item.al.id === audioStore.playList[audioStore.playStatus.currentIndex].id) {
+        // item.isLoading = audioStore.playStatus.isWaiting
         item.isPlay = audioStore.playStatus.isPlay
       } else {
         item.isPlay = false
@@ -80,13 +81,16 @@ watch(
     deep: true
   }
 )
+const isLoading = ref(false)
 // 播放
 const play = (row) => {
   // console.log('播放')
   // console.log(row)
   // 通过row 获取id 获取播放地址
+  row.isLoading = true
   getSongUrlService(row.id).then((res) => {
     // console.log(res.data[0])
+    row.isLoading = false
     audioStore.addSong({
       songId: res.data[0].id,
       id: row.al.id,
@@ -160,19 +164,27 @@ const play = (row) => {
             <!-- 序号 -->
             <span class="start">
               <span class="index">{{ index + 1 }}</span>
+              <!-- 加载 -->
+              <loader class="btn" :size="21" v-if="record.isLoading"></loader>
               <!-- 播放按钮 -->
+              <!-- 当未播放时 并且没有加载时 显示播放按钮 -->
               <span
-                v-if="!record.isPlay"
+                v-if="!record.isPlay ? !record.isLoading : !record.isPlay"
                 class="btn iconfont icon-applemusicicon_07"
                 @click="play(record)"
               ></span>
               <!-- 暂停按钮 -->
-              <span v-else class="btn iconfont icon-applemusicicon_06"> </span>
+              <!-- 当播放时 并且没有加载时 显示暂停按钮 -->
+              <span
+                v-if="record.isPlay ? !record.isLoading : record.isPlay"
+                class="btn iconfont icon-applemusicicon_06"
+              >
+              </span>
             </span>
 
             <!-- 封面 -->
             <div class="cover">
-              <img :src="record.al.picUrl" alt="" />
+              <img v-lazy :src="record.al.picUrl" alt="" />
             </div>
             <!-- 文本信息 -->
             <div class="info">
@@ -239,6 +251,8 @@ const play = (row) => {
         display: flex;
         align-items: center;
         .start {
+          display: flex;
+          align-items: center;
           // width: 100px;
           // 序号
           .index {

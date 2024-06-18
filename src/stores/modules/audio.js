@@ -22,7 +22,8 @@ export const useAudioStore = defineStore('audio', () => {
     order: 'normal', // normal: 正常播放, reverse: 倒序播放
     // 播放顺序索引
     orderIndex: 0,
-
+    isWaiting: false, // 是否正在等待播放
+    isMute: false // 是否静音
   })
   const playList = ref([
     {
@@ -98,7 +99,15 @@ export const useAudioStore = defineStore('audio', () => {
     console.info('开始播放')
   }
 
-
+  // 加载
+  audio.value.onloadstart = () => {
+    playStatus.value.isWaiting = true
+    console.log('开始加载')
+  }
+  audio.value.onloadedmetadata = () => {
+    playStatus.value.isWaiting = false
+    console.info('加载完成')
+  }
   audio.value.onwaiting = () => {
     message.loading('缓冲中...')
     console.info('缓冲中...')

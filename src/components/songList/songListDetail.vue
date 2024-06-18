@@ -6,8 +6,6 @@ import { onMounted, ref, watch } from 'vue'
 import { formatDate, formatSongDuration } from '@/utils/formatTime'
 import { getSongUrlService } from '@/api/wyy/song'
 import { computed } from '@vue/reactivity'
-const wyUserStore = useWyUserStore()
-const audioStore = useAudioStore()
 // const route = useRoute()
 const props = defineProps({
   list: {
@@ -31,7 +29,7 @@ const props = defineProps({
       <!-- 用户信息 / 歌单信息 -->
       <div class="user-info">
         <div class="user-name r">{{ props.isUser ? props.list.nickname : props.list.name }}</div>
-        <div class="user-create r" v-if="!isUser">
+        <div class="user-create r" v-if="!props.isUser">
           <!-- 头像 -->
           <div class="avatar" @click="$router.push('/userDetail')">
             <img :src="props?.list.creator?.avatarUrl" alt="" />
@@ -41,11 +39,11 @@ const props = defineProps({
             {{ props.isUser ? list.nickname : props?.list.creator?.nickname }}
           </div>
           <!-- 创建时间 -->
-          <div class="create-time" v-if="!isUser">
+          <div class="create-time" v-if="!props.isUser">
             {{ formatDate(props?.list.createTime) }} 创建
           </div>
         </div>
-        <div class="user-level-desc r" v-if="isUser">简介：{{ list.signature }}</div>
+        <div class="user-level-desc r" v-if="props.isUser">简介：{{ list.signature }}</div>
       </div>
     </header>
     <!-- 内容 -->
