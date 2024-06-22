@@ -4,7 +4,7 @@ import footerPlay from '@/components/footerPlay/foooterPlay.vue'
 import { SendOutlined, HeartOutlined, LeftOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import SInput from '@/components/SInput.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useWyUserStore } from '@/stores/index'
+import { useWyUserStore } from '@/stores'
 import Slogin from '@/components/header/Slogin.vue'
 
 const wyUserStore = useWyUserStore()
@@ -44,7 +44,10 @@ onBeforeUnmount(() => {
       style="height: 100vh; background-color: #f0f3f6; margin-right: 40px"
     >
       <div class="logo">
-        <img src="@/assets/logo.svg" alt="" />
+        <div class="img-box">
+          <img src="@/assets/logot.svg" alt="" />
+        </div>
+        在线音乐播放
       </div>
       <a-menu
         v-model:selectedKeys="selectedKeys"
@@ -124,6 +127,12 @@ onBeforeUnmount(() => {
   min-height: 100vh;
   max-height: 100%;
   background-color: #fff;
+  // 样式穿透
+  // 选中菜单状态
+  &:deep(.ant-menu .ant-menu-item-selected) {
+    color: #fff;
+    background-color: dodgerblue;
+  }
   .icon {
     font-size: 18px;
   }
@@ -179,13 +188,22 @@ onBeforeUnmount(() => {
     overflow-y: auto;
   }
   .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     // border: 1px solid #000;
     height: 32px;
     background: rgba(255, 255, 255, 0.2);
-    margin: 16px;
-    img {
-      width: 100%;
-      height: 100%;
+    // margin: 16px;
+    margin: 20px 0;
+    .img-box {
+      width: 32px;
+      height: 32px;
+      margin: 0 10px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 

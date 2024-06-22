@@ -39,10 +39,16 @@ export const useWyUserStore = defineStore('wyUser', () => {
     }
   }
 
+  const logout = () => {
+    user.value.cookie = ''
+    user.value.userInfo = {}
+    isLogin.value = false
+  }
   return {
     user,
     isLogin,
-    setCookie
+    setCookie,
+    logout
   }
 }, {
   persist: {

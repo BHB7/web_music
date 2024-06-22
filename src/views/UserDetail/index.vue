@@ -48,6 +48,7 @@ const goPlayListDetail = (item) => {
 <template>
   <songListDetail :list="wyUserStore.user.userInfo" :isUser="true">
     <template #content>
+      <h2>我创建的歌单</h2>
       <div class="play-list">
         <playListItem
           class="item"

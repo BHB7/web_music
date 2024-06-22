@@ -1,108 +1,45 @@
 <script setup>
-import { reactive } from 'vue'
-import { useAudioStore } from '@/stores'
-const formState = reactive({
-  apiMode: ''
+import { ref } from 'vue'
+import { useSettingsStore, useWyUserStore } from '@/stores'
+import { computed } from '@vue/reactivity'
+import { message } from 'ant-design-vue'
+const settingsStore = useSettingsStore()
+const activeKey = ref('1')
+const value1 = ref('wyy')
+
+const getApiSelect = computed(() => {
+  return settingsStore.settings.apiSelect
 })
-const onFinish = (values) => {
-  console.log('Success:', values)
+
+const focus = () => {
+  console.log('focus')
 }
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo)
+
+const handleChange = (value) => {
+  console.log(`selected ${value}`)
+  // 修改apiSelect选项
+  settingsStore.setApiSelect(value)
+  message.success('修改成功, 您将重新登录')
+  useWyUserStore().logout()
 }
 </script>
-<template>
-  <div class="sel">
-    <ul>
-      <li class="active"><a>账号</a></li>
-      <li><a>常规</a></li>
-      <li><a>播放</a></li>
-      <li><a>调试</a></li>
-    </ul>
-  </div>
-  <section class="main">
-    <a-form
-      :labelAlign="'left'"
-      hideRequiredMark
-      :model="formState"
-      name="basic"
-      autocomplete="off"
-      @finish="onFinish"
-      @finishFailed="onFinishFailed"
-    >
-      <a-divider style="border-color: #ccc; width: 100vw" dashed />
-      <a-form-item
-        label="账号"
-        name="username"
-        :rules="[{ required: true, message: 'Please input your username!' }]"
-      >
-        <a-input v-model:value="formState.username" />
-      </a-form-item>
-      <a-divider style="border-color: #ccc; width: 100vw" dashed />
-      <a-form-item label="常规">
-        <span>api接口</span>
-        <a-switch
-          v-model:checked="formState.apiMode"
-          checked-children="QQ"
-          un-checked-children="网易"
-        />
-      </a-form-item>
-      <a-divider style="border-color: #ccc; width: 100vw" dashed />
-      <a-form-item
-        label="播放"
-        name="username"
-        :rules="[{ required: true, message: 'Please input your username!' }]"
-      >
-        <a-input v-model:value="formState.username" />
-      </a-form-item>
-      <a-divider style="border-color: #ccc; width: 100vw" dashed />
-      <a-form-item label="调试信息" name="username">
-        <a-textarea :value="'asdasd'" />
-      </a-form-item>
-    </a-form>
-  </section>
-</template>
 
-<style lang="scss" scoped>
-.sel {
-  ul {
-    display: flex;
-    .active {
-      a {
-        font-weight: 700;
-        color: black;
-        position: relative;
-        &::before {
-          bottom: -10px;
-          left: 50%;
-          position: absolute;
-          transform: translateX(-50%);
-          width: 25px;
-          height: 5px;
-          border-radius: 5px;
-          background-color: dodgerblue;
-          content: '';
-        }
-      }
-    }
-    li {
-      height: 20px;
-      // margin-bottom: 20px;
-      line-height: 20px;
-      a {
-        font-weight: 600;
-        font-size: 16px;
-        color: #4a4c58;
-        padding: 0 16px;
-      }
-    }
-  }
-}
-.main {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
-}
-</style>
+<template>
+  <a-tabs v-model:activeKey="activeKey">
+    <a-tab-pane key="1" tab="api接口">
+      <a-select
+        ref="select"
+        :value="getApiSelect"
+        style="width: 120px"
+        @focus="focus"
+        @change="handleChange"
+      >
+        <a-select-option value="wyy">网易云</a-select-option>
+        <a-select-option value="qq" disabled>QQ音乐</a-select-option>
+        <a-select-option value="kg">酷狗音乐</a-select-option>
+      </a-select>
+    </a-tab-pane>
+    <a-tab-pane key="2" tab="Tab 2" force-render> Content of Tab Pane 2 </a-tab-pane>
+    <a-tab-pane key="3" tab="Tab 3"> Content of Tab Pane 3 </a-tab-pane>
+  </a-tabs>
+</template>

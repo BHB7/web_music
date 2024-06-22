@@ -17,9 +17,10 @@ const activeKey = ref('1')
 onMounted(() => {
   // 获取用户歌单
   getUserPlaylistService(wyUserStore.user.userInfo.userId).then((res) => {
+    // console.log(res)
     playListId.value = res.playlist[0].id
     // 获取歌单详情
-    getPlaylistDetailService(res.playlist[0].id).then((res) => {
+    getPlaylistDetailService(res?.playlist[0].id).then((res) => {
       console.log(res)
       playList.value = res.playlist
       let idsStr = ''
