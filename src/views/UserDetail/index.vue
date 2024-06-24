@@ -1,13 +1,17 @@
 <script setup>
-import { useWyUserStore } from '@/stores'
+import { useWyUserStore, useSettingsStore } from '@/stores'
 // 获取用户歌单
-import { getUserPlaylistService } from '@/api/wyy/user'
+// wyy
+import { getUserPlaylistService as getWyyUserPlaylistService } from '@/api/wyy/user'
+// kg
+import { getUserPlaylistService as getKgUserPlaylistService } from '@/api/kg/user'
 import { FormOutlined } from '@ant-design/icons-vue'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import playListItem from './components/playListItem.vue'
 import songListDetail from '@/components/songList/songListDetail.vue'
 const wyUserStore = useWyUserStore()
+const settingsStore = useSettingsStore()
 const route = useRoute()
 const router = useRouter()
 // tag默认选中
@@ -16,19 +20,28 @@ const activeKey = ref('1')
 const playList = ref([])
 // 收藏的歌单
 const collectPlayList = ref([])
-getUserPlaylistService(wyUserStore.user.userInfo.userId).then((res) => {
-  console.log(res)
-  console.time('循环筛选收藏歌单 耗时')
-  res.playlist.forEach((item) => {
-    if (item.ordered) {
-      console.log('收藏歌单')
-      collectPlayList.value.push(item)
-    } else {
-      playList.value.push(item)
-    }
-  })
-  console.timeEnd('循环筛选收藏歌单 耗时')
-})
+switch (settingsStore.settings.apiSelect) {
+  case 'wyy':
+    getWyyUserPlaylistService(wyUserStore.user.userInfo.userId).then((res) => {
+      console.log(res)
+      console.time('循环筛选收藏歌单 耗时')
+      res.playlist.forEach((item) => {
+        if (item.ordered) {
+          console.log('收藏歌单')
+          collectPlayList.value.push(item)
+        } else {
+          playList.value.push(item)
+        }
+      })
+      console.timeEnd('循环筛选收藏歌单 耗时')
+    })
+    break
+  case 'kg':
+    getKgUserPlaylistService().then((res) => {
+      console.log(res)
+    })
+    break
+}
 
 // 跳转歌单详情
 const goPlayListDetail = (item) => {

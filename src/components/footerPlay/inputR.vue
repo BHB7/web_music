@@ -199,6 +199,7 @@ input[type='range'] {
 
   // 定义进度条的激活部分（已完成部分）的样式
   &::-webkit-slider-runnable-track {
+    transition: background-position 0.2s;
     background: linear-gradient(
       to right,
       var(--bg1),

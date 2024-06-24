@@ -4,12 +4,29 @@ import footerPlay from '@/components/footerPlay/foooterPlay.vue'
 import { SendOutlined, HeartOutlined, LeftOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import SInput from '@/components/SInput.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useWyUserStore } from '@/stores'
+import { useWyUserStore, useKgUserStore, useSettingsStore } from '@/stores'
 import Slogin from '@/components/header/Slogin.vue'
+import { computed } from '@vue/reactivity'
 
 const wyUserStore = useWyUserStore()
+const kgUserStore = useKgUserStore()
+const settingsStore = useSettingsStore()
 const route = useRoute()
 const router = useRouter()
+
+const picture = ref('')
+const selApiUser = computed(() => {
+  switch (settingsStore.settings.apiSelect) {
+    case 'wyy':
+      picture.value = wyUserStore.user.userInfo?.avatarUrl
+      return wyUserStore
+    case 'kg':
+      picture.value = kgUserStore.user.userInfo?.pic
+      return kgUserStore
+  }
+  // return
+})
+
 const onCollapse = (collapsed, type) => {
   console.log(collapsed, type)
 }
@@ -79,7 +96,7 @@ onBeforeUnmount(() => {
         <!-- 右侧 -->
         <div class="r">
           <!-- 未登录 -->
-          <div class="inf" v-if="!wyUserStore.isLogin">
+          <div class="inf" v-if="!selApiUser.isLogin">
             <!-- 头像 -->
             <div class="avatar">
               <img src="https://p1.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg" />
@@ -90,15 +107,12 @@ onBeforeUnmount(() => {
           <!-- 登录 用户信息 -->
           <div class="inf" v-else>
             <!-- 头像 -->
-            <div
-              class="avatar"
-              @click="$router.push(`/userDetail?uid=${wyUserStore.user.userInfo.userId}`)"
-            >
-              <img :src="wyUserStore.user.userInfo.avatarUrl" />
+            <div class="avatar" @click="$router.push(`/userDetail`)">
+              <img :src="picture" />
             </div>
             <!-- 昵称 -->
             <div class="name">
-              <span>{{ wyUserStore.user.userInfo.nickname }}</span>
+              <span>{{ selApiUser.user.userInfo?.nickname }}</span>
             </div>
           </div>
           <!-- 设置 -->

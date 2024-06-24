@@ -6,8 +6,8 @@ let qrKey = ''
 export const getQrCodeService = async () => {
   // 1.二维码 key 生成接口
   const res = await request({ url: `/login/qr/key?timestamp=${Date.now()}` })
-  qrKey = res.data.unikey
-  return request({ url: `/login/qr/create?key=${res.data.unikey}&qrimg=true&timestamp=${Date.now()}` })
+  qrKey = res.data.unikey || res.data.qrcode
+  return request({ url: `/login/qr/create?key=${qrKey}&qrimg=true&timestamp=${Date.now()}` })
 }
 // 3.二维码检测扫码状态接口
 // 轮询此接口可获取二维码扫码状态,800 为二维码过期,801 为等待扫码,802 为待确认,803 为授权登录成功(803 状态码下会返回 cookies),如扫码后返回502,则需加上noCookie参数,如&noCookie=true

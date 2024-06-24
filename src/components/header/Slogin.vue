@@ -2,15 +2,26 @@
 import { ref, watch } from 'vue'
 import { RightOutlined } from '@ant-design/icons-vue'
 import { reactive } from 'vue'
-import {
-  getQrCodeService,
-  getQrCheckService,
-  getUserAccountService,
-  logoutService
-} from '@/api/wyy/user'
-import { useWyUserStore } from '@/stores/index'
 
-const wyUserStore = useWyUserStore()
+// wyy
+import {
+  getQrCodeService as getWyyQrCodeService,
+  getQrCheckService as getWyyQrCheckService,
+  getUserAccountService as getWyyUserAccountService,
+  logoutService as wyyLogoutService
+} from '@/api/wyy/user'
+
+// kg
+import {
+  getQrCodeService as getKgQrCodeService,
+  getQrCheckService as getKgQrCheckService,
+  getLoginStatusService as getKgLoginStatusService
+} from '@/api/kg/user'
+import { useWyUserStore, useSettingsStore, useKgUserStore } from '@/stores'
+
+const settingsStore = useSettingsStore() // 设置
+const wyUserStore = useWyUserStore() // 网易y
+const kgUserStore = useKgUserStore() // 酷g
 const props = defineProps({
   open: {
     type: Boolean,
@@ -30,19 +41,48 @@ const qrCodeImg = ref('')
 const isExpire = ref(false)
 // 等待扫码
 const loginQrMsg = ref('')
-
+const tipMsg = ref('')
 // 登录的弹框
 const timer = ref(null)
 const showLogin = ref(false)
 const login = async () => {
   showLogin.value = true
-  await getQrCode()
-  timer.value = setInterval(checkQrCode, 3000)
+  await init()
 }
 // 二维码检测扫码状态
 // 轮询此接口可获取二维码扫码状态,800 为二维码过期,801 为等待扫码,802 为待确认,803 为授权登录成功(803 状态码下会返回 cookies),如扫码后返回502,则需加上noCookie参数,如&noCookie=true
-const checkQrCode = async () => {
-  const res = await getQrCheckService()
+const init = async () => {
+  switch (settingsStore.settings.apiSelect) {
+    // 网易y
+    case 'wyy':
+      tipMsg.value = '打开网易云音乐APP扫码登录'
+      // 获取二维码
+      await wyyCreateQr()
+      // 轮询检测扫码状态
+      timer.value = setInterval(wyyCheckQrApi, 3000)
+      break
+    // 酷g
+    case 'kg':
+      tipMsg.value = '打开酷狗音乐APP扫码登录'
+      // 获取二维码
+      await kgCreateQr()
+      // 轮询检测扫码状态
+      timer.value = setInterval(kgCheckQrApi, 3000)
+      break
+    default:
+      break
+  }
+}
+
+// 网易y 创建二维码
+const wyyCreateQr = async () => {
+  // 获取二维码
+  const res = await getWyyQrCodeService()
+  qrCodeImg.value = res.data.qrimg
+}
+// 网易y qr轮询检测
+const wyyCheckQrApi = async () => {
+  const res = await getWyyQrCheckService()
   console.log(res)
   switch (+res.code) {
     // 为二维码过期
@@ -61,7 +101,7 @@ const checkQrCode = async () => {
       break
     // 授权登录成功
     case 803:
-      await loginSuccess(res.cookie)
+      await wyyloginSuccess(res.cookie)
       clearInterval(timer.value)
       isExpire.value = false
       break
@@ -70,23 +110,78 @@ const checkQrCode = async () => {
   }
 }
 
-// 获取二维码
-const getQrCode = async () => {
-  const res = await getQrCodeService()
-  qrCodeImg.value = res.data.qrimg
+// 酷g 创建二维码
+const kgCreateQr = async () => {
+  // 获取二维码
+  const res = await getKgQrCodeService()
+  qrCodeImg.value = res.data.base64
 }
+
+// 酷g qr轮询检测
+const kgCheckQrApi = async () => {
+  const res = await getKgQrCheckService()
+  console.log(res)
+  switch (+res.data.status) {
+    // 0为二维码过期
+    case 0:
+      // 重新获取二维码
+      isExpire.value = true
+      clearInterval(timer.value)
+      break
+    // 等待扫码
+    case 1:
+      loginQrMsg.value = '等待扫码'
+      break
+    // 待确认
+    case 2:
+      loginQrMsg.value = '扫码成功'
+      break
+    // 授权登录成功
+    case 4:
+      await kgloginSuccess(res)
+      clearInterval(timer.value)
+      isExpire.value = false
+      break
+    default:
+      break
+  }
+}
+
 // 重新获取二维码
 const getQrCodeAgain = async () => {
   console.log('重新获取二维码')
   isExpire.value = false
-  await getQrCode()
-  timer.value = setInterval(checkQrCode, 3000)
+  switch (settingsStore.settings.apiSelect) {
+    // 网易y
+    case 'wyy':
+      await wyyCreateQr()
+      timer.value = setInterval(wyyCheckQrApi, 3000)
+      break
+    // 酷g
+    case 'kg':
+      await kgCreateQr()
+      timer.value = setInterval(kgCheckQrApi, 3000)
+      break
+    default:
+      break
+  }
 }
 
-// 登录成功
-const loginSuccess = async (cookie) => {
+// 网易y 登录成功
+const wyyloginSuccess = async (cookie) => {
   console.log('登录成功')
   wyUserStore.setCookie(cookie)
+  // 关闭窗口
+  showLogin.value = false
+}
+
+// 酷g 登录成功
+const kgloginSuccess = async (res) => {
+  console.log(res)
+  console.log('登录成功')
+  await getKgLoginStatusService(res.data.token, res.data.userid)
+  kgUserStore.setCookie(res.data.token)
+  kgUserStore.setUserInfo(res.data)
   // 关闭窗口
   showLogin.value = false
 }
@@ -182,7 +277,7 @@ const onFinishFailed = (errorInfo) => {
         </div>
       </div>
       <p>{{ loginQrMsg }}</p>
-      <div class="tip">打开网易云音乐APP扫码登录</div>
+      <div class="tip">{{ tipMsg }}</div>
       <!-- 选择其他登录 -->
       <div class="other">
         <a type="link" @click="loginOther" style="color: #999">其他登录方式</a>
