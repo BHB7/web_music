@@ -14,6 +14,7 @@ const getLyric = async () => {
   const lyric = res.lrc.lyric
   // 将歌词字符串格式化后赋值给数据源
   lyricList.value = formatLyric(lyric)
+  console.log(lyricList.value)
 }
 // 处理在没有音乐时 不请求歌词
 if (audioStore.playList[0].url !== null) {

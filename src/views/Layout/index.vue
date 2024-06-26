@@ -1,7 +1,13 @@
 <script setup>
 import { onBeforeUnmount, ref, watch } from 'vue'
 import footerPlay from '@/components/footerPlay/foooterPlay.vue'
-import { SendOutlined, HeartOutlined, LeftOutlined, SettingOutlined } from '@ant-design/icons-vue'
+import {
+  SendOutlined,
+  HeartOutlined,
+  LeftOutlined,
+  SettingOutlined,
+  UnorderedListOutlined
+} from '@ant-design/icons-vue'
 import SInput from '@/components/SInput.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useWyUserStore, useKgUserStore, useSettingsStore, useAudioStore } from '@/stores'
@@ -43,12 +49,53 @@ const isShowLogin = ref(false)
 const login = () => {
   isShowLogin.value = !isShowLogin.value
 }
-
+const openDrawer = ref(false)
 onBeforeUnmount(() => {
   clearInterval(timer.value)
 })
 </script>
 <template>
+  <!-- 移动端侧边栏激发按钮 -->
+  <UnorderedListOutlined
+    @click="openDrawer = true"
+    class="lg:hidden bg-slate-200"
+    style="font-size: 1.6rem; position: absolute; top: 70px; left: 0"
+  />
+
+  <a-drawer
+    v-model:open="openDrawer"
+    class="custom-class"
+    root-class-name="root-class-name"
+    :root-style="{ color: 'blue' }"
+    title="菜单"
+    placement="left"
+    @after-open-change="afterOpenChange"
+  >
+    <div class="logo">
+      <div class="img-box">
+        <img src="@/assets/logot.svg" alt="" />
+      </div>
+      在线音乐播放
+    </div>
+    <a-menu
+      v-model:selectedKeys="selectedKeys"
+      theme="light"
+      mode="inline"
+      style="background-color: #f0f3f6; margin-top: 10px"
+    >
+      <a-menu-item key="/recommended" @click="$router.push('/recommended')">
+        <SendOutlined class="icon" />
+        <span class="nav-text">为你推荐</span>
+      </a-menu-item>
+      <a-menu-item-group title="我的">
+        <a-menu-item key="/likedSongs" @click="$router.push(`/likedSongs`)">
+          <HeartOutlined class="icon" />
+          <span class="nav-text">我喜欢的音乐</span>
+        </a-menu-item>
+      </a-menu-item-group>
+    </a-menu>
+  </a-drawer>
+
   <a-layout class="layout">
     <!-- 侧边栏 -->
     <a-layout-sider
@@ -58,6 +105,7 @@ onBeforeUnmount(() => {
       @collapse="onCollapse"
       @breakpoint="onBreakpoint"
       style="height: 100vh; background-color: #f0f3f6; margin-right: 40px"
+      class="hidden lg:block"
     >
       <div class="logo">
         <div class="img-box">
@@ -231,5 +279,41 @@ onBeforeUnmount(() => {
 
 [data-theme='dark'] .site-layout-sub-header-background {
   background: #141414;
+}
+
+.custom-class {
+  &:deep(.ant-menu .ant-menu-item-selected) {
+    color: #fff;
+    background-color: dodgerblue;
+  }
+  .icon {
+    font-size: 18px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // border: 1px solid #000;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    // margin: 16px;
+    margin: 20px 0;
+    .img-box {
+      width: 32px;
+      height: 32px;
+      margin: 0 10px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+  .site-layout-sub-header-background {
+    background: #fff;
+  }
+
+  .site-layout-background {
+    background: #fff;
+  }
 }
 </style>
