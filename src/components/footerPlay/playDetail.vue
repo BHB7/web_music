@@ -109,7 +109,7 @@ const close = () => {
           <section class="style-btn">播放器样式</section>
         </div>
       </header>
-      <section class="cont">
+      <section class="cont flex md:justify-center md:items-center lg:justify-evenly">
         <!-- 左边操作面板 -->
         <section class="l px-10">
           <div class="line"></div>
@@ -253,8 +253,8 @@ const close = () => {
   .cont {
     width: 100%;
     height: 100vh;
-    display: flex;
-    justify-content: space-evenly;
+    // display: flex;
+    // justify-content: space-evenly;
     .l {
       min-width: 390px;
       max-width: 700px;
@@ -388,8 +388,8 @@ const close = () => {
             &::after {
               content: '';
               position: absolute;
-              width: 100%;
-              height: 100%;
+              width: 2.8rem;
+              height: 2.8rem;
               background-color: rgba(255, 255, 255, 0.3);
               backdrop-filter: blur(20px);
               border-radius: 50%;
