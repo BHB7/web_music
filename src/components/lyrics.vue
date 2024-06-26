@@ -105,7 +105,7 @@ const goTime = (item, index) => {
 </script>
 <template>
   <!-- 歌词滚动包裹盒子 -->
-  <div class="m-song-scroll" ref="lyricWarp">
+  <div class="m-song-scroll hidden lg:block" ref="lyricWarp">
     <!-- 歌词内容体 -->
     <div class="m-song-iner" ref="lyricUl">
       <!-- 每一条歌词item -->

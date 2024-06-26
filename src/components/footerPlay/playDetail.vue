@@ -180,7 +180,7 @@ const close = () => {
           </div>
         </section>
         <!-- 右边 歌词 -->
-        <div class="lyrics hidden lg:block">
+        <div class="lyrics">
           <lyrics></lyrics>
         </div>
       </section>
