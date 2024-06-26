@@ -109,7 +109,7 @@ const close = () => {
           <section class="style-btn">播放器样式</section>
         </div>
       </header>
-      <section class="cont flex md:justify-center md:items-center lg:justify-evenly">
+      <section class="cont flex md:justify-center md:items-stretch lg:justify-evenly">
         <!-- 左边操作面板 -->
         <section class="l px-10">
           <div class="line"></div>
