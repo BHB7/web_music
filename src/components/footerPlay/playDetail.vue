@@ -111,7 +111,7 @@ const close = () => {
       </header>
       <section class="cont">
         <!-- 左边操作面板 -->
-        <section class="l">
+        <section class="l px-10">
           <div class="line"></div>
           <div
             :class="{ play: audioStore.playStatus.isPlay, noPlay: !audioStore.playStatus.isPlay }"
@@ -180,7 +180,7 @@ const close = () => {
           </div>
         </section>
         <!-- 右边 歌词 -->
-        <div class="lyrics">
+        <div class="lyrics hidden lg:block">
           <lyrics></lyrics>
         </div>
       </section>
@@ -256,11 +256,11 @@ const close = () => {
     display: flex;
     justify-content: space-evenly;
     .l {
-      min-width: 500px;
+      min-width: 390px;
       max-width: 700px;
       flex: 3;
       margin: 20px 0;
-      padding: 0 70px;
+      // padding: 0 70px;
       // width: 30%;
       // height: 100vh;
       display: flex;

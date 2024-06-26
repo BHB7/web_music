@@ -4,16 +4,15 @@ import footerPlay from '@/components/footerPlay/foooterPlay.vue'
 import { SendOutlined, HeartOutlined, LeftOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import SInput from '@/components/SInput.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useWyUserStore, useKgUserStore, useSettingsStore } from '@/stores'
+import { useWyUserStore, useKgUserStore, useSettingsStore, useAudioStore } from '@/stores'
 import Slogin from '@/components/header/Slogin.vue'
 import { computed } from '@vue/reactivity'
-
 const wyUserStore = useWyUserStore()
 const kgUserStore = useKgUserStore()
 const settingsStore = useSettingsStore()
 const route = useRoute()
 const router = useRouter()
-
+const audioStore = useAudioStore()
 const picture = ref('')
 const selApiUser = computed(() => {
   switch (settingsStore.settings.apiSelect) {
@@ -93,8 +92,6 @@ onBeforeUnmount(() => {
           <LeftOutlined class="icon" @click="$router.go(-1)" />
           <SInput :width="'200px'" :height="'35px'" :placeholder="'搜索音乐'" />
         </div>
-
-        <div class="songINfo lg:hidden">asdasdasd</div>
         <!-- 右侧 -->
         <div class="r">
           <!-- 未登录 -->
