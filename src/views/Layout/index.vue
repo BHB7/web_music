@@ -86,13 +86,15 @@ onBeforeUnmount(() => {
     </a-layout-sider>
     <a-layout>
       <!-- 头部 -->
-      <a-layout-header class="header" :style="{ background: '#fff', padding: 0 }">
+      <a-layout-header class="header lg:hidden" :style="{ background: '#fff', padding: 0 }">
         <!-- 左侧 -->
-        <div class="l">
+        <div class="l flex flex-col md:flex-row">
           <!-- 返回 -->
           <LeftOutlined class="icon" @click="$router.go(-1)" />
           <SInput :width="'200px'" :height="'35px'" :placeholder="'搜索音乐'" />
         </div>
+
+        <div class="songINfo lg:hidden">asdasdasd</div>
         <!-- 右侧 -->
         <div class="r">
           <!-- 未登录 -->
@@ -156,12 +158,12 @@ onBeforeUnmount(() => {
     justify-content: space-between;
     // 左边
     .l {
+      display: flex;
+      align-items: center;
       .icon {
         color: #ccc;
         font-size: 20px;
       }
-      display: flex;
-      align-items: center;
     }
     // 右边
     .r {

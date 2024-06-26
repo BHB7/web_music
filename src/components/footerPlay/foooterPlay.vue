@@ -62,7 +62,7 @@ defineOptions({ name: 'foooterPlay' })
         />
       </div>
       <!-- 歌曲信息 -->
-      <div class="info">
+      <div class="info hidden lg:block">
         <p ref="songNameRef" class="song-name">
           {{ audioStore.playList[audioStore.playStatus.currentIndex].name }}
         </p>

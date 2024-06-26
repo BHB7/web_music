@@ -24,12 +24,12 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="input">
+  <div class="input hidden lg:block">
     <div class="input-icon">
       <i class="iconfont icon-sousuo"></i>
     </div>
     <input
-      :style="{width: props.width, height: props.height}"
+      :style="{ width: props.width, height: props.height }"
       :type="props.type"
       :placeholder="props.placeholder"
       :value="props.value"
@@ -67,7 +67,7 @@ const props = defineProps({
       &::-webkit-input-placeholder {
         color: transparent;
       }
-      &::placeholder{
+      &::placeholder {
         color: transparent;
       }
     }
