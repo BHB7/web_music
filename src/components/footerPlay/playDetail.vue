@@ -424,9 +424,9 @@ const close = () => {
     }
     // 歌词
     .lyrics {
-      width: 400px;
-      min-width: 200px;
-      max-width: 600px;
+      // width: 400px;
+      // min-width: 200px;
+      // max-width: 600px;
       display: flex;
       align-items: center;
       justify-content: center;
