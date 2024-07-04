@@ -24,7 +24,7 @@ const props = defineProps({
     <header class="header">
       <!-- 用户头像 / 歌单封面 -->
       <div class="user-avatar">
-        <img :src="props.isUser ? list.avatarUrl : props?.list.coverImgUrl" alt="" />
+        <img :src="props.isUser ? list.avatarUrl : props?.list.coverImgUrl" alt="封面" />
       </div>
       <!-- 用户信息 / 歌单信息 -->
       <div class="user-info">
@@ -62,6 +62,7 @@ const props = defineProps({
     align-items: center;
     padding: 20px;
     .user-avatar {
+      min-width: 150px;
       width: 160px;
       height: 160px;
       border-radius: 12px;
@@ -84,6 +85,7 @@ const props = defineProps({
 
         .avatar {
           cursor: pointer;
+          min-width: 40px;
           width: 40px;
           height: 40px;
           border-radius: 50%;
