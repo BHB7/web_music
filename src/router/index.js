@@ -39,7 +39,16 @@ const router = createRouter({
           name: 'playlistDetail',
           component: () => import('@/views/PlaylistDetail/index.vue')
         },
+        {
+          path: '/404',
+          component: () => import('@/views/404/index.vue')
+        }
       ]
+    },
+    // 404
+    {
+      path: '/:pathMatch(.*)',
+      redirect: '/404',
     }
   ]
 })
