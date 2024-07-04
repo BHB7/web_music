@@ -172,7 +172,7 @@ const pause = () => {
             <span class="start lg:w-auto w-50">
               <span class="index mx-4">{{ index + 1 }}</span>
               <!-- 加载 -->
-              <loader class="btn" :size="21" v-if="record.isLoading"></loader>
+              <loader class="btn" :size="18" v-if="record.isLoading"></loader>
               <!-- 播放按钮 -->
               <!-- 当未播放时 并且没有加载时 显示播放按钮 -->
               <span
