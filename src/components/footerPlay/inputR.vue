@@ -186,7 +186,6 @@ input[type='range'] {
     transition: background-color 0.2s;
     border: none;
   }
-
   &::-ms-thumb {
     opacity: 0;
     width: var(--thumbHw);

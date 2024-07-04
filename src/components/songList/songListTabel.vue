@@ -34,6 +34,7 @@ const columns = [
     title: 'Album',
     dataIndex: 'album',
     key: 'album',
+    width: '10%',
     hover: false
   },
   // 喜欢
@@ -41,7 +42,7 @@ const columns = [
     title: 'Like',
     dataIndex: 'like',
     key: 'like',
-    width: '10%',
+    width: '5%',
     hover: false
   },
   // 时长
@@ -49,7 +50,7 @@ const columns = [
     title: 'Time',
     dataIndex: 'time',
     key: 'time',
-    width: '10%',
+    width: '5%',
     hover: false
   }
 ]
@@ -133,31 +134,33 @@ const pause = () => {
     :pagination="false"
   >
     <template #headerCell="{ column }">
-      <!-- 标题表头 -->
-      <template v-if="column.key === 'name'">
-        <span class="h-t">
-          <NumberOutlined class="icon" />
-          <span class="title">标题</span>
-        </span>
-      </template>
-      <template v-else-if="column.key === 'album'">
-        <span class="h-t">
-          <!-- <UserOutlined class="icon" /> -->
-          <span class="title">专辑</span>
-        </span>
-      </template>
-      <template v-else-if="column.key === 'like'">
-        <span class="h-t">
-          <!-- <UserOutlined class="icon" /> -->
-          <span class="title">喜欢</span>
-        </span>
-      </template>
-      <template v-else-if="column.key === 'time'">
-        <span class="h-t">
-          <!-- <UserOutlined class="icon" /> -->
-          <span class="title">时长</span>
-        </span>
-      </template>
+      <div class="header lg:block hidden">
+        <!-- 标题表头 -->
+        <template v-if="column.key === 'name'">
+          <span class="h-t">
+            <NumberOutlined class="icon" />
+            <span class="title">标题</span>
+          </span>
+        </template>
+        <template v-else-if="column.key === 'album'">
+          <span class="h-t">
+            <!-- <UserOutlined class="icon" /> -->
+            <span class="title">专辑</span>
+          </span>
+        </template>
+        <template v-else-if="column.key === 'like'">
+          <span class="h-t">
+            <!-- <UserOutlined class="icon" /> -->
+            <span class="title">喜欢</span>
+          </span>
+        </template>
+        <template v-else-if="column.key === 'time'">
+          <span class="h-t">
+            <!-- <UserOutlined class="icon" /> -->
+            <span class="title">时长</span>
+          </span>
+        </template>
+      </div>
     </template>
     <!-- 列表内容 -->
     <template #bodyCell="{ index, column, record }">
@@ -166,8 +169,8 @@ const pause = () => {
         <template v-if="column.key === 'name'">
           <div class="song-info">
             <!-- 序号 -->
-            <span class="start">
-              <span class="index">{{ index + 1 }}</span>
+            <span class="start lg:w-auto w-50">
+              <span class="index mx-4">{{ index + 1 }}</span>
               <!-- 加载 -->
               <loader class="btn" :size="21" v-if="record.isLoading"></loader>
               <!-- 播放按钮 -->
@@ -188,7 +191,7 @@ const pause = () => {
             </span>
 
             <!-- 封面 -->
-            <div class="cover">
+            <div class="cover lg:block hidden">
               <img v-lazy :src="record.al.picUrl" alt="" />
             </div>
             <!-- 文本信息 -->
@@ -206,7 +209,7 @@ const pause = () => {
         </template>
         <!-- 专辑 -->
         <template v-else-if="column.key === 'album'">
-          <span>
+          <span class="lg:block hidden">
             {{ record.al.name }}
           </span>
         </template>
@@ -221,7 +224,7 @@ const pause = () => {
         </template>
         <!-- 时长 -->
         <template v-else-if="column.key === 'time'">
-          <span>{{ formatSongDuration(record.dt) }}</span>
+          <span class="lg:block hidden">{{ formatSongDuration(record.dt) }}</span>
         </template>
       </div>
     </template>
@@ -263,7 +266,7 @@ const pause = () => {
           .index {
             font-size: 16px;
             font-weight: 600;
-            margin: 0 18px;
+            // margin: 0 10px;
             color: #959aa5;
           }
           .btn {
