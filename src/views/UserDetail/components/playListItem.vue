@@ -68,6 +68,9 @@ const isShowPlayListBtn = ref(false)
     height: 30px;
     position: absolute;
     top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     right: 20px;
     color: #fff;
     z-index: 1;
@@ -105,13 +108,14 @@ const isShowPlayListBtn = ref(false)
         margin: 0;
         .icon {
           color: #000;
-          font-size: 20px;
         }
         button {
+          margin: 0;
           padding: 8px;
           border: none;
           outline: none;
           border-radius: 50%;
+          background: #fff;
         }
       }
     }

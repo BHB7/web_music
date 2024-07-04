@@ -13,6 +13,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useWyUserStore, useKgUserStore, useSettingsStore, useAudioStore } from '@/stores'
 import Slogin from '@/components/header/Slogin.vue'
 import { computed } from '@vue/reactivity'
+import Smenu from '@/components/menu/Smenu.vue'
 const wyUserStore = useWyUserStore()
 const kgUserStore = useKgUserStore()
 const settingsStore = useSettingsStore()
@@ -55,20 +56,16 @@ onBeforeUnmount(() => {
 })
 </script>
 <template>
-  <!-- 移动端侧边栏激发按钮 -->
-  <UnorderedListOutlined
-    @click="openDrawer = true"
-    class="lg:hidden bg-slate-200"
-    style="font-size: 1.6rem; position: absolute; top: 70px; left: 0"
-  />
-
   <a-drawer
+    :closable="false"
+    :bodyStyle="{ padding: '0px' }"
     v-model:open="openDrawer"
-    class="custom-class"
+    class="layout"
     root-class-name="root-class-name"
     :root-style="{ color: 'blue' }"
-    title="菜单"
     placement="left"
+    :width="'60%'"
+    @close="openDrawer = false"
     @after-open-change="afterOpenChange"
   >
     <div class="logo">
@@ -77,25 +74,8 @@ onBeforeUnmount(() => {
       </div>
       在线音乐播放
     </div>
-    <a-menu
-      v-model:selectedKeys="selectedKeys"
-      theme="light"
-      mode="inline"
-      style="background-color: #f0f3f6; margin-top: 10px"
-    >
-      <a-menu-item key="/recommended" @click="$router.push('/recommended')">
-        <SendOutlined class="icon" />
-        <span class="nav-text">为你推荐</span>
-      </a-menu-item>
-      <a-menu-item-group title="我的">
-        <a-menu-item key="/likedSongs" @click="$router.push(`/likedSongs`)">
-          <HeartOutlined class="icon" />
-          <span class="nav-text">我喜欢的音乐</span>
-        </a-menu-item>
-      </a-menu-item-group>
-    </a-menu>
+    <Smenu></Smenu>
   </a-drawer>
-
   <a-layout class="layout">
     <!-- 侧边栏 -->
     <a-layout-sider
@@ -113,31 +93,21 @@ onBeforeUnmount(() => {
         </div>
         在线音乐播放
       </div>
-      <a-menu
-        v-model:selectedKeys="selectedKeys"
-        theme="light"
-        mode="inline"
-        style="background-color: #f0f3f6; margin-top: 10px"
-      >
-        <a-menu-item key="/recommended" @click="$router.push('/recommended')">
-          <SendOutlined class="icon" />
-          <span class="nav-text">为你推荐</span>
-        </a-menu-item>
-        <a-menu-item-group title="我的">
-          <a-menu-item key="/likedSongs" @click="$router.push(`/likedSongs`)">
-            <HeartOutlined class="icon" />
-            <span class="nav-text">我喜欢的音乐</span>
-          </a-menu-item>
-        </a-menu-item-group>
-      </a-menu>
+      <Smenu></Smenu>
     </a-layout-sider>
     <a-layout>
       <!-- 头部 -->
-      <a-layout-header class="header lg:hidden" :style="{ background: '#fff', padding: 0 }">
+      <a-layout-header class="header" :style="{ background: '#fff', padding: 0 }">
         <!-- 左侧 -->
         <div class="l flex flex-col md:flex-row">
           <!-- 返回 -->
-          <LeftOutlined class="icon" @click="$router.go(-1)" />
+          <LeftOutlined class="icon lg:block hidden" @click="$router.go(-1)" />
+          <!-- 移动端侧边栏激发按钮 -->
+          <UnorderedListOutlined
+            @click="openDrawer = true"
+            class="lg:hidden text-blue ml-4"
+            style="font-size: 1.6rem"
+          />
           <SInput :width="'200px'" :height="'35px'" :placeholder="'搜索音乐'" />
         </div>
         <!-- 右侧 -->
@@ -158,12 +128,12 @@ onBeforeUnmount(() => {
               <img :src="picture" />
             </div>
             <!-- 昵称 -->
-            <div class="name">
+            <div class="name lg:mr-0 mr-5">
               <span>{{ selApiUser.user.userInfo?.nickname }}</span>
             </div>
           </div>
           <!-- 设置 -->
-          <div class="set" @click="$router.push('/setting')">
+          <div class="set lg:block hidden" @click="$router.push('/setting')">
             <SettingOutlined class="icon" />
           </div>
         </div>
@@ -266,54 +236,6 @@ onBeforeUnmount(() => {
         height: 100%;
       }
     }
-  }
-
-  .site-layout-sub-header-background {
-    background: #fff;
-  }
-
-  .site-layout-background {
-    background: #fff;
-  }
-}
-
-[data-theme='dark'] .site-layout-sub-header-background {
-  background: #141414;
-}
-
-.custom-class {
-  &:deep(.ant-menu .ant-menu-item-selected) {
-    color: #fff;
-    background-color: dodgerblue;
-  }
-  .icon {
-    font-size: 18px;
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    // border: 1px solid #000;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    // margin: 16px;
-    margin: 20px 0;
-    .img-box {
-      width: 32px;
-      height: 32px;
-      margin: 0 10px;
-      img {
-        width: 100%;
-        height: 100%;
-      }
-    }
-  }
-  .site-layout-sub-header-background {
-    background: #fff;
-  }
-
-  .site-layout-background {
-    background: #fff;
   }
 }
 </style>
