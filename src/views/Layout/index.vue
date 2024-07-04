@@ -158,12 +158,7 @@ onBeforeUnmount(() => {
   min-height: 100vh;
   max-height: 100%;
   background-color: #fff;
-  // 样式穿透
-  // 选中菜单状态
-  &:deep(.ant-menu .ant-menu-item-selected) {
-    color: #fff;
-    background-color: dodgerblue;
-  }
+
   .icon {
     font-size: 18px;
   }
