@@ -119,7 +119,7 @@ onBeforeUnmount(() => {
               <img src="https://p1.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg" />
             </div>
             <!-- 昵称 -->
-            <div class="name" @click="login"><span>未登录</span></div>
+            <div class="name lg:mr-0 mr-8" @click="login"><span>未登录</span></div>
           </div>
           <!-- 登录 用户信息 -->
           <div class="inf" v-else>
