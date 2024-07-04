@@ -57,6 +57,7 @@ const props = defineProps({
 <style lang="scss" scoped>
 .main {
   height: 100vh;
+  margin-bottom: -90px;
   .header {
     display: flex;
     align-items: center;

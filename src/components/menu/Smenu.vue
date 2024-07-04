@@ -10,6 +10,13 @@ watch(
     selectedKeys.value = [newVal]
   }
 )
+
+const props = defineProps({
+  isLogin: {
+    type: Boolean,
+    default: false
+  }
+})
 </script>
 
 <template>
@@ -24,7 +31,7 @@ watch(
         <SendOutlined class="icon" />
         <span class="nav-text">为你推荐</span>
       </a-menu-item>
-      <a-menu-item-group title="我的">
+      <a-menu-item-group title="我的" v-if="props.isLogin">
         <a-menu-item key="/likedSongs" @click="$router.push(`/likedSongs`)">
           <HeartOutlined class="icon" />
           <span class="nav-text">我喜欢的音乐</span>

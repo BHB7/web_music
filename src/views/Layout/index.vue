@@ -68,7 +68,7 @@ onBeforeUnmount(() => {
       </div>
       在线音乐播放
     </div>
-    <Smenu></Smenu>
+    <Smenu :isLogin="selApiUser.isLogin"></Smenu>
   </a-drawer>
   <a-layout class="layout">
     <!-- 侧边栏 -->
@@ -87,7 +87,7 @@ onBeforeUnmount(() => {
         </div>
         在线音乐播放
       </div>
-      <Smenu></Smenu>
+      <Smenu :isLogin="selApiUser.isLogin"></Smenu>
     </a-layout-sider>
     <a-layout>
       <!-- 头部 -->
