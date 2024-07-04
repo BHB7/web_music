@@ -27,7 +27,8 @@ const columns = [
     dataIndex: 'name',
     key: 'name',
     width: '50%',
-    hover: false
+    hover: false,
+    ellipsis: true // 溢出显示省略号
   },
   // 专辑
   {
@@ -52,15 +53,6 @@ const columns = [
     key: 'time',
     width: '5%',
     hover: false
-  }
-]
-const data = [
-  {
-    key: '1',
-    name: '演员',
-    album: '专辑名',
-    like: true,
-    time: '03:02'
   }
 ]
 watch(
@@ -128,6 +120,7 @@ const pause = () => {
     y
     sticky
     ellipsis
+    :locale="{ emptyText: '暂无歌曲' }"
     class="tabel"
     :columns="columns"
     :data-source="list?.songs"
@@ -233,6 +226,9 @@ const pause = () => {
 
 <style lang="scss" scoped>
 .play-list {
+  &:deep(table tbody tr:hover > td) {
+    background-color: #ffffff !important;
+  }
   width: 100%;
   // height: 100%;
   margin: 10px 0;

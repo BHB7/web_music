@@ -1,13 +1,7 @@
 <script setup>
 import { onBeforeUnmount, ref, watch } from 'vue'
 import footerPlay from '@/components/footerPlay/foooterPlay.vue'
-import {
-  SendOutlined,
-  HeartOutlined,
-  LeftOutlined,
-  SettingOutlined,
-  UnorderedListOutlined
-} from '@ant-design/icons-vue'
+import { LeftOutlined, SettingOutlined, MenuOutlined } from '@ant-design/icons-vue'
 import SInput from '@/components/SInput.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useWyUserStore, useKgUserStore, useSettingsStore, useAudioStore } from '@/stores'
@@ -103,7 +97,7 @@ onBeforeUnmount(() => {
           <!-- 返回 -->
           <LeftOutlined class="icon lg:block hidden" @click="$router.go(-1)" />
           <!-- 移动端侧边栏激发按钮 -->
-          <UnorderedListOutlined
+          <MenuOutlined
             @click="openDrawer = true"
             class="lg:hidden text-blue ml-4"
             style="font-size: 1.6rem"
