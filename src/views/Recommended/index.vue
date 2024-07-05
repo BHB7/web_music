@@ -3,9 +3,19 @@ import { useWyUserStore, useViewMsgStore } from '@/stores'
 import Segmented from '@/components/Segmented.vue'
 import itemBox from '@/components/playList/itemBox.vue'
 import { ref } from 'vue'
+import { getRecommendSongListService } from '@/api/wyy/songList'
 const viewMsgTitleStore = useViewMsgStore() // 全局视图信息
 viewMsgTitleStore.setCNavTitle('为你推荐')
-
+const playList = ref([])
+getRecommendSongListService()
+  .then((res) => {
+    // console.log(res.result)
+    playList.value = res.result
+  })
+  .catch((err) => {
+    console.log(err)
+    message.error('获取歌单失败')
+  })
 const activeIndex = ref(0)
 const sel = (index) => {
   activeIndex.value = index
@@ -16,12 +26,17 @@ const sel = (index) => {
   <header class="header">
     <Segmented
       @sel="sel"
-      :option="['最新', '最热1', '测试']"
+      :option="['最新', '最热', '测试']"
       :active-index="activeIndex"
     ></Segmented>
   </header>
   <section class="body">
-    <itemBox class="item" v-for="item in 20"></itemBox>
+    <itemBox
+      :item="item"
+      class="item lg:mt-4 lg:mr-4 mt-4 mr-4"
+      v-for="item in playList"
+      :key="item.id + 1"
+    ></itemBox>
   </section>
 </template>
 
@@ -34,11 +49,11 @@ const sel = (index) => {
   flex-wrap: wrap;
   margin: 10px 0;
   overflow: scroll;
-  height: calc(100vh - 184px);
-  padding-bottom: 60px;
+  height: calc(100vh - 170px);
+  padding-bottom: 50px;
   .item {
-    margin-right: 20px;
-    margin-top: 20px;
+    // margin-right: 20px;
+    // margin-top: 20px;
   }
 }
 </style>

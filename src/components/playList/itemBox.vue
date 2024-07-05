@@ -1,12 +1,17 @@
+<script setup>
+const props = defineProps({
+  item: { type: Object, required: true }
+})
+</script>
 <template>
   <div class="item-box">
-    <div class="cover-box lg:w-60 lg:h-60">
-      <img src="@/assets/test.png" alt="" />
+    <div class="cover-box lg:w-60 lg:mr-4 lg:h-60 h-24 w-24 mr-2">
+      <img :src="item.picUrl || '@/assets/audio.svg'" alt="" />
     </div>
-    <div class="desc lg:w-48">
-      <p class="title">标题</p>
-      <p class="auth">作者</p>
-      <div class="plays">200</div>
+    <div class="desc lg:w-48 lg:mt-4 h-20 w-24">
+      <p class="title font-bold lg:text-xl text-md">{{ item.name || '加载失败..' }}</p>
+      <p class="auth font-thin text-zinc-500 lg:text-lg text-sm">作者暂无</p>
+      <div class="plays font-thin text-zinc-500 lg:text-lg text-sm">{{ item.playCount }}</div>
     </div>
   </div>
 </template>
@@ -42,7 +47,7 @@
     // height: 150px;
     border-radius: 10px;
     overflow: hidden;
-    margin-right: 10px;
+    // margin-right: 4px;
     img {
       width: 100%;
       height: 100%;
@@ -50,12 +55,15 @@
     }
   }
   .desc {
-    border: 1px solid #000;
-    min-width: 180px;
+    font-family: 'my-Font';
+    // border: 1px solid #000;
+    // min-width: 180px;
     display: flex;
     flex-direction: column;
     justify-content: start;
-    padding: 20px 0;
+    // padding: 20px 0;
+    .title {
+    }
   }
 }
 </style>
