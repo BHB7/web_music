@@ -4,6 +4,7 @@ import Segmented from '@/components/Segmented.vue'
 import itemBox from '@/components/playList/itemBox.vue'
 import { ref } from 'vue'
 import { getRecommendSongListService } from '@/api/wyy/songList'
+import router from '@/router'
 const viewMsgTitleStore = useViewMsgStore() // 全局视图信息
 viewMsgTitleStore.setCNavTitle('为你推荐')
 const playList = ref([])
@@ -20,6 +21,17 @@ const activeIndex = ref(0)
 const sel = (index) => {
   activeIndex.value = index
 }
+
+const goPlayListDetail = (id) => {
+  viewMsgTitleStore.setCNavTitle('歌单详情')
+  console.log(id)
+  router.push({
+    path: '/playListDetail',
+    query: {
+      id
+    }
+  })
+}
 </script>
 
 <template>
@@ -32,6 +44,7 @@ const sel = (index) => {
   </header>
   <section class="body">
     <itemBox
+      @click="goPlayListDetail(item.id)"
       :item="item"
       class="item lg:mt-4 lg:mr-4 mt-4 mr-4"
       v-for="item in playList"
