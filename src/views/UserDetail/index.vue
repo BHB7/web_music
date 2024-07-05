@@ -17,7 +17,7 @@ const route = useRoute()
 const router = useRouter()
 // tag默认选中
 const activeKey = ref('1')
-viewMsgTitleStore.setCNavTitle('我的')
+viewMsgTitleStore.setCNavTitle(route.query.uid ? 'TA的歌单' : '我的')
 const playList = ref([])
 // 收藏的歌单
 const collectPlayList = ref([])
@@ -138,6 +138,7 @@ const goPlayListDetail = (item) => {
       overflow: auto;
       display: flex;
       flex-wrap: wrap;
+      padding-bottom: 100px;
       // 每个歌单
       .item {
         margin-right: 20px;

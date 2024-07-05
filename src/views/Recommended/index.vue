@@ -23,7 +23,7 @@ const sel = (index) => {
 }
 
 const goPlayListDetail = (id) => {
-  viewMsgTitleStore.setCNavTitle('歌单详情')
+  // viewMsgTitleStore.setCNavTitle('歌单详情')
   console.log(id)
   router.push({
     path: '/playListDetail',
