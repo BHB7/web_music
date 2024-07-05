@@ -7,7 +7,7 @@ import { getRecommendSongListService } from '@/api/wyy/songList'
 const viewMsgTitleStore = useViewMsgStore() // 全局视图信息
 viewMsgTitleStore.setCNavTitle('为你推荐')
 const playList = ref([])
-getRecommendSongListService()
+getRecommendSongListService(100)
   .then((res) => {
     // console.log(res.result)
     playList.value = res.result
