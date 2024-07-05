@@ -147,7 +147,7 @@ onBeforeUnmount(() => {
       <div class="scroll">
         <!-- 内容 -->
         <a-layout-content>
-          <div :style="{ padding: '24px', background: '#fff', minHeight: '100vh' }">
+          <div class="lg:pl-0 bg-white pl-4">
             <router-view></router-view>
           </div>
         </a-layout-content>
