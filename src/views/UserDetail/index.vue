@@ -1,5 +1,5 @@
 <script setup>
-import { useWyUserStore, useSettingsStore } from '@/stores'
+import { useWyUserStore, useSettingsStore, useViewMsgStore } from '@/stores'
 // 获取用户歌单
 // wyy
 import { getUserPlaylistService as getWyyUserPlaylistService } from '@/api/wyy/user'
@@ -11,21 +11,26 @@ import { useRoute, useRouter } from 'vue-router'
 import playListItem from './components/playListItem.vue'
 import songListDetail from '@/components/songList/songListDetail.vue'
 const wyUserStore = useWyUserStore()
+const viewMsgTitleStore = useViewMsgStore() // 全局视图信息
 const settingsStore = useSettingsStore()
 const route = useRoute()
 const router = useRouter()
 // tag默认选中
 const activeKey = ref('1')
-
+viewMsgTitleStore.setCNavTitle('我的')
 const playList = ref([])
 // 收藏的歌单
 const collectPlayList = ref([])
 switch (settingsStore.settings.apiSelect) {
   case 'wyy':
-    getWyyUserPlaylistService(wyUserStore.user.userInfo.userId).then((res) => {
+    getWyyUserPlaylistService(route.query.uid || wyUserStore.user.userInfo.userId).then((res) => {
       console.log(res)
       console.time('循环筛选收藏歌单 耗时')
       res.playlist.forEach((item) => {
+        if (route.query.uid) {
+          playList.value = res.playlist
+          return
+        }
         if (item.ordered) {
           console.log('收藏歌单')
           collectPlayList.value.push(item)
@@ -59,9 +64,12 @@ const goPlayListDetail = (item) => {
 </script>
 
 <template>
-  <songListDetail :list="wyUserStore.user.userInfo" :isUser="true">
+  <songListDetail
+    :list="route.query.uid ? playList[0].creator : wyUserStore.user.userInfo"
+    :isUser="true"
+  >
     <template #content>
-      <h2>我创建的歌单</h2>
+      <h2>{{ route.query.uid ? 'TA创建的歌单' : '我创建的歌单' }}</h2>
       <div class="play-list">
         <playListItem
           class="item"
@@ -70,8 +78,8 @@ const goPlayListDetail = (item) => {
           @click="goPlayListDetail(item)"
         ></playListItem>
       </div>
-      <h2>我收藏的歌单</h2>
-      <div class="play-list">
+      <h2 v-if="!route.query.uid">我收藏的歌单</h2>
+      <div v-if="!route.query.uid" class="play-list">
         <playListItem
           class="item"
           v-for="item in collectPlayList"

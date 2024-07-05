@@ -4,13 +4,20 @@ import footerPlay from '@/components/footerPlay/foooterPlay.vue'
 import { LeftOutlined, SettingOutlined, MenuOutlined } from '@ant-design/icons-vue'
 import SInput from '@/components/SInput.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useWyUserStore, useKgUserStore, useSettingsStore, useAudioStore } from '@/stores'
+import {
+  useViewMsgStore,
+  useWyUserStore,
+  useKgUserStore,
+  useSettingsStore,
+  useAudioStore
+} from '@/stores'
 import Slogin from '@/components/header/Slogin.vue'
 import { computed } from '@vue/reactivity'
 import Smenu from '@/components/menu/Smenu.vue'
 const wyUserStore = useWyUserStore()
 const kgUserStore = useKgUserStore()
 const settingsStore = useSettingsStore()
+const viewMsgTitleStore = useViewMsgStore() // 全局视图信息
 const route = useRoute()
 const router = useRouter()
 const audioStore = useAudioStore()
@@ -62,7 +69,7 @@ onBeforeUnmount(() => {
     @close="openDrawer = false"
     @after-open-change="afterOpenChange"
   >
-    <div class="logo">
+    <div class="logo c h-32">
       <div class="img-box">
         <img src="@/assets/logot.svg" alt="" />
       </div>
@@ -81,7 +88,7 @@ onBeforeUnmount(() => {
       style="height: 100vh; background-color: #f0f3f6; margin-right: 40px"
       class="hidden lg:block"
     >
-      <div class="logo">
+      <div class="logo b bg-white h-20">
         <div class="img-box">
           <img src="@/assets/logot.svg" alt="" />
         </div>
@@ -93,7 +100,7 @@ onBeforeUnmount(() => {
       <!-- 头部 -->
       <a-layout-header class="header" :style="{ background: '#fff', padding: 0 }">
         <!-- 左侧 -->
-        <div class="l flex flex-col md:flex-row">
+        <div class="l flex">
           <!-- 返回 -->
           <LeftOutlined class="icon lg:block hidden" @click="$router.go(-1)" />
           <!-- 移动端侧边栏激发按钮 -->
@@ -102,6 +109,10 @@ onBeforeUnmount(() => {
             class="lg:hidden text-blue ml-4"
             style="font-size: 1.6rem"
           />
+          <!-- 移动端标题显示位置 -->
+          <span class="ctitlt lg:hidden mx-4 font-bold text-sm">{{
+            viewMsgTitleStore.cNavTitle
+          }}</span>
           <SInput :width="'200px'" :height="'35px'" :placeholder="'搜索音乐'" />
         </div>
         <!-- 右侧 -->
@@ -207,15 +218,21 @@ onBeforeUnmount(() => {
   .scroll {
     overflow-y: auto;
   }
+  .c {
+    background-color: rgba(152, 208, 242, 0.809);
+  }
+  .b {
+    background-color: rgba(255, 255, 255, 0.809);
+  }
   .logo {
+    font-size: 18;
+    font-family: 'myFont';
+    color: black;
     display: flex;
     align-items: center;
     justify-content: center;
     // border: 1px solid #000;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
     // margin: 16px;
-    margin: 20px 0;
     .img-box {
       width: 32px;
       height: 32px;

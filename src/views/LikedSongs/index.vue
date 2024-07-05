@@ -1,12 +1,14 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import songListDetail from '@/components/songList/songListDetail.vue'
-import { useWyUserStore } from '@/stores'
+import { useWyUserStore, useViewMsgStore } from '@/stores'
 // 获取用户歌单
 import { getUserPlaylistService, getPlaylistDetailService } from '@/api/wyy/user'
 import { getSongDetailService } from '@/api/wyy/song'
 import { useRoute } from 'vue-router'
 import songListTabel from '@/components/songList/songListTabel.vue'
+import Segmented from '@/components/Segmented.vue'
+const viewMsgTitleStore = useViewMsgStore() // 全局视图信息
 const wyUserStore = useWyUserStore()
 const playListId = ref('')
 const route = useRoute()
@@ -15,6 +17,7 @@ const playList = ref()
 // tag默认选中
 const activeKey = ref('1')
 onMounted(() => {
+  viewMsgTitleStore.setCNavTitle('我喜欢的音乐')
   // 获取用户歌单
   getUserPlaylistService(wyUserStore.user.userInfo.userId).then((res) => {
     // console.log(res)
@@ -41,23 +44,33 @@ onMounted(() => {
     })
   })
 })
+const activeIndex = ref(0)
+const sel = (index) => {
+  activeIndex.value = index
+}
 </script>
 <template>
   <!-- 歌单详情组件 -->
   <songListDetail :list="playList">
     <template #content>
       <!-- 标签Tab -->
-      <a-tabs v-model:activeKey="activeKey">
-        <a-tab-pane style="height: 100%" key="1" tab="歌曲">
-          <div class="play-list">
-            <songListTabel :list="playList"></songListTabel>
-          </div>
-          <!-- <h2>我收藏的歌单</h2>
+      <Segmented
+        style="margin-bottom: 5px"
+        :option="['歌曲', '评论']"
+        :active-index="activeIndex"
+        @sel="sel"
+      ></Segmented>
+      <div class="play-list" v-if="activeIndex === 0">
+        <songListTabel :list="playList"></songListTabel>
+      </div>
+      <!-- <h2>我收藏的歌单</h2>
           <div class="play-list">a</div> -->
-        </a-tab-pane>
-        <a-tab-pane key="2" tab="评论" force-render>Content of Tab Pane 2</a-tab-pane>
-        <a-tab-pane key="3" tab="播客">Content of Tab Pane 3</a-tab-pane>
-      </a-tabs>
     </template>
   </songListDetail>
 </template>
+
+<style lang="scss" scoped>
+.play-list {
+  padding-bottom: 290px;
+}
+</style>

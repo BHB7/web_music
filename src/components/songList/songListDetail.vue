@@ -17,6 +17,9 @@ const props = defineProps({
     default: () => false
   }
 })
+onMounted(() => {
+  console.log(props.list)
+})
 </script>
 <template>
   <!-- 公共通用 详情 模板组件 -->
@@ -31,7 +34,10 @@ const props = defineProps({
         <div class="user-name r">{{ props.isUser ? props.list.nickname : props.list.name }}</div>
         <div class="user-create r" v-if="!props.isUser">
           <!-- 头像 -->
-          <div class="avatar" @click="$router.push('/userDetail')">
+          <div
+            class="avatar"
+            @click="$router.push(`/userDetail?uid=${props?.list.creator?.userId}`)"
+          >
             <img :src="props?.list.creator?.avatarUrl" alt="" />
           </div>
           <!-- 昵称 -->
@@ -56,7 +62,7 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .main {
-  height: 100vh;
+  height: 100%;
   margin-bottom: -90px;
   .header {
     display: flex;

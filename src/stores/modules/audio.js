@@ -2,7 +2,6 @@ import { message } from 'ant-design-vue'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import logo from '@/assets/audio.svg'
-import gsap from 'gsap'
 export const useAudioStore = defineStore('audio', () => {
   const audio = ref(new Audio())
   const timer = ref(null)
