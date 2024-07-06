@@ -8,12 +8,13 @@ const props = defineProps({
     <div class="cover-box lg:w-60 lg:mr-4 lg:h-60 h-20 w-16 mr-2">
       <div class="plays shadow-xl lg:py-2 pl-0">
         <i class="iconfont icon-play m-0"></i>
-        <p class="count font-thin lg:text-lg text-xs lg:mr-2">{{ item.playCount }}</p>
+        <!-- 播放量 -->
+        <p class="count font-thin lg:text-lg text-xs lg:mr-2 mr-1">{{ item.playCount }}</p>
       </div>
       <img v-lazy :src="item.picUrl || '@/assets/audio.svg'" alt="" />
     </div>
-    <div class="desc lg:w-48 lg:mt-4 h-16 w-20">
-      <p class="title font-bold lg:text-xl text-xs lg:mt-0 mt-6">
+    <div class="desc text-ellipsis overflow-hidden lg:w-48 lg:mt-4 h-20 w-20">
+      <p class="title font-bold lg:text-xl text-xs lg:mt-0 mt-7">
         {{ item.name || '加载失败..' }}
       </p>
       <!-- <p class="auth font-thin text-zinc-500 lg:text-lg text-sm">作者暂无</p> -->
@@ -62,7 +63,7 @@ const props = defineProps({
       left: 2px;
       border-radius: 5px;
       // padding: 2px 8px;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
       background-color: rgba(255, 255, 255, 0.4);
       .count {
         color: rgba(255, 255, 255, 0.9);
@@ -81,6 +82,8 @@ const props = defineProps({
     display: flex;
     flex-direction: column;
     justify-content: start;
+    // overflow: hidden;
+
     // padding: 20px 0;
     .title {
     }
