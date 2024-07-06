@@ -4,16 +4,18 @@ const props = defineProps({
 })
 </script>
 <template>
-  <div class="item-box">
+  <div class="item-box font-mono">
     <div class="cover-box lg:w-60 lg:mr-4 lg:h-60 h-20 w-16 mr-2">
-      <div class="plays">
+      <div class="plays shadow-xl lg:py-2 pl-0">
         <i class="iconfont icon-play m-0"></i>
         <p class="count font-thin lg:text-lg text-xs lg:mr-2">{{ item.playCount }}</p>
       </div>
       <img v-lazy :src="item.picUrl || '@/assets/audio.svg'" alt="" />
     </div>
     <div class="desc lg:w-48 lg:mt-4 h-16 w-20">
-      <p class="title font-bold lg:text-xl text-md">{{ item.name || '加载失败..' }}</p>
+      <p class="title font-bold lg:text-xl text-xs lg:mt-0 mt-6">
+        {{ item.name || '加载失败..' }}
+      </p>
       <!-- <p class="auth font-thin text-zinc-500 lg:text-lg text-sm">作者暂无</p> -->
     </div>
   </div>
