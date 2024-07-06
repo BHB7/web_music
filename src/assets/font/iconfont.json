@@ -6,6 +6,76 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "6085761",
+      "name": "VIP",
+      "font_class": "VIP",
+      "unicode": "e64b",
+      "unicode_decimal": 58955
+    },
+    {
+      "icon_id": "9167278",
+      "name": "金融保险",
+      "font_class": "ziyuan",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "9817294",
+      "name": "个人-VIP",
+      "font_class": "lujing",
+      "unicode": "e698",
+      "unicode_decimal": 59032
+    },
+    {
+      "icon_id": "13769353",
+      "name": "列表页-VIP角标",
+      "font_class": "liebiaoye-VIPjiaobiao",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "15710864",
+      "name": "免费",
+      "font_class": "mianfei",
+      "unicode": "e67a",
+      "unicode_decimal": 59002
+    },
+    {
+      "icon_id": "16517973",
+      "name": "金钱管理",
+      "font_class": "jinqianguanli",
+      "unicode": "e6be",
+      "unicode_decimal": 59070
+    },
+    {
+      "icon_id": "16892959",
+      "name": "金钱",
+      "font_class": "jinqian",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "20788403",
+      "name": "ic_Hi-Res",
+      "font_class": "ic_Hi-Res",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "24667533",
+      "name": "vip",
+      "font_class": "vip",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "30049070",
+      "name": "无损音质",
+      "font_class": "wusunyinzhi",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
       "icon_id": "22785545",
       "name": "音量-无",
       "font_class": "yinliang-wu",

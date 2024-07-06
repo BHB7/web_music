@@ -31,23 +31,16 @@ instance.interceptors.request.use(
     config.baseURL = newBaseURL // 设置新的 baseURL 到 config
     const wyUserStore = useWyUserStore()
     const kgUserStore = useKgUserStore()
-    // if (wyUserStore.user.cookie || kgUserStore.user.cookie) {
-    //   document.cookies = wyUserStore.user.cookie || kgUserStore.user.cookie
-    //   config.data = {
-    //     token: kgUserStore.user.cookie
-    //   }
-
-    // }  
     const settingStore = useSettingsStore()
     const apiSelect = settingStore.settings.apiSelect
     switch (apiSelect) {
       case 'wyy':
-        console.log('网易云');
-        document.cookies = wyUserStore.user.cookie
+        // console.log('网易云');
+        document.cookie = wyUserStore.user.cookie
         break
       case 'kg':
-        console.log('酷狗');
-        document.cookies = kgUserStore.user.cookie
+        // console.log('酷狗');
+        document.cookie = kgUserStore.user.cookie
         config.data = {
           token: kgUserStore.user.cookie
         }
@@ -64,11 +57,24 @@ instance.interceptors.response.use(
     return res.data
   },
   (err) => {
+    const config = err.config;
+    if (config) {
+      config.retry = config.retry || 0;
+      if (config.retry < 6) {
+        config.retry += 1;
+        console.log(`重试次数: ${config.retry}`);
+        const delay = new Promise(resolve => {
+          setTimeout(() => resolve(), 1000); // 延迟1秒后重试
+        });
+        return delay.then(() => instance(config));
+      }
+    }
+
     if (err.response) {
       console.log(err.response)
       message.error('系统错误')
     } else {
-      message.error('服务器异常')
+      message.error('网络错误')
     }
     return Promise.reject(err)
   }

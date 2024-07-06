@@ -67,7 +67,6 @@ onBeforeUnmount(() => {
     placement="left"
     :width="'60%'"
     @close="openDrawer = false"
-    @after-open-change="afterOpenChange"
   >
     <div class="logo c h-32">
       <div class="img-box">

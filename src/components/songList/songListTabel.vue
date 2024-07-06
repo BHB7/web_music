@@ -74,7 +74,6 @@ watch(
     deep: true
   }
 )
-const isLoading = ref(false)
 // 播放
 const play = (row) => {
   // console.log('播放')
@@ -113,6 +112,8 @@ const play = (row) => {
 const pause = () => {
   audioStore.pause()
 }
+
+const isLoading = ref(true)
 </script>
 <template>
   <!-- 歌曲列表 表格 -->
@@ -190,10 +191,64 @@ const pause = () => {
             <!-- 文本信息 -->
             <div class="info">
               <!-- 歌曲名 -->
-              <div class="song-name">{{ record.name }}</div>
+              <div class="song-name">
+                {{ record.name }}
+              </div>
               <div class="author">
                 <!-- 歌曲品质 -->
-                <div class="timbre">图标占位</div>
+                <div class="timbre flex items-center">
+                  <i v-if="record.hr">
+                    <svg
+                      t="1720244855005"
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="3161"
+                      width="20"
+                      height="20"
+                    >
+                      <path
+                        d="M588.458667 512V110.592h86.016V512a162.474667 162.474667 0 1 1-132.565334-159.744v89.344a76.458667 76.458667 0 1 0 46.293334 76.672l0.256-6.272z"
+                        fill="#EBC78D"
+                        p-id="3162"
+                      ></path>
+                      <path
+                        d="M793.941333 110.592l-0.042666 401.365333 0.042666 0.042667a281.941333 281.941333 0 1 1-252.032-280.362667V318.293333a195.925333 195.925333 0 1 0 165.802667 202.88l0.213333-9.216V110.592h86.016z"
+                        fill="#EBC78D"
+                        p-id="3163"
+                      ></path>
+                      <path
+                        d="M827.392 110.592h86.016V512a401.408 401.408 0 0 1-389.76 401.237333l-11.648 0.170667a401.408 401.408 0 1 1 29.866667-801.706667l0.042666 86.314667A315.392 315.392 0 1 0 827.392 512V110.549333z"
+                        fill="#EBC78D"
+                        p-id="3164"
+                      ></path>
+                    </svg>
+                  </i>
+                  <i v-if="record.sq">
+                    <svg
+                      t="1720244920033"
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="3320"
+                      width="25"
+                      height="25"
+                    >
+                      <path
+                        d="M776.78432119 674.94419766H247.21567881V349.05580234h529.56864238v325.88839532z m40.73604941-366.62444472H206.4796294v407.36049412h611.0407412V308.31975294z"
+                        fill="#fc9302"
+                        p-id="3321"
+                      ></path>
+                      <path
+                        d="M338.44406147 410.58760498v122.20814825h101.84012353v40.73604941h-101.84012353v40.73604942h142.57617295v-122.20814824h-101.84012354v-40.73604942h101.84012354v-40.73604942h-122.20814825zM664.33245678 573.10407412v-162.94419766h-142.57617295v203.68024708h162.94419765v-40.73604942h-20.3680247z m-40.73604941 0h-61.10407412v-122.20814824h61.10407412v122.20814824z"
+                        fill="#fc9302"
+                        p-id="3322"
+                      ></path>
+                    </svg>
+                  </i>
+                </div>
                 <!-- 歌手 -->
                 <div class="name">{{ record.ar[0].name }}</div>
               </div>
@@ -220,26 +275,31 @@ const pause = () => {
           <span class="lg:block hidden">{{ formatSongDuration(record.dt) }}</span>
         </template>
       </div>
+      <!-- 加载状态 -->
+      <div v-if="!isLoading" class="flex items-center justify-center">
+        <loader></loader><span>加载中...</span>
+      </div>
     </template>
   </a-table>
 </template>
 
 <style lang="scss" scoped>
 .play-list {
-  &:deep(table tbody tr:hover > td) {
-    background-color: #ffffff !important;
-  }
   width: 100%;
   // height: 100%;
   margin: 10px 0;
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
+  &::deep(table tbody tr:hover > td) {
+    background-color: #ffffff !important;
+  }
   // 表格
   .tabel {
     display: block;
     height: 100%;
     width: 100%;
+    padding-bottom: 240px !important;
     .like-icon {
       color: red;
       font-size: 18px;

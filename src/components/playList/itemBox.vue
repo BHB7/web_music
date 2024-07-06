@@ -5,12 +5,12 @@ const props = defineProps({
 </script>
 <template>
   <div class="item-box">
-    <div class="cover-box lg:w-60 lg:mr-4 lg:h-60 h-24 w-24 mr-2">
+    <div class="cover-box lg:w-60 lg:mr-4 lg:h-60 h-20 w-16 mr-4">
       <img v-lazy :src="item.picUrl || '@/assets/audio.svg'" alt="" />
     </div>
-    <div class="desc lg:w-48 lg:mt-4 h-20 w-24">
+    <div class="desc lg:w-48 lg:mt-4 h-16 w-20">
       <p class="title font-bold lg:text-xl text-md">{{ item.name || '加载失败..' }}</p>
-      <p class="auth font-thin text-zinc-500 lg:text-lg text-sm">作者暂无</p>
+      <!-- <p class="auth font-thin text-zinc-500 lg:text-lg text-sm">作者暂无</p> -->
       <div class="plays font-thin text-zinc-500 lg:text-lg text-sm">{{ item.playCount }}</div>
     </div>
   </div>
