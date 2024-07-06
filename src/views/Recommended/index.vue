@@ -48,7 +48,7 @@ const goPlayListDetail = (id) => {
     <itemBox
       @click="goPlayListDetail(item.id)"
       :item="item"
-      class="item lg:mt-4 lg:mr-4 mt-4 mr-4"
+      class="item lg:mt-4 lg:mr-4 mt-6 mr-5 mx-2"
       v-for="item in playList"
       :key="item.id + 1"
       v-if="!isLoading"

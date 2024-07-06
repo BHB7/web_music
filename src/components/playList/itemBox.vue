@@ -5,7 +5,7 @@ const props = defineProps({
 </script>
 <template>
   <div class="item-box">
-    <div class="cover-box lg:w-60 lg:mr-4 lg:h-60 h-20 w-16 mr-4">
+    <div class="cover-box lg:w-60 lg:mr-4 lg:h-60 h-20 w-16 mr-2">
       <img v-lazy :src="item.picUrl || '@/assets/audio.svg'" alt="" />
     </div>
     <div class="desc lg:w-48 lg:mt-4 h-16 w-20">
