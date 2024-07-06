@@ -75,7 +75,7 @@ const goPlayListDetail = (id) => {
   .img {
     border-radius: 5px;
     margin-right: 6px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(202, 202, 202, 0.2);
   }
   .desc {
     display: flex;
@@ -85,7 +85,7 @@ const goPlayListDetail = (id) => {
       padding: 5px 20px;
       margin: 5px 0;
       border-radius: 5px;
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: rgba(202, 202, 202, 0.2);
     }
   }
 }

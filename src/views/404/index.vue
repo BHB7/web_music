@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <img class="bg" src="./404.png" />
-    <div class="btn">
-      <a @click="$router.push('/')" class="goindex">返回首页</a>
+    <div class="btn flex flex-col lg:flex-row justify-between items-center">
+      <a @click="$router.push('/')" class="">返回首页</a>
       <a
-        href="http://wpa.qq.com/msgrd?v=3&uin=1812287263&site=qq&menu=yes"
+        href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1812287263"
         target="_blank"
-        class="lx"
+        class="lx lg:mt-0 mt-2"
         >咨询站长</a
       >
       <div style="clear: both"></div>
@@ -33,13 +33,13 @@ img {
   margin: 40px auto;
 }
 .btn {
+  /* display: flex; */
   width: 400px;
   margin: 0 auto;
   max-width: 100%;
   margin-top: 40px;
 }
 .btn a {
-  float: left;
   text-decoration: none;
   width: 46.5%;
   border: 1px solid #5298ff;
@@ -52,9 +52,6 @@ img {
   font-size: 16px;
   border-radius: 3px;
   overflow: hidden;
-}
-.btn .goindex {
-  margin-right: 7%;
 }
 .btn .lx {
   border: 1px solid #d8d8d8;
