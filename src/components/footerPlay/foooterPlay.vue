@@ -144,7 +144,8 @@ defineOptions({ name: 'foooterPlay' })
   justify-content: space-between;
   align-items: center;
   bottom: 0;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
   z-index: 1000;
   // 左侧部分
   .footer-left {
