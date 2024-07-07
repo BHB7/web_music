@@ -13,7 +13,7 @@ const props = defineProps({
 const emit = defineEmits(['sel'])
 
 const sel = (index) => {
-  console.log(index)
+  // console.log(index)
   emit('sel', index)
 }
 </script>

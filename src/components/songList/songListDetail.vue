@@ -24,15 +24,21 @@ onMounted(() => {
 <template>
   <!-- 公共通用 详情 模板组件 -->
   <main class="main">
-    <header class="header">
+    <header class="header lg:pb-4 pb-2">
       <!-- 用户头像 / 歌单封面 -->
       <div class="user-avatar">
         <img :src="props.isUser ? list.avatarUrl : props?.list.coverImgUrl" alt="封面" />
       </div>
       <!-- 用户信息 / 歌单信息 -->
-      <div class="user-info">
-        <div class="user-name r">{{ props.isUser ? props.list.nickname : props.list.name }}</div>
-        <div class="user-create r" v-if="!props.isUser">
+      <div class="user-info lg:ml-6 ml-2">
+        <div class="user-name lg:ml-4 ml-2">
+          <!-- 歌单名 / 用户名 -->
+          <p class="lg:text-xl text-lg">
+            {{ props.isUser ? props.list.nickname : props.list.name }}
+          </p>
+        </div>
+        <!-- 歌单创建者 信息 -->
+        <div class="user-create lg:ml-4 ml-2" v-if="!props.isUser">
           <!-- 头像 -->
           <div
             class="avatar"
@@ -40,16 +46,24 @@ onMounted(() => {
           >
             <img :src="props?.list.creator?.avatarUrl" alt="" />
           </div>
-          <!-- 昵称 -->
-          <div class="nickname">
-            {{ props.isUser ? list.nickname : props?.list.creator?.nickname }}
-          </div>
-          <!-- 创建时间 -->
-          <div class="create-time" v-if="!props.isUser">
-            {{ formatDate(props?.list.createTime) }} 创建
+
+          <div class="c flex flex-col items-center">
+            <!-- 昵称 -->
+            <div class="nickname">
+              <p class="lg:text-sm text-xs">
+                {{ props.isUser ? list.nickname : props?.list.creator?.nickname }}
+              </p>
+            </div>
+            <!-- 创建时间 -->
+            <div class="create-time" v-if="!props.isUser">
+              <p class="lg:text-sm text-xs">{{ formatDate(props?.list.createTime) }} 创建</p>
+            </div>
           </div>
         </div>
-        <div class="user-level-desc r" v-if="props.isUser">简介：{{ list.signature }}</div>
+        <!-- 用户信息 -->
+        <div class="user-level-desc" v-if="props.isUser">
+          <p class="lg:text-sm text-xs">简介：{{ list.signature }}</p>
+        </div>
       </div>
     </header>
     <!-- 内容 -->
@@ -67,7 +81,7 @@ onMounted(() => {
   .header {
     display: flex;
     align-items: center;
-    padding: 20px;
+    // padding: 20px;
     .user-avatar {
       min-width: 150px;
       width: 160px;
@@ -81,7 +95,7 @@ onMounted(() => {
       }
     }
     .user-info {
-      margin-left: 20px;
+      // margin-left: 20px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -109,9 +123,6 @@ onMounted(() => {
         .create-time {
           color: #999;
         }
-      }
-      .r {
-        margin-bottom: 10px;
       }
       .user-name {
         font-size: 20px;

@@ -7,6 +7,7 @@ import { getUserPlaylistService, getPlaylistDetailService } from '@/api/wyy/user
 import { getSongDetailService } from '@/api/wyy/song'
 import { useRoute } from 'vue-router'
 import songListTabel from '@/components/songList/songListTabel.vue'
+import Segmented from '@/components/Segmented.vue'
 const wyUserStore = useWyUserStore()
 const playListId = ref('')
 const route = useRoute()
@@ -33,22 +34,28 @@ onMounted(() => {
     })
   })
 })
+
+const activeIndex = ref(0)
+
+const sel = (index) => {
+  activeIndex.value = index
+}
 </script>
 <template>
   <songListDetail :list="playList">
     <template #content="{ list }">
       <!-- 标签Tab -->
-      <a-tabs v-model:activeKey="activeKey">
-        <a-tab-pane style="height: 100%" key="1" tab="歌曲">
-          <div class="play-list">
-            <songListTabel :list="list"></songListTabel>
-          </div>
-          <!-- <h2>我收藏的歌单</h2>
+      <Segmented
+        style="margin-bottom: 5px"
+        :option="['歌曲', '评论']"
+        :active-index="activeIndex"
+        @sel="sel"
+      ></Segmented>
+      <div class="play-list">
+        <songListTabel :list="list"></songListTabel>
+      </div>
+      <!-- <h2>我收藏的歌单</h2>
           <div class="play-list">a</div> -->
-        </a-tab-pane>
-        <a-tab-pane key="2" tab="评论" force-render>Content of Tab Pane 2</a-tab-pane>
-        <a-tab-pane key="3" tab="播客">Content of Tab Pane 3</a-tab-pane>
-      </a-tabs>
     </template>
   </songListDetail>
 </template>
