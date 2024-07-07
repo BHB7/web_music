@@ -194,4 +194,19 @@ onMounted(() => {
   overflow: scroll;
   height: calc(100vh - 170px);
 }
+
+.footerc {
+  align-items: center;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.footerb {
+  align-items: center;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: calc(100% - 200px);
+}
 </style>
