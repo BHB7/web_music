@@ -109,7 +109,7 @@ onMounted(() => {
     <a-back-top :visibilityHeight="800" />
 
     <div class="w-full lg:hidden block">
-      <footer class="footerc lg:hidden block" ref="footerRef1" v-if="listEnd">
+      <footer class="footerc lg:hidden block" ref="footerRef1" v-if="!listEnd">
         <loader></loader>
         <span>加载更多...</span>
       </footer>
@@ -118,7 +118,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="w-full hidden lg:block">
-      <footer class="footerb" ref="footerRef2" v-if="listEnd">
+      <footer class="footerb" ref="footerRef2" v-if="!listEnd">
         <loader></loader>
         <span>加载更多...</span>
       </footer>
