@@ -32,6 +32,11 @@ const goPlayListDetail = (id) => {
 
 const footerRef = ref(null)
 
+const removeDuplicates = (existingList, newList) => {
+  const existingIds = new Set(existingList.map((item) => item.id))
+  return newList.filter((item) => !existingIds.has(item.id))
+}
+
 const getMoreSongs = () => {
   if (!isIntersecting.value || isLoading.value || isFetching.value || listEnd.value) return
 
@@ -40,10 +45,12 @@ const getMoreSongs = () => {
 
   getRecommendSongListService(songListSum.value)
     .then((res) => {
-      if (res.result.length < 12) {
+      const newSongs = removeDuplicates(playList.value, res.result)
+      if (newSongs.length === 0) {
         listEnd.value = true
+      } else {
+        playList.value = [...playList.value, ...newSongs]
       }
-      playList.value = [...new Set([...res.result])]
     })
     .catch((err) => {
       console.error('获取歌单失败', err)
