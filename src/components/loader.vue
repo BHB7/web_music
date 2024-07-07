@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="loader" :style="{ width: `${props.size}px`, height: `${props.size}px` }">
+  <div class="ld" :style="{ width: `${props.size}px`, height: `${props.size}px` }">
     <div class="bar1"></div>
     <div class="bar2"></div>
     <div class="bar3"></div>
@@ -25,14 +25,14 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.loader {
+.ld {
   position: relative;
   width: 54px;
   height: 54px;
   border-radius: 10px;
 }
 
-.loader div {
+.ld div {
   width: 8%;
   height: 24%;
   background: rgb(0, 0, 0, 0.5);
@@ -55,62 +55,62 @@ const props = defineProps({
   }
 }
 
-.loader .bar1 {
+.ld .bar1 {
   transform: rotate(0deg) translate(0, -130%);
   animation-delay: 0s;
 }
 
-.loader .bar2 {
+.ld .bar2 {
   transform: rotate(30deg) translate(0, -130%);
   animation-delay: -1.1s;
 }
 
-.loader .bar3 {
+.ld .bar3 {
   transform: rotate(60deg) translate(0, -130%);
   animation-delay: -1s;
 }
 
-.loader .bar4 {
+.ld .bar4 {
   transform: rotate(90deg) translate(0, -130%);
   animation-delay: -0.9s;
 }
 
-.loader .bar5 {
+.ld .bar5 {
   transform: rotate(120deg) translate(0, -130%);
   animation-delay: -0.8s;
 }
 
-.loader .bar6 {
+.ld .bar6 {
   transform: rotate(150deg) translate(0, -130%);
   animation-delay: -0.7s;
 }
 
-.loader .bar7 {
+.ld .bar7 {
   transform: rotate(180deg) translate(0, -130%);
   animation-delay: -0.6s;
 }
 
-.loader .bar8 {
+.ld .bar8 {
   transform: rotate(210deg) translate(0, -130%);
   animation-delay: -0.5s;
 }
 
-.loader .bar9 {
+.ld .bar9 {
   transform: rotate(240deg) translate(0, -130%);
   animation-delay: -0.4s;
 }
 
-.loader .bar10 {
+.ld .bar10 {
   transform: rotate(270deg) translate(0, -130%);
   animation-delay: -0.3s;
 }
 
-.loader .bar11 {
+.ld .bar11 {
   transform: rotate(300deg) translate(0, -130%);
   animation-delay: -0.2s;
 }
 
-.loader .bar12 {
+.ld .bar12 {
   transform: rotate(330deg) translate(0, -130%);
   animation-delay: -0.1s;
 }

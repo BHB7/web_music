@@ -27,17 +27,22 @@ const goPlayListDetail = (id) => {
 }
 
 const itemRef = ref()
-const footerRef = ref()
+const footerRef1 = ref()
+const footerRef2 = ref()
 const isIntersecting = ref(false)
-
+const listEnd = ref(false)
 const getMoreSongs = () => {
   if (isIntersecting.value && !isLoading.value) {
     // isLoading.value = true
     songListSum.value *= 2 // 增加数据量
-
+    if (songListSum.value >= 100) {
+      listEnd.value = true
+      return
+    }
     getRecommendSongListService(songListSum.value)
       .then((res) => {
-        playList.value = [...playList.value, ...res.result]
+        console.log(res.result)
+        playList.value = [...new Set([...res.result])]
       })
       .catch((err) => {
         console.error('获取歌单失败', err)
@@ -54,7 +59,8 @@ onMounted(() => {
     getMoreSongs()
   })
 
-  observer.observe(footerRef.value)
+  observer.observe(footerRef1.value)
+  observer.observe(footerRef2.value)
 
   // 组件销毁时取消观察器
   onUnmounted(() => {
@@ -102,10 +108,24 @@ onMounted(() => {
     </div>
     <a-back-top :visibilityHeight="800" />
 
-    <footer class="footer" ref="footerRef">
-      <loader></loader>
-      <span>加载更多...</span>
-    </footer>
+    <div class="w-full lg:hidden block">
+      <footer class="footerc lg:hidden block" ref="footerRef1" v-if="listEnd">
+        <loader></loader>
+        <span>加载更多...</span>
+      </footer>
+      <div class="footerb" v-else>
+        <span>没有更多啦~</span>
+      </div>
+    </div>
+    <div class="w-full hidden lg:block">
+      <footer class="footerb" ref="footerRef2" v-if="listEnd">
+        <loader></loader>
+        <span>加载更多...</span>
+      </footer>
+      <div class="footerb" v-else>
+        <span>没有更多啦~</span>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -175,7 +195,14 @@ onMounted(() => {
   height: calc(100vh - 170px);
 }
 
-.footer {
+.footerc {
+  align-items: center;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.footerb {
   align-items: center;
   margin-top: 10px;
   display: flex;
