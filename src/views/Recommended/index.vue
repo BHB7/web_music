@@ -2,11 +2,12 @@
 import { useWyUserStore, useViewMsgStore } from '@/stores'
 import Segmented from '@/components/Segmented.vue'
 import itemBox from '@/components/playList/itemBox.vue'
-import { onMounted, ref, onUnmounted } from 'vue'
+import { onMounted, ref, onUnmounted, nextTick } from 'vue'
 import { getRecommendSongListService } from '@/api/wyy/songList'
 import router from '@/router'
 import loader from '@/components/loader.vue'
 import { SyncOutlined } from '@ant-design/icons-vue'
+
 const viewMsgTitleStore = useViewMsgStore() // 全局视图信息
 viewMsgTitleStore.setCNavTitle('为你推荐')
 
@@ -14,6 +15,9 @@ const playList = ref([])
 const isLoading = ref(true)
 const songListSum = ref(12)
 const activeIndex = ref(0)
+const isFetching = ref(false)
+const listEnd = ref(false)
+const isIntersecting = ref(false)
 
 const sel = (index) => {
   activeIndex.value = index
@@ -26,48 +30,45 @@ const goPlayListDetail = (id) => {
   })
 }
 
-const itemRef = ref()
-const footerRef1 = ref()
-const footerRef2 = ref()
-const isIntersecting = ref(false)
-const listEnd = ref(false)
+const footerRef = ref(null)
+
 const getMoreSongs = () => {
-  if (isIntersecting.value && !isLoading.value) {
-    // isLoading.value = true
-    songListSum.value *= 2 // 增加数据量
-    if (songListSum.value >= 100) {
-      listEnd.value = true
-      return
-    }
-    getRecommendSongListService(songListSum.value)
-      .then((res) => {
-        console.log(res.result)
-        playList.value = [...new Set([...res.result])]
-      })
-      .catch((err) => {
-        console.error('获取歌单失败', err)
-      })
-      .finally(() => {
-        isLoading.value = false
-      })
-  }
+  if (!isIntersecting.value || isLoading.value || isFetching.value || listEnd.value) return
+
+  isFetching.value = true
+  songListSum.value += 12
+
+  getRecommendSongListService(songListSum.value)
+    .then((res) => {
+      if (res.result.length < 12) {
+        listEnd.value = true
+      }
+      playList.value = [...new Set([...res.result])]
+    })
+    .catch((err) => {
+      console.error('获取歌单失败', err)
+    })
+    .finally(() => {
+      isFetching.value = false
+    })
 }
 
 onMounted(() => {
   const observer = new IntersectionObserver((entries) => {
     isIntersecting.value = entries[0].isIntersecting
-    getMoreSongs()
+    if (isIntersecting.value) {
+      getMoreSongs()
+    }
   })
 
-  observer.observe(footerRef1.value)
-  observer.observe(footerRef2.value)
+  nextTick(() => {
+    if (footerRef.value) observer.observe(footerRef.value)
+  })
 
-  // 组件销毁时取消观察器
   onUnmounted(() => {
     observer.disconnect()
   })
 
-  // 初始化加载数据
   getRecommendSongListService(songListSum.value)
     .then((res) => {
       playList.value = res.result
@@ -75,10 +76,10 @@ onMounted(() => {
     })
     .catch((err) => {
       console.error('获取歌单失败', err)
-      // 可以添加错误处理逻辑，比如显示错误信息
     })
 })
 </script>
+
 <template>
   <header class="header">
     <Segmented
@@ -90,7 +91,6 @@ onMounted(() => {
   <section class="body">
     <itemBox
       v-if="!isLoading"
-      ref="itemRef"
       @click="goPlayListDetail(item.id)"
       :item="item"
       class="item lg:mt-4 lg:mr-4 mt-6 mr-5 mx-2"
@@ -108,21 +108,12 @@ onMounted(() => {
     </div>
     <a-back-top :visibilityHeight="800" />
 
-    <div class="w-full lg:hidden block">
-      <footer class="footerc lg:hidden block" ref="footerRef1" v-if="!listEnd">
+    <div class="w-full">
+      <footer class="footer" ref="footerRef" v-if="!listEnd">
         <loader></loader>
         <span>加载更多...</span>
       </footer>
-      <div class="footerc" v-else>
-        <span>没有更多啦~</span>
-      </div>
-    </div>
-    <div class="w-full hidden lg:block">
-      <footer class="footerb" ref="footerRef2" v-if="!listEnd">
-        <loader></loader>
-        <span>加载更多...</span>
-      </footer>
-      <div class="footerb" v-else>
+      <div class="footer" v-else>
         <span>没有更多啦~</span>
       </div>
     </div>
@@ -195,18 +186,11 @@ onMounted(() => {
   height: calc(100vh - 170px);
 }
 
-.footerc {
+.footer {
   align-items: center;
   margin-top: 10px;
   display: flex;
   justify-content: center;
   width: 100%;
-}
-.footerb {
-  align-items: center;
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  width: calc(100% - 200px);
 }
 </style>

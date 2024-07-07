@@ -1,11 +1,13 @@
 <script setup>
-import { useWyUserStore, useAudioStore } from '@/stores'
+import { useWyUserStore, useAudioStore, useViewMsgStore } from '@/stores'
 import { NumberOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons-vue'
 // import { useRoute } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
 import { formatDate, formatSongDuration } from '@/utils/formatTime'
 import { getSongUrlService } from '@/api/wyy/song'
 import { computed } from '@vue/reactivity'
+
+const viewMsgStore = useViewMsgStore() // 全局视图信息
 // const route = useRoute()
 const props = defineProps({
   list: {
@@ -25,29 +27,38 @@ onMounted(() => {
   <!-- 公共通用 详情 模板组件 -->
   <main class="main">
     <header class="header lg:pb-4 pb-2">
+      <a-skeleton-image active v-if="viewMsgStore.playListDetailIsLoaded" />
       <!-- 用户头像 / 歌单封面 -->
-      <div class="user-avatar">
+      <div class="user-avatar" v-else>
         <img :src="props.isUser ? list.avatarUrl : props?.list.coverImgUrl" alt="封面" />
       </div>
       <!-- 用户信息 / 歌单信息 -->
       <div class="user-info lg:ml-6 ml-2">
         <div class="user-name lg:ml-4 ml-2">
+          <!-- 骨架 -->
+          <a-space v-if="viewMsgStore.playListDetailIsLoaded">
+            <a-skeleton-input style="width: 100%" active :size="'small'" />
+          </a-space>
           <!-- 歌单名 / 用户名 -->
-          <p class="lg:text-xl text-lg">
+          <p class="lg:text-xl text-lg" v-else>
             {{ props.isUser ? props.list.nickname : props.list.name }}
           </p>
         </div>
         <!-- 歌单创建者 信息 -->
         <div class="user-create lg:ml-4 ml-2" v-if="!props.isUser">
+          <a-space v-if="viewMsgStore.playListDetailIsLoaded">
+            <a-skeleton-avatar :active="true" :size="size" :shape="avatarShape" />
+            <a-skeleton-input style="width: 200px" :active="true" :size="size" />
+          </a-space>
           <!-- 头像 -->
           <div
+            v-if="!viewMsgStore.playListDetailIsLoaded"
             class="avatar"
             @click="$router.push(`/userDetail?uid=${props?.list.creator?.userId}`)"
           >
             <img :src="props?.list.creator?.avatarUrl" alt="" />
           </div>
-
-          <div class="c flex flex-col items-center">
+          <div v-if="!viewMsgStore.playListDetailIsLoaded" class="c flex flex-col mx-2">
             <!-- 昵称 -->
             <div class="nickname">
               <p class="lg:text-sm text-xs">

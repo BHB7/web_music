@@ -1,5 +1,5 @@
 <script setup>
-import { useWyUserStore, useAudioStore } from '@/stores'
+import { useWyUserStore, useAudioStore, useViewMsgStore } from '@/stores'
 import { NumberOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons-vue'
 // import { useRoute } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
@@ -10,6 +10,7 @@ import loader from '../loader.vue'
 const wyUserStore = useWyUserStore()
 const audioStore = useAudioStore()
 // const route = useRoute()
+const viewMsgStore = useViewMsgStore() // 全局视图信息
 const props = defineProps({
   list: {
     type: Object,
@@ -121,7 +122,7 @@ const isLoading = ref(true)
     y
     sticky
     ellipsis
-    :locale="{ emptyText: '暂无歌曲' }"
+    :locale="{ emptyText: viewMsgStore.playListDetailIsLoaded ? '加载中...' : '暂无歌曲' }"
     class="tabel"
     :columns="columns"
     :data-source="list?.songs"
@@ -274,10 +275,6 @@ const isLoading = ref(true)
         <template v-else-if="column.key === 'time'">
           <span class="lg:block hidden">{{ formatSongDuration(record.dt) }}</span>
         </template>
-      </div>
-      <!-- 加载状态 -->
-      <div v-if="!isLoading" class="flex items-center justify-center">
-        <loader></loader><span>加载中...</span>
       </div>
     </template>
   </a-table>
