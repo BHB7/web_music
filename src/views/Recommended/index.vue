@@ -113,7 +113,7 @@ onMounted(() => {
         <loader></loader>
         <span>加载更多...</span>
       </footer>
-      <div class="footerb" v-else>
+      <div class="footerc" v-else>
         <span>没有更多啦~</span>
       </div>
     </div>
