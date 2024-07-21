@@ -1,7 +1,6 @@
 import { message } from 'ant-design-vue'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import logo from '@/assets/audio.svg'
 export const useAudioStore = defineStore('audio', () => {
   const audio = ref(new Audio())
   const timer = ref(null)
@@ -22,15 +21,10 @@ export const useAudioStore = defineStore('audio', () => {
     // 播放顺序索引
     orderIndex: 0,
     isWaiting: false, // 是否正在等待播放
-    isMute: false // 是否静音
+    isMute: false, // 是否静音
+    isNext: false
   })
   const playList = ref([
-    {
-      url: null,
-      cover: logo,
-      name: '暂无歌曲',
-      singer: ''
-    }
   ])
 
   const addSong = (song) => {
@@ -39,7 +33,7 @@ export const useAudioStore = defineStore('audio', () => {
     playList.value.unshift(song)
   }
   const play = () => {
-    if (playList.value.url === null) {
+    if (!Object.keys(playList.value[playStatus.value.currentIndex])) {
       message.error('暂无歌曲')
       return
     }
@@ -47,6 +41,10 @@ export const useAudioStore = defineStore('audio', () => {
     if (playStatus.value.pauseTime > 0) {
       audio.value.currentTime = playStatus.value.pauseTime
     }
+    console.log(playList.value[playStatus.value.currentIndex].url)
+    console.log(playStatus.value.currentIndex)
+    console.log(playList.value.length)
+    console.log(playList.value)
     audio.value.src = playList.value[playStatus.value.currentIndex].url
     audio.value.play()
   }
@@ -87,6 +85,7 @@ export const useAudioStore = defineStore('audio', () => {
   }
   // 开始播放
   audio.value.onplay = () => {
+    playStatus.value.isNext = false
     audio.value.volume = 0// 默认音量
     playStatus.value.isPlay = true
     let timer = setInterval(() => {
@@ -108,13 +107,14 @@ export const useAudioStore = defineStore('audio', () => {
     console.info('加载完成')
   }
   audio.value.onwaiting = () => {
-    message.loading('缓冲中...')
+    // message.loading('缓冲中...')
     console.info('缓冲中...')
   }
   // 播放结束
   audio.value.onended = () => {
     playStatus.value.isPlay = false
     console.info('播放结束')
+    playStatus.value.isNext = true
   }
   audio.value.onerror = () => {
     playStatus.value.isPlay = false
@@ -128,6 +128,7 @@ export const useAudioStore = defineStore('audio', () => {
     // 记录播放进度
     playStatus.value.pauseTime = audio.value.currentTime
   }
+  // 音频/视频（audio/video）的播放位置发生改变时触发
   audio.value.ontimeupdate = () => {
     // console.info('播放进度:' + audio.value.currentTime)
     playStatus.value.currentTime = audio.value.currentTime
@@ -138,14 +139,36 @@ export const useAudioStore = defineStore('audio', () => {
     // console.log('百分比' + (playProgress / duration) * 100)
     playStatus.value.progress = (playProgress / duration) * 100
   }
+  // 上一曲
+  const prev = () => {
+    console.log('上一曲')
+    if (playStatus.value.currentIndex === 0) {
+      playStatus.value.currentIndex = playList.value.length - 1
+    } else {
+      playStatus.value.currentIndex--
+    }
+    play()
+  }
+  // 下一曲
+  const next = () => {
+    console.log('下一曲')
+    if (playStatus.value.currentIndex === playList.value.length - 1) {
+      playStatus.value.currentIndex = 0
+    } else {
+      playStatus.value.currentIndex++
+    }
+    play()
+  }
   return {
     audio,
     play,
     pause,
+    prev,
+    next,
     addSong,
     playList,
+    setVolume,
     playStatus,
     setProgress,
-    setVolume
   }
 })

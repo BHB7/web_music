@@ -12,7 +12,8 @@ import { useAudioStore } from '@/stores/index'
 import { formatTime } from '@/utils/formatTime'
 import inputR from '../footerPlay/inputR.vue'
 import playDetail from './playDetail.vue'
-
+import { computed } from '@vue/reactivity'
+import logo from '@/assets/audio.svg'
 const value = ref(0)
 const audioStore = useAudioStore()
 const volume = ref(50)
@@ -47,6 +48,23 @@ const setVolume = (e) => {
 const isShowPlayDetail = ref(false)
 const coverRef = ref()
 
+// 上一首
+const prev = () => {
+  audioStore.prev()
+}
+// 下一首
+const next = () => {
+  audioStore.next()
+}
+const getCover = computed(() => {
+  return audioStore.playList[audioStore.playStatus.currentIndex]?.cover || logo
+})
+const getSongName = computed(() => {
+  return audioStore.playList[audioStore.playStatus.currentIndex]?.name || '暂无歌曲'
+})
+const getAuthor = computed(() => {
+  return audioStore.playList[audioStore.playStatus.currentIndex]?.singer || '暂无歌手'
+})
 defineOptions({ name: 'foooterPlay' })
 </script>
 
@@ -55,19 +73,15 @@ defineOptions({ name: 'foooterPlay' })
     <div class="footer-left">
       <!-- 歌曲封面 -->
       <div class="cover" @click="isShowPlayDetail = true">
-        <img
-          ref="coverRef"
-          :src="audioStore.playList[audioStore.playStatus.currentIndex].cover"
-          alt=""
-        />
+        <img ref="coverRef" :src="getCover" alt="" />
       </div>
       <!-- 歌曲信息 -->
       <div class="info hidden lg:block">
         <p ref="songNameRef" class="song-name">
-          {{ audioStore.playList[audioStore.playStatus.currentIndex].name }}
+          {{ getSongName }}
         </p>
         <p ref="authorRef" class="author">
-          {{ audioStore.playList[audioStore.playStatus.currentIndex].singer }}
+          {{ getAuthor }}
         </p>
       </div>
     </div>
@@ -77,14 +91,14 @@ defineOptions({ name: 'foooterPlay' })
         <div class="control">
           <div class="c">
             <!-- 上一首 -->
-            <BackwardOutlined class="icon" />
+            <BackwardOutlined class="icon" @click="prev" />
             <!-- 暂停 -->
             <PauseOutlined v-if="audioStore.playStatus.isPlay" @click="pause" class="icon" />
             <!-- 播放 -->
             <CaretRightOutlined v-else @click="play" class="icon" />
             <LoadingOutlined v-if="isLoading" />
             <!-- 下一首 -->
-            <ForwardOutlined class="icon" />
+            <ForwardOutlined class="icon" @click="next" />
           </div>
         </div>
         <div class="slider">

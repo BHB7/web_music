@@ -63,6 +63,8 @@ const columns = [
     hover: false
   }
 ]
+
+// 监听设置歌单播放当前歌曲的状态
 watch(
   // 监听多个值 只要有一个发生改变 都会触发
   () => [audioStore.playList, audioStore.playStatus.isPlay, audioStore.playStatus.isWaiting],
@@ -82,10 +84,45 @@ watch(
     deep: true
   }
 )
+
+const tIsPlay = ref(false)
+const songIds = ref([])
+
+const playIndex = ref(0)
 // 播放
-const play = (row) => {
+const play = (row, index) => {
+  if (!tIsPlay.value) {
+    // 筛选设置预加载数据
+    songIds.value = props.list?.songs?.map((item) => {
+      return {
+        alId: item.al.id, // 用于定位当前播放的状态
+        id: item.id,
+        cover: item.al.picUrl,
+        name: item.al.name,
+        singer: computed(() => {
+          const nstr = item.ar.map((item) => {
+            // console.log(item)
+            return item.name
+          })
+          let str = ''
+          nstr.forEach((item, index) => {
+            if (index !== 0) {
+              str += ' / '
+            }
+            str += item
+          })
+          return str
+        })
+      }
+    })
+  }
+  if (songIds.value) {
+    tIsPlay.value = true
+  }
+  playIndex.value = index
+  console.log(songIds.value)
   // console.log('播放')
-  // console.log(row)
+  console.log(row)
   // 通过row 获取id 获取播放地址
   row.isLoading = true
   getSongUrlService(row.id).then((res) => {
@@ -116,11 +153,41 @@ const play = (row) => {
     audioStore.play()
   })
 }
+
+// 监听音乐播放完成时 切换歌曲
+watch(
+  () => audioStore.playStatus.isNext,
+  (n) => {
+    if (n) {
+      console.log('下一首触发')
+      playIndex.value++
+      if (playIndex.value >= songIds.value.length) {
+        playIndex.value = 0
+      }
+      console.log(songIds.value[playIndex.value].id)
+      getSongUrlService(songIds.value[playIndex.value].id).then((res) => {
+        console.log(res.data[0])
+        audioStore.addSong({
+          songId: res.data[0].id,
+          id: songIds.value[playIndex.value].alId,
+          url: res.data[0].url,
+          cover: songIds.value[playIndex.value].cover,
+          name: songIds.value[playIndex.value].name,
+          singer: songIds.value[playIndex.value].singer.value
+        })
+        // 播放
+        audioStore.play()
+      })
+    }
+  },
+  {
+    deep: true
+  }
+)
 // 暂停
 const pause = () => {
   audioStore.pause()
 }
-
 const isLoading = ref(true)
 </script>
 <template>
@@ -150,12 +217,11 @@ const isLoading = ref(true)
             <span class="title">专辑</span>
           </span>
         </template>
-        <template v-else-if="column.key === 'like'">
+        <!-- <template v-else-if="column.key === 'like'">
           <span class="h-t">
-            <!-- <UserOutlined class="icon" /> -->
             <span class="title">喜欢</span>
           </span>
-        </template>
+        </template> -->
         <template v-else-if="column.key === 'time'">
           <span class="h-t">
             <!-- <UserOutlined class="icon" /> -->
@@ -180,7 +246,7 @@ const isLoading = ref(true)
               <span
                 v-if="!record.isPlay ? !record.isLoading : !record.isPlay"
                 class="btn iconfont icon-applemusicicon_07"
-                @click="play(record)"
+                @click="play(record, index)"
               ></span>
               <!-- 暂停按钮 -->
               <!-- 当播放时 并且没有加载时 显示暂停按钮 -->
@@ -273,9 +339,9 @@ const isLoading = ref(true)
         <template v-else-if="column.key === 'like'">
           <span>
             <!-- 不喜欢 -->
-            <HeartOutlined class="like-icon" v-if="false" />
+            <!-- <HeartOutlined class="like-icon" v-if="false" /> -->
             <!-- 喜欢 -->
-            <HeartFilled class="like-icon" v-else />
+            <!-- <HeartFilled class="like-icon" v-else /> -->
           </span>
         </template>
         <!-- 时长 -->
