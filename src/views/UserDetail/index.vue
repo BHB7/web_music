@@ -6,18 +6,18 @@ import { getUserPlaylistService as getWyyUserPlaylistService } from '@/api/wyy/u
 // kg
 import { getUserPlaylistService as getKgUserPlaylistService } from '@/api/kg/user'
 import { FormOutlined } from '@ant-design/icons-vue'
-import { onMounted, ref } from 'vue'
+import { onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import playListItem from './components/playListItem.vue'
 import songListDetail from '@/components/songList/songListDetail.vue'
 const wyUserStore = useWyUserStore()
-const viewMsgTitleStore = useViewMsgStore() // 全局视图信息
+const viewMsgStore = useViewMsgStore() // 全局视图信息
 const settingsStore = useSettingsStore()
 const route = useRoute()
 const router = useRouter()
 // tag默认选中
 const activeKey = ref('1')
-viewMsgTitleStore.setCNavTitle(route.query.uid ? 'TA的歌单' : '我的')
+viewMsgStore.setCNavTitle(route.query.uid ? 'TA的歌单' : '我的')
 const playList = ref([])
 // 收藏的歌单
 const collectPlayList = ref([])
@@ -38,6 +38,7 @@ switch (settingsStore.settings.apiSelect) {
           playList.value.push(item)
         }
       })
+      viewMsgStore.setPlayListDetailIsLoaded(false) // 详情加载完成
       console.timeEnd('循环筛选收藏歌单 耗时')
     })
     break
@@ -61,12 +62,19 @@ const goPlayListDetail = (item) => {
     }
   })
 }
+
+// 当页面不可见时 destroyed，设置歌单详情加载状态false
+onUnmounted(() => {
+  console.log('离开歌单详情页')
+  // viewMsgStore.setPlayListDetailIsLoaded(true)
+})
 </script>
 
 <template>
   <songListDetail
     :list="route.query.uid ? playList[0].creator : wyUserStore.user.userInfo"
     :isUser="true"
+    art="1"
   >
     <template #content>
       <h2>{{ route.query.uid ? 'TA创建的歌单' : '我创建的歌单' }}</h2>

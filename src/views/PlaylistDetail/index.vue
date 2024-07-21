@@ -16,6 +16,9 @@ const route = useRoute()
 console.log(wyUserStore.user.userInfo.userId)
 const playList = ref()
 onMounted(() => {
+  console.log('进入歌单详情页')
+  // 进入歌单详情 设置加载状态true
+  viewMsgStore.setPlayListDetailIsLoaded(true)
   // 获取歌单详情
   getPlaylistDetailService(route.query.id).then((res) => {
     console.log(res)
@@ -38,12 +41,6 @@ onMounted(() => {
   })
 })
 
-// 当页面不可见时 destroyed，设置歌单详情加载状态false
-onUnmounted(() => {
-  console.log('离开歌单详情页')
-  viewMsgStore.setPlayListDetailIsLoaded(true)
-})
-
 const activeIndex = ref(0)
 
 const sel = (index) => {
@@ -51,7 +48,7 @@ const sel = (index) => {
 }
 </script>
 <template>
-  <songListDetail :list="playList">
+  <songListDetail :list="playList" :art="1">
     <template #content="{ list }">
       <!-- 标签Tab -->
       <Segmented

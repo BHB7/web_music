@@ -15,9 +15,16 @@ const props = defineProps({
   list: {
     type: Object,
     default: () => ({})
+  },
+  art: {
+    type: Number,
+    default: () => 1 // 0: 用户喜欢歌单详情 1: 推荐歌单详情
   }
 })
 
+const getArt = computed(() => {
+  return props.art === 0 ? viewMsgStore.likePlayListIsLoaded : viewMsgStore.playListDetailIsLoaded
+})
 onMounted(() => {
   console.log(props.list)
 })
@@ -122,7 +129,7 @@ const isLoading = ref(true)
     y
     sticky
     ellipsis
-    :locale="{ emptyText: viewMsgStore.playListDetailIsLoaded ? '加载中...' : '暂无歌曲' }"
+    :locale="{ emptyText: getArt ? '加载中...' : '暂无歌曲' }"
     class="tabel"
     :columns="columns"
     :data-source="list?.songs"
