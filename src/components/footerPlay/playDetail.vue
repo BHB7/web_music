@@ -47,7 +47,14 @@ const setProgress = (e) => {
   // console.log('设置值' + e)
   audioStore.setProgress(e)
 }
-
+// 上一首
+const prev = () => {
+  audioStore.prev()
+}
+// 下一首
+const next = () => {
+  audioStore.next()
+}
 // 设置音量
 const setVolume = (e) => {
   // console.log('设置音量' + e)
@@ -161,7 +168,7 @@ const close = () => {
             <!-- 随机 -->
             <i class="iconfont icon-suijibofang"></i>
             <!-- 上一曲 -->
-            <i class="iconfont icon-applemusicicon_08"></i>
+            <i class="iconfont icon-applemusicicon_08" @click="prev"></i>
             <!-- 播放 -->
             <i
               class="iconfont size icon-applemusicicon_07"
@@ -171,7 +178,7 @@ const close = () => {
             <!-- 暂停 -->
             <i class="iconfont size icon-applemusicicon_06" v-else @click="pause"></i>
             <!-- 下一曲 -->
-            <i class="iconfont icon-applemusicicon_09"></i>
+            <i class="iconfont icon-applemusicicon_09" @click="next"></i>
             <!-- 单曲循环 -->
             <i class="iconfont icon-bofang-xunhuanbofang active"></i>
           </div>

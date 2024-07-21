@@ -30,7 +30,8 @@ export const useAudioStore = defineStore('audio', () => {
   const addSong = (song) => {
     // 清除之前的播放进度
     playStatus.value.pauseTime = 0
-    playList.value.unshift(song)
+    playList.value.push(song)
+    playStatus.value.currentIndex = playList.value.length - 1
   }
   const play = () => {
     if (!Object.keys(playList.value[playStatus.value.currentIndex])) {
