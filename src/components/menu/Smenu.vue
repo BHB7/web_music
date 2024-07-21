@@ -25,7 +25,7 @@ const props = defineProps({
       v-model:selectedKeys="selectedKeys"
       theme="light"
       mode="inline"
-      style="background-color: #f0f3f6; margin-top: 10px"
+      style="background-color: #fff; margin-top: 10px"
     >
       <a-menu-item key="/recommended" @click="$router.push('/recommended')">
         <SendOutlined class="icon" />

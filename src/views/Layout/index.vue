@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
       collapsed-width="0"
       @collapse="onCollapse"
       @breakpoint="onBreakpoint"
-      style="height: 100vh; background-color: #f0f3f6; margin-right: 40px"
+      style="height: 100vh; background-color: #fff; margin-right: 40px"
       class="hidden lg:block"
     >
       <div class="logo b bg-white h-20">
