@@ -120,8 +120,10 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .cover {
+  width: 100%;
+  height: 100vh;
   transform: scale(1.5);
   z-index: -1;
-  border: 1px solid #ffffff;
+  border: 1px solid #101010;
 }
 </style>

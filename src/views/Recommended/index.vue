@@ -105,7 +105,7 @@ onMounted(() => {
       :key="item.id"
     ></itemBox>
 
-    <div class="loader" v-for="item in 12" v-else>
+    <div class="loader rounded-lg" v-for="item in 12" v-else>
       <div class="img lg:w-60 lg:mr-4 lg:h-60 h-20 w-16"></div>
       <div class="desc lg:w-48 lg:mt-4 h-16 w-20">
         <p></p>
@@ -135,7 +135,6 @@ onMounted(() => {
   background-color: #e3e3e3;
   margin: 10px 10px;
   overflow: hidden;
-  border-radius: 10px;
   .img {
     border-radius: 5px;
     margin-right: 6px;
