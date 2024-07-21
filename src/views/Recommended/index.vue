@@ -135,6 +135,7 @@ onMounted(() => {
   background-color: #e3e3e3;
   margin: 10px 10px;
   overflow: hidden;
+  border-radius: 10px;
   .img {
     border-radius: 5px;
     margin-right: 6px;
