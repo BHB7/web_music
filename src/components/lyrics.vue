@@ -1,8 +1,10 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { getLyricService } from '@/api/wyy/song'
-import { useAudioStore } from '@/stores/index'
+import { useAudioStore, useViewMsgStore } from '@/stores/index'
+
 const audioStore = useAudioStore()
+const viewMsgStore = useViewMsgStore() // 全局视图信息
 // 定义一个歌词数组用于页面渲染
 const lyricList = ref([])
 // 获取歌词方法
@@ -72,11 +74,14 @@ const lyricIndex = ref(0)
 let currentTime = ''
 // 音频播放时间更新的事件
 const audioTime = (e) => {
+  // console.log(lyricLi.value)
   // 当前播放的时间
   currentTime = e
   for (let i = 0; i < lyricList.value.length; i++) {
     // 如果播放时间大于当前歌曲条目的时间
     if (currentTime > lyricList.value[i].time) {
+      console.log(lyricList.value[i])
+      viewMsgStore.setLyric(lyricList.value[i])
       // 赋值激活选项
       lyricIndex.value = i
       // 歌词内容体dom通过transform:translateY实现歌词滚动

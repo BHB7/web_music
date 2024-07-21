@@ -18,7 +18,7 @@ const props = defineProps({
     type: Number,
     default: () => 1 // 0: 用户喜欢歌单详情 1: 推荐歌单详情
   },
-  // 控制是否显示用户样式
+  // 控制是否显示用户样式·
   isUser: {
     type: Boolean,
     default: false

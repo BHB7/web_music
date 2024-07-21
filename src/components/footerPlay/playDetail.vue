@@ -2,14 +2,15 @@
 import { DownOutlined, ArrowsAltOutlined, EllipsisOutlined } from '@ant-design/icons-vue'
 import inputR from './inputR.vue'
 import { formatTime } from '@/utils/formatTime'
-import { useAudioStore } from '@/stores/index'
+import { useAudioStore, useViewMsgStore } from '@/stores/index'
 import { nextTick, onMounted, ref, watch } from 'vue'
 import lyrics from '../lyrics.vue'
+
 // 导入动画库
 import gsap from 'gsap'
 // 背景
 import bgColor from '../bgColor.vue'
-
+const viewMsgStore = useViewMsgStore() // 全局视图信息
 const props = defineProps({
   open: {
     type: Boolean,
@@ -123,12 +124,14 @@ const close = () => {
           <div class="info">
             <div class="desc">
               <div class="p">
-                <p class="song-name">
+                <p class="song-name lg:text-2xl text-xl">
                   {{ audioStore.playList[audioStore.playStatus.currentIndex].name }}
                 </p>
-                <p class="author">
+                <p class="author lg:text-lg text-sm">
                   {{ audioStore.playList[audioStore.playStatus.currentIndex].singer }}
                 </p>
+                <!-- c 端 歌词  显示一条 左滑后显示全部歌词-->
+                <p class="lyric lg:text-lg text-sm">{{ viewMsgStore.lyric.words }}</p>
               </div>
               <!-- 更多 -->
               <EllipsisOutlined class="icon" />
@@ -340,7 +343,7 @@ const close = () => {
           // 歌名
           .song-name {
             background-clip: text;
-            font-size: 20px;
+            // font-size: 25px;
             font-weight: 600;
             color: transparent;
             background-color: rgba(255, 255, 255, 0.8);
@@ -349,7 +352,7 @@ const close = () => {
           // 歌手
           .author {
             background-clip: text;
-            font-size: 16px;
+            // font-size: 16px;
             color: transparent;
             background-color: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(10px);

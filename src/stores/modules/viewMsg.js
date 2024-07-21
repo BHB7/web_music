@@ -25,8 +25,17 @@ export const useViewMsgStore = defineStore('viewMsg', () => {
         likePlayListIsLoaded.value = newValue
     }
 
+    // c 端 单条歌词设置
+    const lyric = ref('')
+
+    const setLyric = (newLyric) => {
+        lyric.value = newLyric
+    }
+
 
     return {
+        lyric,
+        setLyric,
         cNavTitle,
         setCNavTitle,
         playListDetailIsLoaded,
