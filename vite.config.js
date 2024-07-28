@@ -30,7 +30,7 @@ export default defineConfig({
       '/kw': {
         target: 'https://proxy.vocucc.cn',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/kw/, '')
+        rewrite: (path) => path.replace(/^\/kw/, '/api')
       }
     }
   }
