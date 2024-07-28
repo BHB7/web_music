@@ -10,7 +10,7 @@ import axios from "axios";
  * @example http://search.kuwo.cn/r.s?all=周杰伦&ft=music&itemset=web_2013&client=kt&pn=0&rn=10&rformat=json&encoding=utf8
  */
 export const search = (all, pn = 0, rn = 20) => {
-    return axios.get(`https://proxy.vocucc.cn/api/r.s`, {
+    return axios.get(`https://proxy.vocucc.cn/r.s`, {
         params: {
             all: all,
             ft: 'music',
