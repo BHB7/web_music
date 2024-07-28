@@ -109,12 +109,10 @@ const close = () => {
         <div class="l">
           <!-- 收起 -->
           <DownOutlined class="icon" @click="close" />
-          <!-- 全屏 -->
-          <ArrowsAltOutlined class="icon" />
         </div>
-        <div class="c"><span>播放详情</span></div>
+        <div class="c lg:block hidden"><span>播放详情</span></div>
         <div class="r">
-          <section class="style-btn">播放器样式</section>
+          <section class="style-btn lg:block hidden">播放器样式</section>
         </div>
       </header>
       <section class="cont flex md:justify-center md:items-stretch lg:justify-evenly">
@@ -298,12 +296,12 @@ const close = () => {
       .play {
         transition: all 0.4s ease-in;
         // .cover{
-        transform: scale(1.1);
+        transform: scale(1);
         // }
       }
       .noPlay {
         transition: all 0.4s ease-out;
-        transform: scale(1);
+        transform: scale(0.9);
       }
       // 封面
       .cover {
@@ -317,8 +315,9 @@ const close = () => {
           rgba(0, 0, 0, 0.22) 0px 15px 12px;
         img {
           width: 100%;
-          height: 330px;
-          object-fit: cover;
+          height: 350px;
+          min-height: 300px;
+          object-fit: fill;
         }
       }
       // 歌曲信息

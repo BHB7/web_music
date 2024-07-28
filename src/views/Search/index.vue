@@ -48,7 +48,7 @@ const onSearch = (value) => {
   search({ q: value, limit: 10 }).then((res) => {
     console.log(res)
   })
-  kwSearch(value, 1, 20).then((res) => {
+  kwSearch(value.trim(''), 1, 20).then((res) => {
     // 将字符串中的单引号替换为双引号 方便解析json
     const dataStr = res.data.replace(/\'/g, '"')
     // 将字符串解析为json
@@ -63,7 +63,7 @@ const onSearch = (value) => {
       return {
         al: {
           picUrl: item.web_albumpic_short
-            ? 'https://img2.kuwo.cn/star/albumcover/'.concat(item.web_albumpic_short)
+            ? 'https://img1.kuwo.cn/star/albumcover/'.concat(item.web_albumpic_short)
             : item.web_artistpic_short
               ? 'https://img1.kuwo.cn/star/starheads/'.concat(item.web_artistpic_short)
               : '',

@@ -14,7 +14,7 @@ html {
 }
 /* 滚动条高度和背景 */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
   height: 8px;
 }
 

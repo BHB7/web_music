@@ -90,7 +90,6 @@ watch(
   }
 )
 
-const tIsPlay = ref(false)
 const songIds = ref([])
 
 const playIndex = ref(0)
@@ -99,34 +98,29 @@ const play = (row, index) => {
   console.log(row)
   playIndex.value = index
   row.isLoading = true
-  if (!tIsPlay.value) {
-    // 筛选设置预加载数据
-    songIds.value = props.list?.songs?.map((item) => {
-      return {
-        alId: item.al.id, // 用于定位当前播放的状态
-        id: item.id,
-        cover: item.al.picUrl,
-        name: item.al.name,
-        singer: computed(() => {
-          const nstr = item.ar.map((item) => {
-            // console.log(item)
-            return item.name
-          })
-          let str = ''
-          nstr.forEach((item, index) => {
-            if (index !== 0) {
-              str += ' / '
-            }
-            str += item
-          })
-          return str
+  // 筛选设置预加载数据
+  songIds.value = props.list?.songs?.map((item) => {
+    return {
+      alId: item.al.id, // 用于定位当前播放的状态
+      id: item.id,
+      cover: item.al.picUrl,
+      name: item.al.name,
+      singer: computed(() => {
+        const nstr = item.ar.map((item) => {
+          // console.log(item)
+          return item.name
         })
-      }
-    })
-  }
-  if (songIds.value) {
-    tIsPlay.value = true
-  }
+        let str = ''
+        nstr.forEach((item, index) => {
+          if (index !== 0) {
+            str += ' / '
+          }
+          str += item
+        })
+        return str
+      })
+    }
+  })
   switch (props.type) {
     case 'wyy':
       // 通过row 获取id 获取播放地址
@@ -206,19 +200,23 @@ watch(
         playIndex.value = 0
       }
       console.log(songIds.value[playIndex.value].id)
-      getSongUrlService(songIds.value[playIndex.value].id).then((res) => {
-        console.log(res.data[0])
-        audioStore.addSong({
-          songId: res.data[0].id,
-          id: songIds.value[playIndex.value].alId,
-          url: res.data[0].url,
-          cover: songIds.value[playIndex.value].cover,
-          name: songIds.value[playIndex.value].name,
-          singer: songIds.value[playIndex.value].singer.value
-        })
-        // 播放
-        audioStore.play()
-      })
+      switch (props.type) {
+        case 'wyy':
+          getSongUrlService(songIds.value[playIndex.value].id).then((res) => {
+            console.log(res.data[0])
+            audioStore.addSong({
+              songId: res.data[0].id,
+              id: songIds.value[playIndex.value].alId,
+              url: res.data[0].url,
+              cover: songIds.value[playIndex.value].cover,
+              name: songIds.value[playIndex.value].name,
+              singer: songIds.value[playIndex.value].singer.value
+            })
+            // 播放
+            audioStore.play()
+          })
+          break
+      }
     }
   },
   {

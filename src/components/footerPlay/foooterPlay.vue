@@ -14,6 +14,7 @@ import inputR from '../footerPlay/inputR.vue'
 import playDetail from './playDetail.vue'
 import { computed } from '@vue/reactivity'
 import logo from '@/assets/audio.svg'
+import { message } from 'ant-design-vue'
 const value = ref(0)
 const audioStore = useAudioStore()
 const volume = ref(50)
@@ -65,6 +66,13 @@ const getSongName = computed(() => {
 const getAuthor = computed(() => {
   return audioStore.playList[audioStore.playStatus.currentIndex]?.singer || '暂无歌手'
 })
+const showPlayDetail = () => {
+  if (!audioStore.playList[audioStore.playStatus.currentIndex]) {
+    message.warning('当前播放列表为空')
+    return
+  }
+  isShowPlayDetail.value = true
+}
 defineOptions({ name: 'foooterPlay' })
 </script>
 
@@ -72,7 +80,7 @@ defineOptions({ name: 'foooterPlay' })
   <footer class="footer">
     <div class="footer-left">
       <!-- 歌曲封面 -->
-      <div class="cover" @click="isShowPlayDetail = true">
+      <div class="cover" @click="showPlayDetail">
         <img ref="coverRef" :src="getCover" alt="" />
       </div>
       <!-- 歌曲信息 -->
