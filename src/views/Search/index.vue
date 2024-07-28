@@ -45,9 +45,6 @@ const value = ref('')
 const playList = ref({})
 const onSearch = (value) => {
   if (!value) return
-  search({ q: value, limit: 10 }).then((res) => {
-    console.log(res)
-  })
   kwSearch(value.trim(''), 1, 20).then((res) => {
     // 将字符串中的单引号替换为双引号 方便解析json
     const dataStr = res.data.replace(/\'/g, '"')
