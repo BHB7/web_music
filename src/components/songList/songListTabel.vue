@@ -7,6 +7,7 @@ import { formatDate, formatSongDuration } from '@/utils/formatTime'
 import { getSongUrlService } from '@/api/wyy/song'
 import { computed } from '@vue/reactivity'
 import loader from '../loader.vue'
+import { getPlayUrl } from '@/api/kw/song'
 const wyUserStore = useWyUserStore()
 const audioStore = useAudioStore()
 // const route = useRoute()
@@ -19,6 +20,10 @@ const props = defineProps({
   art: {
     type: Number,
     default: () => 1 // 0: 用户喜欢歌单详情 1: 推荐歌单详情
+  },
+  type: {
+    type: String,
+    default: () => 'wyy'
   }
 })
 
@@ -91,6 +96,9 @@ const songIds = ref([])
 const playIndex = ref(0)
 // 播放
 const play = (row, index) => {
+  console.log(row)
+  playIndex.value = index
+  row.isLoading = true
   if (!tIsPlay.value) {
     // 筛选设置预加载数据
     songIds.value = props.list?.songs?.map((item) => {
@@ -119,39 +127,72 @@ const play = (row, index) => {
   if (songIds.value) {
     tIsPlay.value = true
   }
-  playIndex.value = index
+  switch (props.type) {
+    case 'wyy':
+      // 通过row 获取id 获取播放地址
+      getSongUrlService(row.id).then((res) => {
+        // console.log(res.data[0])
+        row.isLoading = false
+        audioStore.addSong({
+          songId: res.data[0].id,
+          id: row.al.id,
+          url: res.data[0].url,
+          cover: row.al.picUrl,
+          name: row.name,
+          singer: computed(() => {
+            const nstr = row.ar.map((item) => {
+              // console.log(item)
+              return item.name
+            })
+            let str = ''
+            nstr.forEach((item, index) => {
+              if (index !== 0) {
+                str += ' / '
+              }
+              str += item
+            })
+            return str
+          })
+        })
+        // 播放
+        audioStore.play()
+      })
+      break
+    case 'kw':
+      getPlayUrl(row.al.id).then((res) => {
+        row.isLoading = false
+        console.log(res.data.data.url)
+        audioStore.addSong({
+          songId: res.data.data.rid,
+          id: row.al.id,
+          url: res.data.data.url,
+          cover: row.al.picUrl,
+          name: row.name,
+          singer: computed(() => {
+            const nstr = row.ar.map((item) => {
+              // console.log(item)
+              return item.name
+            })
+            let str = ''
+            nstr.forEach((item, index) => {
+              if (index !== 0) {
+                str += ' / '
+              }
+              str += item
+            })
+            return str
+          })
+        })
+        // 播放
+        audioStore.play()
+      })
+      break
+    default:
+      console.log('没有找到类型')
+  }
   console.log(songIds.value)
   // console.log('播放')
   console.log(row)
-  // 通过row 获取id 获取播放地址
-  row.isLoading = true
-  getSongUrlService(row.id).then((res) => {
-    // console.log(res.data[0])
-    row.isLoading = false
-    audioStore.addSong({
-      songId: res.data[0].id,
-      id: row.al.id,
-      url: res.data[0].url,
-      cover: row.al.picUrl,
-      name: row.name,
-      singer: computed(() => {
-        const nstr = row.ar.map((item) => {
-          // console.log(item)
-          return item.name
-        })
-        let str = ''
-        nstr.forEach((item, index) => {
-          if (index !== 0) {
-            str += ' / '
-          }
-          str += item
-        })
-        return str
-      })
-    })
-    // 播放
-    audioStore.play()
-  })
 }
 
 // 监听音乐播放完成时 切换歌曲
@@ -271,7 +312,7 @@ const isLoading = ref(true)
               <div class="author">
                 <!-- 歌曲品质 -->
                 <div class="timbre flex items-center">
-                  <i v-if="record.hr">
+                  <i v-if="record.sq">
                     <svg
                       t="1720244855005"
                       class="icon"
@@ -299,7 +340,7 @@ const isLoading = ref(true)
                       ></path>
                     </svg>
                   </i>
-                  <i v-if="record.sq">
+                  <i v-else>
                     <svg
                       t="1720244920033"
                       class="icon"

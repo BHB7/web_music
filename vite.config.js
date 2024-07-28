@@ -24,5 +24,14 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  server: {
+    proxy: {
+      '/kw': {
+        target: 'http://search.kuwo.cn',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/kw/, '')
+      }
+    }
   }
 })

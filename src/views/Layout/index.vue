@@ -1,23 +1,26 @@
 <script setup>
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import footerPlay from '@/components/footerPlay/foooterPlay.vue'
 import { LeftOutlined, SettingOutlined, MenuOutlined } from '@ant-design/icons-vue'
-import SInput from '@/components/SInput.vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   useViewMsgStore,
   useWyUserStore,
   useKgUserStore,
   useSettingsStore,
-  useAudioStore
+  useAudioStore,
+  useSpotifyUser
 } from '@/stores'
 import Slogin from '@/components/header/Slogin.vue'
 import { computed } from '@vue/reactivity'
 import Smenu from '@/components/menu/Smenu.vue'
+
+import { getToken } from '@/api/spotify/user'
 const wyUserStore = useWyUserStore()
 const kgUserStore = useKgUserStore()
 const settingsStore = useSettingsStore()
 const viewMsgTitleStore = useViewMsgStore() // 全局视图信息
+const spotifyUser = useSpotifyUser() // spotify
 const route = useRoute()
 const router = useRouter()
 const audioStore = useAudioStore()
@@ -54,6 +57,16 @@ const login = () => {
 const openDrawer = ref(false)
 onBeforeUnmount(() => {
   clearInterval(timer.value)
+})
+
+onMounted(() => {
+  if (!spotifyUser.user.token) {
+    console.log('获取spotify token')
+    getToken().then((res) => {
+      console.log(res.data.access_token)
+      spotifyUser.setToken(res.data.access_token)
+    })
+  }
 })
 </script>
 <template>
@@ -112,7 +125,6 @@ onBeforeUnmount(() => {
           <span class="ctitlt lg:hidden mx-4 font-bold text-sm">{{
             viewMsgTitleStore.cNavTitle
           }}</span>
-          <SInput :width="'200px'" :height="'35px'" :placeholder="'搜索音乐'" />
         </div>
         <!-- 右侧 -->
         <div class="r">
@@ -146,7 +158,7 @@ onBeforeUnmount(() => {
       <div class="scroll">
         <!-- 内容 -->
         <a-layout-content>
-          <div class="lg:pl-0 bg-white pl-4">
+          <div class="lg:pl-0 bg-white pl-4 h-lvh">
             <router-view></router-view>
           </div>
         </a-layout-content>

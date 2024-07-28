@@ -39,6 +39,18 @@ const router = createRouter({
           name: 'playlistDetail',
           component: () => import('@/views/PlaylistDetail/index.vue')
         },
+        // 测试搜索页
+        {
+          path: '/search',
+          name: 'search',
+          component: () => import('@/views/Search/index.vue')
+        },
+        // 项目介绍页
+        {
+          path: '/introduce',
+          name: 'introduce',
+          component: () => import('@/views/Introduce/index.vue')
+        },
         {
           path: '/404',
           component: () => import('@/views/404/index.vue')

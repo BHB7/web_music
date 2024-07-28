@@ -14,3 +14,4 @@ export * from './modules/wyUser'
 export * from './modules/settings'
 export * from './modules/kgUser'
 export * from './modules/viewMsg' // 全局页面信息
+export * from './modules/spotifyUser' // spotify 
