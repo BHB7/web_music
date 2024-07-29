@@ -28,7 +28,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/kw': {
-        target: 'https://proxy.vocucc.cn/api/search',
+        target: 'https://search.kuwo.cn',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/kw/, '')
       }
