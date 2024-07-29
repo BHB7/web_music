@@ -28,9 +28,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/kw': {
-        target: 'https://proxy.vocucc.cn',
+        target: 'https://proxy.vocucc.cn/api/search',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/kw/, '/api')
+        rewrite: (path) => path.replace(/^\/kw/, '')
       }
     }
   }
