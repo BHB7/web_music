@@ -264,7 +264,7 @@ const close = () => {
     // display: flex;
     // justify-content: space-evenly;
     .l {
-      min-width: 390px;
+      min-width: 350px;
       max-width: 700px;
       flex: 3;
       margin: 20px 0;
@@ -316,8 +316,9 @@ const close = () => {
         img {
           width: 100%;
           height: 350px;
-          min-height: 300px;
+          min-height: 350px;
           object-fit: fill;
+          image-rendering: crisp-edges;
         }
       }
       // 歌曲信息
