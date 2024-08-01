@@ -19,6 +19,13 @@ const value = ref(0)
 const audioStore = useAudioStore()
 const volume = ref(50)
 const isLoading = ref(false)
+
+const props = defineProps({
+  device: {
+    type: String,
+    default: 'pc'
+  }
+})
 const play = () => {
   audioStore.play()
 }

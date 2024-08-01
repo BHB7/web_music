@@ -16,7 +16,6 @@ import { computed } from '@vue/reactivity'
 import Smenu from '@/components/menu/Smenu.vue'
 
 import { getToken } from '@/api/spotify/user'
-import { log } from 'console'
 const wyUserStore = useWyUserStore()
 const kgUserStore = useKgUserStore()
 const settingsStore = useSettingsStore()
@@ -180,7 +179,7 @@ onMounted(() => {
     </a-layout>
   </a-layout>
   <!-- 底部 -->
-  <footerPlay></footerPlay>
+  <footerPlay :device="viewMsgStore.device"></footerPlay>
   <Slogin :open="isShowLogin"></Slogin>
 </template>
 <style lang="scss" scoped>
