@@ -16,10 +16,11 @@ import { computed } from '@vue/reactivity'
 import Smenu from '@/components/menu/Smenu.vue'
 
 import { getToken } from '@/api/spotify/user'
+import { log } from 'console'
 const wyUserStore = useWyUserStore()
 const kgUserStore = useKgUserStore()
 const settingsStore = useSettingsStore()
-const viewMsgTitleStore = useViewMsgStore() // 全局视图信息
+const viewMsgStore = useViewMsgStore() // 全局视图信息
 const spotifyUser = useSpotifyUser() // spotify
 const route = useRoute()
 const router = useRouter()
@@ -58,8 +59,23 @@ const openDrawer = ref(false)
 onBeforeUnmount(() => {
   clearInterval(timer.value)
 })
+// 判断设备
+const isMobile = () => {
+  let flag = navigator.userAgent.match(
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+  )
+  return flag
+}
 
 onMounted(() => {
+  if (isMobile()) {
+    viewMsgStore.setDevice('mobile') // 设置设备类型为移动设备
+    console.log('移动端设备')
+  } else {
+    viewMsgStore.setDevice('pc') // 设置设备类型为pc设备
+    console.log('pc设备')
+  }
+
   if (!spotifyUser.user.token) {
     console.log('获取spotify token')
     getToken().then((res) => {
@@ -122,9 +138,7 @@ onMounted(() => {
             style="font-size: 1.6rem"
           />
           <!-- 移动端标题显示位置 -->
-          <span class="ctitlt lg:hidden mx-4 font-bold text-sm">{{
-            viewMsgTitleStore.cNavTitle
-          }}</span>
+          <span class="ctitlt lg:hidden mx-4 font-bold text-sm">{{ viewMsgStore.cNavTitle }}</span>
         </div>
         <!-- 右侧 -->
         <div class="r">

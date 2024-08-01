@@ -4,6 +4,8 @@ import { ref } from 'vue'
 export const useViewMsgStore = defineStore('viewMsg', () => {
     const cNavTitle = ref('') // c端导航栏标题
 
+    const device = ref('') // 设备类型 mobile | pc
+
     // 歌单详情页数据是否加载
     const playListDetailIsLoaded = ref(true)
 
@@ -32,12 +34,19 @@ export const useViewMsgStore = defineStore('viewMsg', () => {
         lyric.value = newLyric
     }
 
+    // 设置设备类型
+    const setDevice = (newDevice) => {
+        device.value = newDevice
+    }
+
 
     return {
         lyric,
         setLyric,
         cNavTitle,
         setCNavTitle,
+        device,
+        setDevice,
         playListDetailIsLoaded,
         setPlayListDetailIsLoaded,
         likePlayListIsLoaded,

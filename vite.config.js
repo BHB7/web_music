@@ -8,6 +8,8 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // 根路径 默认使用/ vue cli 3.3+ 弃用 baseUrl
+  publicPath: '/', // 此处改为 './' 即可
   plugins: [
     vue(),
     Components({
@@ -27,10 +29,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/kw': {
+      '/kws': {
         target: 'https://search.kuwo.cn',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/kw/, '')
+        rewrite: (path) => path.replace(/^\/kws/, '')
       }
     }
   }
