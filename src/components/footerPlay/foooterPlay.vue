@@ -22,6 +22,7 @@ const isLoading = ref(false)
 
 const props = defineProps({
   device: {
+    // 设备 标识 | mobile 移动端 pc 电脑端
     type: String,
     default: 'pc'
   }

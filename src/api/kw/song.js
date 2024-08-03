@@ -41,7 +41,7 @@ export const search = (all, pn = 0, rn = 20) => {
  * @param {number} musicID 音乐ID
  */
 export const getPlayUrl = (musicID) => {
-    return axios.get('http://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign', {
+    return axios.get('https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign', {
         params: {
             rid: musicID,
         }

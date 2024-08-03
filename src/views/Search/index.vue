@@ -45,11 +45,12 @@ const value = ref('')
 const playList = ref({})
 const onSearch = (value) => {
   if (!value) return
-  kwSearch(value.trim(''), 1, 20).then((res) => {
+  kwSearch(value.trim(''), 1, 200).then((res) => {
     // 将字符串中的单引号替换为双引号 方便解析json
     const dataStr = res.data.replace(/\'/g, '"')
+
     // 将字符串解析为json
-    const data = JSON.parse(dataStr)
+    const data = JSON.parse(dataStr.replace(/\&nbsp;/g, ' ').replace(/\&/g, ' / '))
     console.log(data.abslist)
     const list = data.abslist.map((item) => {
       /**
