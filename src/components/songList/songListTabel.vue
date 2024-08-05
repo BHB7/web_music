@@ -232,6 +232,8 @@ const isLoading = ref(true)
 <template>
   <!-- 歌曲列表 表格 -->
   <a-table
+    :align="'center'"
+    :loading="!viewMsgStore.playListDetailIsLoaded"
     y
     sticky
     ellipsis
