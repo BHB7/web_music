@@ -206,7 +206,7 @@ defineOptions({ name: 'foooterPlay' })
       </div>
     </div>
   </footer>
-  <playDetail @close="isShowPlayDetail = false" :open="isShowPlayDetail" :img="coverRef" />
+  <playDetail @close="isShowPlayDetail = false" :open="isShowPlayDetail" />
 </template>
 
 <style lang="scss" scoped>

@@ -4,16 +4,15 @@
 import { onMounted, ref } from 'vue'
 import ColorThief from 'colorthief'
 import colorfulBackground from '@/utils/colorful.min.js'
-
+// const audioStore = useAudioStore()
 // 动态导入 Web Worker
 const worker = new Worker(new URL('../utils/worker.js', import.meta.url), {
   type: 'module'
 })
-
-// 定义组件的 props
 const props = defineProps({
   img: {
-    type: Object
+    type: String,
+    default: ''
   }
 })
 
@@ -27,7 +26,7 @@ onMounted(async () => {
   // 创建一个 Image 对象并设置跨域属性
   const img = new Image()
   img.crossOrigin = 'Anonymous'
-  img.src = props.img.currentSrc
+  img.src = props.img
 
   // 当图像加载完成后执行的回调函数
   img.onload = () => {

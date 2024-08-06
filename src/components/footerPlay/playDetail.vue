@@ -3,7 +3,7 @@ import { DownOutlined, ArrowsAltOutlined, EllipsisOutlined } from '@ant-design/i
 import inputR from './inputR.vue'
 import { formatTime } from '@/utils/formatTime'
 import { useAudioStore, useViewMsgStore } from '@/stores/index'
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { nextTick, onMounted, ref, watch, computed } from 'vue'
 import lyrics from '../lyrics.vue'
 
 // 导入动画库
@@ -15,9 +15,6 @@ const props = defineProps({
   open: {
     type: Boolean,
     default: () => false
-  },
-  img: {
-    type: Object
   }
 })
 const audioStore = useAudioStore()
@@ -27,6 +24,11 @@ const volume = ref(50)
 const play = () => {
   audioStore.play()
 }
+const getCover = computed(() => {
+  return (
+    audioStore.playList[audioStore.playStatus.currentIndex]?.cover.replace(/120/g, '350') || logo
+  )
+})
 const pause = () => {
   audioStore.pause()
 }
@@ -103,7 +105,7 @@ const close = () => {
 </script>
 <template>
   <main class="main" ref="mianRef" v-if="props.open">
-    <bgColor :img="props.img" class="bg"></bgColor>
+    <bgColor :img="getCover" class="bg"></bgColor>
     <div class="play-detail">
       <header class="header">
         <div class="l">
@@ -123,7 +125,7 @@ const close = () => {
             :class="{ play: audioStore.playStatus.isPlay, noPlay: !audioStore.playStatus.isPlay }"
             class="cover"
           >
-            <img :src="img.src" alt="" />
+            <img :src="getCover" alt="" />
           </div>
           <!-- 歌曲信息 -->
           <div class="info">
