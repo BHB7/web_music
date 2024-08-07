@@ -8,6 +8,7 @@ import { getSongUrlService } from '@/api/wyy/song'
 import { computed } from '@vue/reactivity'
 import loader from '../loader.vue'
 import { getPlayUrl } from '@/api/kw/song'
+import ld from '@/assets/ld.png'
 const wyUserStore = useWyUserStore()
 const audioStore = useAudioStore()
 // const route = useRoute()
@@ -441,6 +442,8 @@ const styleVars = {
                 ripple
                 lazy
                 fit="cover"
+                error="https://i.postimg.cc/BZDgf2qk/01.png"
+                :loading="ld"
                 :src="record.al.picUrl"
               />
             </div>
@@ -474,7 +477,7 @@ const styleVars = {
 }
 .c {
   .r {
-    width: 100%;
+    width: 100vw;
   }
   .play-action {
     .song-info {
