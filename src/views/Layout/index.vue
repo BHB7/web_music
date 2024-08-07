@@ -44,6 +44,7 @@ const onBreakpoint = (broken) => {
   console.log(broken)
 }
 const selectedKeys = ref([route.path])
+const isShowMenu = ref(false)
 watch(
   () => route.path,
   (newVal) => {
@@ -52,20 +53,21 @@ watch(
       console.log(newVal)
       console.log('非推荐页')
       viewMsgStore.isT = true
+      isShowMenu.value = false
     } else {
       viewMsgStore.isT = false
+      isShowMenu.value = true
     }
     selectedKeys.value = [newVal]
+  },
+  {
+    immediate: true
   }
 )
 const isShowLogin = ref(false)
 const login = () => {
   isShowLogin.value = !isShowLogin.value
 }
-const openDrawer = ref(false)
-onBeforeUnmount(() => {
-  clearInterval(timer.value)
-})
 // 判断设备
 const isMobile = () => {
   let flag = navigator.userAgent.match(
@@ -163,7 +165,8 @@ onMounted(() => {
       <!-- 移动端头部 -->
       <var-app-bar v-if="viewMsgStore.device === 'mobile'" :title="viewMsgStore.cNavTitle">
         <template #left>
-          <var-menu v-if="!viewMsgStore.isT">
+          <!-- 菜单 -->
+          <var-menu v-if="isShowMenu">
             <var-button color="transparent" text-color="#fff" round text @click="showPopup = true">
               <var-icon name="menu" :size="24" />
             </var-button>
@@ -175,9 +178,10 @@ onMounted(() => {
               </var-popup>
             </template>
           </var-menu>
+          <!-- 返回 -->
           <var-button
-            @click="$router.go(-1)"
-            v-else
+            @click="$router.push('/recommended')"
+            v-if="!isShowMenu"
             color="transparent"
             text-color="#fff"
             round

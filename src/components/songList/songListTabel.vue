@@ -76,7 +76,7 @@ watch(
   (newVal, oldVal) => {
     // 判断当前播放歌曲是否在歌单中
     props.list?.songs?.forEach((item, index) => {
-      if (item.al.id === audioStore.playList[audioStore.playStatus.currentIndex].id) {
+      if (item.al?.id === audioStore.playList[audioStore.playStatus.currentIndex]?.id) {
         // item.isLoading = audioStore.playStatus.isWaiting
         item.isPlay = audioStore.playStatus.isPlay
       } else {
@@ -233,7 +233,6 @@ const isLoading = ref(true)
   <!-- 歌曲列表 表格 -->
   <a-table
     :align="'center'"
-    :loading="!viewMsgStore.playListDetailIsLoaded"
     y
     sticky
     ellipsis
@@ -392,6 +391,7 @@ const isLoading = ref(true)
       </div>
     </template>
   </a-table>
+  <var-back-top :duration="1000" :elevation="5" :visibility-height="1000" :bottom="120" />
 </template>
 
 <style lang="scss" scoped>

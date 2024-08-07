@@ -10,7 +10,7 @@ import songListTabel from '@/components/songList/songListTabel.vue'
 import Segmented from '@/components/Segmented.vue'
 const wyUserStore = useWyUserStore()
 const viewMsgStore = useViewMsgStore() // 全局视图信息
-
+viewMsgStore.setCNavTitle('歌单详情')
 const playListId = ref('')
 const route = useRoute()
 console.log(wyUserStore.user.userInfo.userId)

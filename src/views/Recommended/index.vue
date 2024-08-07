@@ -100,10 +100,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <var-tabs elevation v-model:active="activeIndex">
+  <var-tabs v-model:active="activeIndex">
     <var-tab>最新</var-tab>
-    <var-tab>选项2</var-tab>
-    <var-tab>选项3</var-tab>
   </var-tabs>
 
   <var-tabs-items v-model:active="activeIndex">
@@ -119,7 +117,7 @@ onMounted(() => {
             />
           </var-style-provider>
         </div>
-        <var-back-top :duration="1000" :visibility-height="800" :bottom="120" />
+        <var-back-top :duration="1000" :elevation="5" :visibility-height="800" :bottom="120" />
       </div>
       <div class="w-full">
         <footer class="footer" ref="footerRef" v-if="!listEnd">
@@ -130,14 +128,6 @@ onMounted(() => {
           <span>没有更多啦~</span>
         </div>
       </div>
-    </var-tab-item>
-    <var-tab-item>
-      很多人不长眼睛，嚣张都靠武器。 赤手空拳就缩成蚂蚁。 不用麻烦了，不用麻烦了。
-      不用麻烦，不用麻烦了，不用麻烦了。
-    </var-tab-item>
-    <var-tab-item>
-      你们一起上，我在赶时间。 每天决斗观众都累了，英雄也累了。 不用麻烦了，不用麻烦了。
-      副歌不长你们有几个，一起上好了。 正义呼唤我，美女需要我。 牛仔很忙的。
     </var-tab-item>
   </var-tabs-items>
 </template>

@@ -39,12 +39,6 @@ const router = createRouter({
           name: 'playlistDetail',
           component: () => import('@/views/PlaylistDetail/index.vue')
         },
-        // 测试搜索页
-        {
-          path: '/search',
-          name: 'search',
-          component: () => import('@/views/Search/index.vue')
-        },
         // 项目介绍页
         {
           path: '/introduce',
@@ -57,11 +51,18 @@ const router = createRouter({
         }
       ]
     },
+    // 测试搜索页
+    {
+      path: '/search',
+      name: 'search',
+      component: () => import('@/views/Search/index.vue')
+    },
     // 404
     {
       path: '/:pathMatch(.*)',
       redirect: '/404',
-    }
+    },
+
   ]
 })
 

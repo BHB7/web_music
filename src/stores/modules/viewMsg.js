@@ -8,6 +8,8 @@ export const useViewMsgStore = defineStore('viewMsg', () => {
 
     const isT = ref(false)
 
+    // 搜索历史记录
+    const searchHistory = ref([])
     // 歌单详情页数据是否加载
     const playListDetailIsLoaded = ref(true)
 
@@ -44,6 +46,16 @@ export const useViewMsgStore = defineStore('viewMsg', () => {
     const setT = (newT) => {
         isT.value = newT
     }
+    // 设置搜索历史记录
+    const setSearchHistory = (newSearchHistory) => {
+        console.log(newSearchHistory)
+        searchHistory.value = newSearchHistory
+    }
+
+    // 添加搜索历史记录
+    const addSearchHistory = (newSearchHistory) => {
+        searchHistory.value.unshift(newSearchHistory)
+    }
 
     return {
         isT,
@@ -52,11 +64,20 @@ export const useViewMsgStore = defineStore('viewMsg', () => {
         setLyric,
         cNavTitle,
         setCNavTitle,
+        searchHistory,
+        setSearchHistory,
+        addSearchHistory,
         device,
         setDevice,
         playListDetailIsLoaded,
         setPlayListDetailIsLoaded,
         likePlayListIsLoaded,
         setLikePlayListIsLoaded
+    }
+}, {
+    persist: true,
+    persist: {
+        storage: sessionStorage,
+        paths: ['searchHistory']
     }
 })
