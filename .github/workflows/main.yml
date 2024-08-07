@@ -3,7 +3,7 @@ name: CI
 # 触发workflow的条件
 on:
   push:
-    # 只有master分支发生push事件时，才会触发workflow
+    # 只有main分支发生push事件时，才会触发workflow
     branches: [main]
 
 # jobs表示执行的一项或多项任务
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # 切代码到 runner
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # 在当前操作系统安装node
       - name: install NodeJs
