@@ -450,9 +450,11 @@ const styleVars = {
           </td>
           <td class="r">
             <div class="song-info">
-              <div class="song-name">{{ record.ar[0].name }}</div>
+              <div class="song-name">
+                <var-ellipsis style="max-width: 170px">{{ record.name }}</var-ellipsis>
+              </div>
               <var-ellipsis style="max-width: 170px">
-                <div class="song-name">{{ record.name }}</div>
+                <div class="name">{{ record.ar[0].name }}</div>
               </var-ellipsis>
             </div>
           </td>
@@ -478,6 +480,15 @@ const styleVars = {
 .c {
   .r {
     width: 100vw;
+    .song-name {
+      font-weight: 600;
+      font-size: 16px;
+      color: #283248;
+    }
+    .name {
+      color: #959aa5;
+      margin: 0 10px;
+    }
   }
   .play-action {
     .song-info {
