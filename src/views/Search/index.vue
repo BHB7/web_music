@@ -84,7 +84,12 @@ const onSearch = (value) => {
 </script>
 <template>
   <div class="ipt">
-    <a-input-search v-model:value="value" placeholder="点击搜索" enter-button @search="onSearch" />
+    <a-input-search
+      v-model:value="value"
+      placeholder="点击搜索音乐"
+      enter-button
+      @search="onSearch"
+    />
   </div>
   <div class="play-list">
     <songListTabel :list="playList" type="kw" :art="0"></songListTabel>
