@@ -6,6 +6,8 @@ export const useViewMsgStore = defineStore('viewMsg', () => {
 
     const device = ref('') // 设备类型 mobile | pc
 
+    const isT = ref(false)
+
     // 歌单详情页数据是否加载
     const playListDetailIsLoaded = ref(true)
 
@@ -38,9 +40,14 @@ export const useViewMsgStore = defineStore('viewMsg', () => {
     const setDevice = (newDevice) => {
         device.value = newDevice
     }
-
+    // 
+    const setT = (newT) => {
+        isT.value = newT
+    }
 
     return {
+        isT,
+        setT,
         lyric,
         setLyric,
         cNavTitle,

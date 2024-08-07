@@ -11,7 +11,7 @@ const props = defineProps({
         <!-- 播放量 -->
         <p class="count font-thin lg:text-lg text-xs lg:mr-2 mr-1">{{ item.playCount }}</p>
       </div>
-      <img v-lazy :src="item.picUrl || '@/assets/audio.svg'" alt="" />
+      <img v-myLazy :src="item.picUrl || '@/assets/audio.svg'" alt="" />
     </div>
     <div class="desc text-ellipsis overflow-hidden lg:w-48 lg:mt-4 h-20 w-20">
       <p class="title font-bold lg:text-xl text-xs lg:mt-0 mt-7">

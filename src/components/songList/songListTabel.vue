@@ -301,7 +301,7 @@ const isLoading = ref(true)
 
             <!-- 封面 -->
             <div class="cover lg:block hidden">
-              <img v-lazy :src="record.al.picUrl" alt="" />
+              <img v-myLazy :src="record.al.picUrl" alt="" />
             </div>
             <!-- 文本信息 -->
             <div class="info">

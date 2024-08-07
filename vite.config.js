@@ -6,6 +6,8 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
+import autoImport from 'unplugin-auto-import/vite'
+import { VarletImportResolver } from '@varlet/import-resolver'
 // https://vitejs.dev/config/
 export default defineConfig({
   // 根路径 默认使用/ vue cli 3.3+ 弃用 baseUrl
@@ -16,8 +18,13 @@ export default defineConfig({
       resolvers: [
         AntDesignVueResolver({
           importStyle: false // css in js
-        })
+        }),
+        VarletImportResolver()
       ]
+    })
+    ,
+    autoImport({
+      resolvers: [VarletImportResolver({ autoImport: true })]
     }),
     // 解决props响应式问题
     ReactivityTransform(),

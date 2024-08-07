@@ -47,6 +47,14 @@ const selectedKeys = ref([route.path])
 watch(
   () => route.path,
   (newVal) => {
+    // 判断路径如果 不是 recommended 就 设置
+    if (newVal !== '/recommended') {
+      console.log(newVal)
+      console.log('非推荐页')
+      viewMsgStore.isT = true
+    } else {
+      viewMsgStore.isT = false
+    }
     selectedKeys.value = [newVal]
   }
 )
@@ -63,18 +71,26 @@ const isMobile = () => {
   let flag = navigator.userAgent.match(
     /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
   )
-  return flag
-}
-
-onMounted(() => {
-  if (isMobile()) {
+  if (flag) {
     viewMsgStore.setDevice('mobile') // 设置设备类型为移动设备
     console.log('移动端设备')
   } else {
     viewMsgStore.setDevice('pc') // 设置设备类型为pc设备
     console.log('pc设备')
   }
+}
+isMobile()
+// 当视口发生变化时触发
+const timer = ref(null)
+window.onresize = () => {
+  clearTimeout(timer.value)
+  timer.value = setTimeout(() => {
+    isMobile()
+  }, 500)
+}
 
+const showPopup = ref(false)
+onMounted(() => {
   if (!spotifyUser.user.token) {
     console.log('获取spotify token')
     getToken().then((res) => {
@@ -85,25 +101,6 @@ onMounted(() => {
 })
 </script>
 <template>
-  <a-drawer
-    :closable="false"
-    :bodyStyle="{ padding: '0px' }"
-    v-model:open="openDrawer"
-    class="layout"
-    root-class-name="root-class-name"
-    :root-style="{ color: 'blue' }"
-    placement="left"
-    :width="'60%'"
-    @close="openDrawer = false"
-  >
-    <div class="logo c h-32">
-      <div class="img-box">
-        <img src="@/assets/logot.svg" alt="" />
-      </div>
-      在线音乐播放
-    </div>
-    <Smenu :isLogin="selApiUser.isLogin"></Smenu>
-  </a-drawer>
   <a-layout class="layout">
     <!-- 侧边栏 -->
     <a-layout-sider
@@ -124,20 +121,16 @@ onMounted(() => {
       <Smenu :isLogin="selApiUser.isLogin"></Smenu>
     </a-layout-sider>
     <a-layout>
-      <!-- 头部 -->
-      <a-layout-header class="header" :style="{ background: '#fff', padding: 0 }">
+      <!-- pc头部 -->
+      <a-layout-header
+        v-if="viewMsgStore.device === 'pc'"
+        class="header"
+        :style="{ background: '#fff', padding: 0 }"
+      >
         <!-- 左侧 -->
         <div class="l flex">
           <!-- 返回 -->
           <LeftOutlined class="icon lg:block hidden" @click="$router.go(-1)" />
-          <!-- 移动端侧边栏激发按钮 -->
-          <MenuOutlined
-            @click="openDrawer = true"
-            class="lg:hidden text-blue ml-4"
-            style="font-size: 1.6rem"
-          />
-          <!-- 移动端标题显示位置 -->
-          <span class="ctitlt lg:hidden mx-4 font-bold text-sm">{{ viewMsgStore.cNavTitle }}</span>
         </div>
         <!-- 右侧 -->
         <div class="r">
@@ -167,22 +160,61 @@ onMounted(() => {
           </div>
         </div>
       </a-layout-header>
+      <!-- 移动端头部 -->
+      <var-app-bar v-if="viewMsgStore.device === 'mobile'" :title="viewMsgStore.cNavTitle">
+        <template #left>
+          <var-menu v-if="!viewMsgStore.isT">
+            <var-button color="transparent" text-color="#fff" round text @click="showPopup = true">
+              <var-icon name="menu" :size="24" />
+            </var-button>
+            <template #menu>
+              <var-popup position="left" v-model:show="showPopup">
+                <div class="popup-example-block">
+                  <Smenu></Smenu>
+                </div>
+              </var-popup>
+            </template>
+          </var-menu>
+          <var-button
+            @click="$router.go(-1)"
+            v-else
+            color="transparent"
+            text-color="#fff"
+            round
+            text
+          >
+            <var-icon name="chevron-left" :size="24" />
+          </var-button>
+        </template>
+
+        <template #right>
+          <var-button type="primary" round>
+            <var-icon name="magnify" />
+          </var-button>
+        </template>
+      </var-app-bar>
       <!-- 滚动容器 -->
       <div class="scroll">
         <!-- 内容 -->
         <a-layout-content>
-          <div class="lg:pl-0 bg-white pl-4 h-lvh">
+          <div class="lg:pl-0 bg-white h-lvh">
             <router-view></router-view>
           </div>
         </a-layout-content>
       </div>
     </a-layout>
   </a-layout>
+
   <!-- 底部 -->
   <footerPlay :device="viewMsgStore.device"></footerPlay>
   <Slogin :open="isShowLogin"></Slogin>
 </template>
 <style lang="scss" scoped>
+// 侧边栏
+.popup-example-block {
+  padding: 24px;
+  width: 280px;
+}
 .layout {
   min-height: 100vh;
   max-height: 100%;

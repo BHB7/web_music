@@ -11,6 +11,7 @@ import gsap from 'gsap'
 // 背景
 import bgColor from '../bgColor.vue'
 const viewMsgStore = useViewMsgStore() // 全局视图信息
+viewMsgStore.isT = true
 const props = defineProps({
   open: {
     type: Boolean,

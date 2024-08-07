@@ -11,6 +11,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@varlet/ui": "^3.3.12",
     "ant-design-vue": "^4.2.2",
     "axios": "^1.7.2",
     "colorthief": "^2.4.0",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",
+    "@varlet/import-resolver": "^3.3.12",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue-macros/reactivity-transform": "^0.4.6",
     "autoprefixer": "^10.4.19",
@@ -31,10 +33,12 @@
     "eslint-plugin-vue": "^9.17.0",
     "http-proxy-middleware": "^3.0.0",
     "postcss": "^8.4.38",
+    "postcss-px-to-viewport": "^1.1.1",
     "prettier": "^3.2.5",
     "sass": "^1.77.4",
     "tailwindcss": "^3.4.4",
-    "unplugin-vue-components": "^0.27.0",
+    "unplugin-auto-import": "^0.18.2",
+    "unplugin-vue-components": "^0.27.3",
     "vite": "^5.2.8"
   }
 }
