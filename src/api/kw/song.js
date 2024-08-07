@@ -69,5 +69,5 @@ export const getLyric = (musicID) => {
 // 获取热门搜索
 export const getHotSearch = () => {
     return axios.get(`
-    https://kuwo.cn/openapi/v1/www/search/searchKey?key=&httpsStatus=1&reqId=96af6a10-54ef-11ef-b619-f341ec1da43b&plat=web_www&from=`)
+    /scHot/searchKey?key=&httpsStatus=1&reqId=96af6a10-54ef-11ef-b619-f341ec1da43b&plat=web_www&from=`)
 }

@@ -36,10 +36,10 @@ const props = defineProps({
         <SendOutlined class="icon" />
         <span class="nav-text">为你推荐</span>
       </a-menu-item>
-      <a-menu-item key="/search" @click="$router.push('/search')">
+      <!-- <a-menu-item key="/search" @click="$router.push('/search')">
         <SearchOutlined class="icon" />
         <span class="nav-text">搜索</span>
-      </a-menu-item>
+      </a-menu-item> -->
       <a-menu-item-group title="我的" v-if="props.isLogin">
         <a-menu-item key="/likedSongs" @click="$router.push(`/likedSongs`)">
           <HeartOutlined class="icon" />

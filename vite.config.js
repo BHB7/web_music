@@ -40,6 +40,11 @@ export default defineConfig({
         target: 'https://search.kuwo.cn',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/kws/, '')
+      },
+      '/scHot': {
+        target: 'https://kuwo.cn/openapi/v1/www/search',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/scHot/, '')
       }
     }
   }

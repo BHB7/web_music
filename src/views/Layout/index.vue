@@ -192,9 +192,12 @@ onMounted(() => {
         </template>
 
         <template #right>
-          <var-button type="primary" round>
-            <var-icon name="magnify" />
-          </var-button>
+          <div class="r">
+            <!-- 搜索 -->
+            <var-button type="primary" round @click="$router.push('/search')">
+              <var-icon name="magnify" />
+            </var-button>
+          </div>
         </template>
       </var-app-bar>
       <!-- 滚动容器 -->
@@ -223,7 +226,11 @@ onMounted(() => {
   min-height: 100vh;
   max-height: 100%;
   background-color: #fff;
-
+  .r {
+    &:deep(.var-button--round) {
+      margin-right: 12px;
+    }
+  }
   .icon {
     font-size: 18px;
   }
