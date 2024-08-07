@@ -2,7 +2,7 @@
 import { useWyUserStore, useAudioStore, useViewMsgStore } from '@/stores'
 import { NumberOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons-vue'
 // import { useRoute } from 'vue-router'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, reactive } from 'vue'
 import { formatDate, formatSongDuration } from '@/utils/formatTime'
 import { getSongUrlService } from '@/api/wyy/song'
 import { computed } from '@vue/reactivity'
@@ -227,11 +227,35 @@ watch(
 const pause = () => {
   audioStore.pause()
 }
+
+const getName = (key) => {
+  const temp = ref('')
+  switch (key) {
+    case 'name':
+      temp.value = '标题'
+      break
+    case 'album':
+      temp.value = '专辑'
+      break
+    case 'like':
+      temp.value = '喜欢'
+      break
+    case 'time':
+      temp.value = '时长'
+      break
+  }
+  return temp.value
+}
 const isLoading = ref(true)
+
+const styleVars = {
+  '--table-tbody-tr-border-bottom': '20px'
+}
 </script>
 <template>
   <!-- 歌曲列表 表格 -->
   <a-table
+    v-if="viewMsgStore.device === 'pc'"
     :align="'center'"
     y
     sticky
@@ -391,10 +415,74 @@ const isLoading = ref(true)
       </div>
     </template>
   </a-table>
+  <var-style-provider :style-vars="styleVars">
+    <!-- 移动端表格 -->
+    <var-table v-if="viewMsgStore.device === 'mobile'" elevation="0">
+      <!-- <thead>
+      <tr>
+        <th v-for="(column, index) in columns" :key="index">{{ getName(column.key) }}</th>
+      </tr>
+    </thead> -->
+      <tbody class="c">
+        <tr
+          :class="{ 'play-action': record.isPlay }"
+          class="item"
+          v-for="(record, index) in list?.songs"
+          :key="index"
+          @click="play(record, index)"
+        >
+          <td class="l">
+            <!-- 歌曲封面 -->
+            <div class="cover">
+              <var-image
+                width="75px"
+                :radius="6"
+                height="75px"
+                ripple
+                lazy
+                fit="cover"
+                :src="record.al.picUrl"
+              />
+            </div>
+          </td>
+          <td class="r">
+            <div class="song-info">
+              <div class="song-name">{{ record.ar[0].name }}</div>
+              <var-ellipsis style="max-width: 170px">
+                <div class="song-name">{{ record.name }}</div>
+              </var-ellipsis>
+            </div>
+          </td>
+          <td style="width: 50px">
+            <div class="end">
+              <var-icon name="dots-vertical" />
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </var-table>
+  </var-style-provider>
   <var-back-top :duration="1000" :elevation="5" :visibility-height="1000" :bottom="120" />
 </template>
 
 <style lang="scss" scoped>
+.item {
+  // margin: 10px 0;
+  // background-color: aqua;
+  display: block;
+  margin: 8px 0;
+}
+.c {
+  .r {
+    width: 200px;
+  }
+  .play-action {
+    .song-info {
+      color: dodgerblue;
+    }
+  }
+}
+
 .play-list {
   width: 100%;
   // height: 100%;

@@ -37,12 +37,6 @@ const selApiUser = computed(() => {
   // return
 })
 
-const onCollapse = (collapsed, type) => {
-  console.log(collapsed, type)
-}
-const onBreakpoint = (broken) => {
-  console.log(broken)
-}
 const selectedKeys = ref([route.path])
 const isShowMenu = ref(false)
 watch(
@@ -109,8 +103,6 @@ onMounted(() => {
       theme="light"
       breakpoint="lg"
       collapsed-width="0"
-      @collapse="onCollapse"
-      @breakpoint="onBreakpoint"
       style="height: 100vh; background-color: #fff; margin-right: 40px"
       class="hidden lg:block"
     >
