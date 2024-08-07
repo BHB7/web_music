@@ -426,7 +426,6 @@ const styleVars = {
     </thead> -->
       <tbody class="c">
         <tr
-          :class="{ 'play-action': record.isPlay }"
           class="item"
           v-for="(record, index) in list?.songs"
           :key="index"
@@ -448,7 +447,7 @@ const styleVars = {
               />
             </div>
           </td>
-          <td class="r">
+          <td class="r" :class="{ 'play-action': record.isPlay }">
             <div class="song-info">
               <div class="song-name">
                 <var-ellipsis style="max-width: 170px">{{ record.name }}</var-ellipsis>
@@ -467,7 +466,7 @@ const styleVars = {
       </tbody>
     </var-table>
   </var-style-provider>
-  <var-back-top :duration="1000" :elevation="5" :visibility-height="1000" :bottom="120" />
+  <var-back-top :duration="300" :elevation="5" :visibility-height="1000" :bottom="100" />
 </template>
 
 <style lang="scss" scoped>
@@ -491,7 +490,10 @@ const styleVars = {
     }
   }
   .play-action {
-    .song-info {
+    .song-name {
+      color: dodgerblue;
+    }
+    .name {
       color: dodgerblue;
     }
   }
