@@ -21,13 +21,20 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4.0.3
         with:
-          node-version: '20.X'
+          node-version: '20'
+
+      # 删除 node_modules 和 package-lock.json
+      - name: Remove node_modules and package-lock.json
+        run: |
+          rm -rf node_modules
+          rm -f package-lock.json
+
+      # 安装依赖项
+      - name: Install Dependencies
+        run: npm install
 
       - name: Print Node.js version
         run: node --version
-
-      - name: Install Dependencies
-        run: npm install
 
       - name: Print npm version
         run: npm --version
