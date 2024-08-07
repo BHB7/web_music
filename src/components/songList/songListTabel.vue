@@ -474,7 +474,7 @@ const styleVars = {
 }
 .c {
   .r {
-    width: 200px;
+    width: 100%;
   }
   .play-action {
     .song-info {
