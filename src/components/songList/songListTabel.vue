@@ -466,7 +466,7 @@ const styleVars = {
       </tbody>
     </var-table>
   </var-style-provider>
-  <var-back-top :duration="300" :elevation="5" :visibility-height="1000" :bottom="100" />
+  <!-- <var-back-top :duration="300" :elevation="5" :visibility-height="1000" :bottom="100" /> -->
 </template>
 
 <style lang="scss" scoped>
