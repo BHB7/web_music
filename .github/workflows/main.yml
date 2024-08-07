@@ -17,7 +17,7 @@ build:
     - name: install NodeJs
 uses: actions/setup-node@v4.0.3
 with:
-node-version: "14.X"
+node-version: "20"
 - name: install deps
 run: npm install
 - name: build app 
