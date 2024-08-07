@@ -1,36 +1,39 @@
 name: CI
-# 触发workflow的条件，
+
+# 触发workflow的条件
 on:
-push:
-# 只有master分支发生push事件时，才会触发workflow
-branches: [ mian ]
+  push:
+    # 只有master分支发生push事件时，才会触发workflow
+    branches: [main]
+
 # jobs表示执行的一项或多项任务
 jobs:
-# 任务的job_id，具体名称自定义，这里build代表打包
-build:
-  # runs-on字段指定运行所需要的虚拟机环境。注意：这个是必填字段
-  runs-on: ubuntu-latest
-  steps:
-    # 切代码到 runner
-    - uses: actions/checkout@v2
-    # 在当前操作系统安装node
-    - name: install NodeJs
-uses: actions/setup-node@v4.0.3
-with:
-node-version: "20"
-- name: install deps
-run: npm install
-- name: build app 
-run: npm run build
-- name: scp 
-uses: appleboy/scp-action@v0.0.1
-with: 
-host: ${{ REMOTE_HOST }},
-username: ${{ REMOTE_USER }},
-password: ${{ REMOTE_PASS }},
-port: ${{ REMOTE_PORT }},
-source: 'dist/',
-target: ${{ REMOTE_TARGET }}
-           
-         
-    
+  # 任务的job_id，具体名称自定义，这里build代表打包
+  build:
+    # runs-on字段指定运行所需要的虚拟机环境。注意：这个是必填字段
+    runs-on: ubuntu-latest
+    steps:
+      # 切代码到 runner
+      - uses: actions/checkout@v2
+
+      # 在当前操作系统安装node
+      - name: install NodeJs
+        uses: actions/setup-node@v4.0.3
+        with:
+          node-version: '20'
+
+      - name: install deps
+        run: npm install
+
+      - name: build app
+        run: npm run build
+
+      - name: scp
+        uses: appleboy/scp-action@v0.0.1
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.REMOTE_PASS }}
+          port: ${{ secrets.REMOTE_PORT }}
+          source: 'dist/'
+          target: ${{ secrets.REMOTE_TARGET }}
