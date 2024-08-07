@@ -45,9 +45,9 @@ const value = ref('')
 const playList = ref({})
 const onSearch = (value) => {
   if (!value) return
-  viewMsgStore.setPlayListDetailIsLoaded(false) // 显示加载
+  // viewMsgStore.setPlayListDetailIsLoaded(false) // 显示加载
   kwSearch(value.trim(''), 0, 1000).then((res) => {
-    viewMsgStore.setPlayListDetailIsLoaded(true) // 隐藏加载
+    // viewMsgStore.setPlayListDetailIsLoaded(true) // 隐藏加载
     const data = res.data
     if (typeof res.data === 'string') {
       // 将字符串中的单引号替换为双引号 方便解析json
