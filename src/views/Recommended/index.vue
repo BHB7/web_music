@@ -1,12 +1,10 @@
 <script setup>
+import { ref, reactive, onMounted, onUnmounted, nextTick } from 'vue'
 import { useWyUserStore, useViewMsgStore } from '@/stores'
-import Segmented from '@/components/Segmented.vue'
-import itemBox from '@/components/playList/itemBox.vue'
-import { onMounted, ref, reactive, onUnmounted, nextTick } from 'vue'
 import { getRecommendSongListService } from '@/api/wyy/songList'
 import router from '@/router'
 import loader from '@/components/loader.vue'
-import { SyncOutlined } from '@ant-design/icons-vue'
+import SkeletonCard from '@/components/SkeletonCard.vue'
 
 const state = reactive({
   score: 5,
@@ -107,15 +105,19 @@ onMounted(() => {
   <var-tabs-items v-model:active="activeIndex">
     <var-tab-item>
       <div class="body">
-        <div class="item" v-for="item in playList">
-          <var-style-provider :style-vars="successTheme" :key="item.id">
-            <!-- 每一个歌单 -->
-            <var-card
-              @click="goPlayListDetail(item.id)"
-              :description="item.name.trim('')"
-              :src="item.picUrl || '@/assets/audio.svg'"
-            />
-          </var-style-provider>
+        <div class="item" v-for="item in playList" :key="item.id">
+          <template v-if="isLoading">
+            <SkeletonCard />
+          </template>
+          <template v-else>
+            <var-style-provider :style-vars="successTheme">
+              <var-card
+                @click="goPlayListDetail(item.id)"
+                :description="item.name.trim('')"
+                :src="item.picUrl || '@/assets/audio.svg'"
+              />
+            </var-style-provider>
+          </template>
         </div>
         <var-back-top :duration="1000" :elevation="5" :visibility-height="800" :bottom="120" />
       </div>
